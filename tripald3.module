@@ -78,11 +78,11 @@ function tripald3_get_relationship_json($base_table, $id) {
       'restrict relationships' => array(
         'object' => array(
           'is_maternal_parent_of', 'is_paternal_parent_of',
-          'is_selection_of'
         ),
         'subject' => array(
           'is_registered_cultivar_of',
-          'is_progeny_of_selfing_of'
+          'is_progeny_of_selfing_of',
+          'is_selection_of'
         )
       ),
     )
