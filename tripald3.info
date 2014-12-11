@@ -1,0 +1,4 @@
+name = Tripal D3
+description = Provides D3.js integration and diagrams for tripal.
+core = 7.x
+package = Tripal Extensions

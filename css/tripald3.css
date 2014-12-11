@@ -1,0 +1,24 @@
+.node circle {
+    stroke: #333333;
+    stroke-width: 2px;
+}
+.node text {
+    font: 12px sans-serif;
+}
+.link {
+    fill: none;
+    stroke: black;
+    stroke-width: 4px;
+}
+.link.is-maternal-parent-of {
+    stroke: #5DA047;
+}
+.link.is-paternal-parent-of {
+    stroke: #004080;
+}
+.node {
+    cursor: pointer;
+}
+#tree {
+  height: 800px;
+}
