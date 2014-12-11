@@ -13,7 +13,7 @@
       // to get the data for the tree from.
       bioD3.drawPedigreeTree({
         "elementId": "tree",
-        "dataJSONpath": "/dev/main/ajax/tripal/d3-json/relationships/stock/" + <?php print $node->stock->stock_id; ?>
+        "dataJSONpath": <?php print '"' . url('ajax/tripal/d3-json/relationships/stock/' . $node->stock->stock_id) . '"'; ?>
       });
     }
   };
