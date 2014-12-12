@@ -18,7 +18,7 @@
 }
 .link.is-selection-of {
   stroke: #999999;
-  stroke-dasharray: 10,5;
+  stroke-dasharray: 10,2;
 }
 .link.is-progeny-of-selfing-of {
   stroke-dasharray: 20,5,5,5;
@@ -31,4 +31,8 @@
 }
 #tree {
   height: 800px;
+}
+
+.legend {
+  border: 1px solid black;
 }

@@ -263,6 +263,9 @@ bioD3 = {
             d.x0 = d.x;
             d.y0 = d.y;
           });
+
+          // Draw the key.
+          bioD3.drawKey(svg);
       }
 
       /**
@@ -287,5 +290,89 @@ bioD3 = {
           }
           drawTree(d);
       }
+  },
+
+  /**
+   * Draws a graphical key on an existing diagram to explain the colours
+   * and styles used.
+   *
+   * @param data
+   *   An array of key items where each item is an object with the following keys:
+   *    - classes: the classes attached to the item represented.
+   * @param $options
+   *   A javascript object with any of the following keys:
+   */
+  drawKey: function(svg) {
+
+    data = [
+      {
+        'classes': ['link', 'is-maternal-parent-of'],
+        'type': 'path',
+        'label': 'is maternal parent of'
+      },
+      {
+        'classes': ['link', 'is-paternal-parent-of'],
+        'type': 'path',
+        'label': 'is paternal parent of'
+      },
+      {
+        'classes': ['link', 'is-selection-of'],
+        'type': 'path',
+        'label': 'is selection of'
+      },
+      {
+        'classes': ['link', 'is-progeny-of-selfing-of'],
+        'type': 'path',
+        'label': 'is progeny of selfing of'
+      },
+      {
+        'classes': ['link', 'is-registered-cultivar-of'],
+        'type': 'path',
+        'label': 'is registered cultivar of'
+      }
+    ];
+
+    var legendSpacing = 18;
+
+    // Create a g legend container to hold the entire legend.
+    var legend = svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', 'translate(10,550)');
+
+    // Now for each item in the data array, create a g legend-item
+    // and move it to where we want each member of the lengend to go.
+    var legendItems = legend.selectAll('.legend-item')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'legend-item')
+      .attr('transform', function(d, i) {
+        var horz = 0;
+        var vert = i * legendSpacing;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+    // Define a function to draw the line.
+    var lineFunction = d3.svg.line()
+      .x(function(d) { return d.x; })
+      .y(function(d) { return d.y; })
+      .interpolate("linear");
+
+    // For each legend-item add a path element with the classes specified
+    // in data and a length similar to the lines drawn in the diagram.
+    legendItems.append('path')
+      .attr('class', function( i, val ) {
+        return data[val].classes.join(' ');
+      })
+      .attr("d", function(d) {
+        // Draw a line 60px long.
+        return lineFunction([{x:0, y:0},{x:55, y:0}]);
+      });
+
+    // Add the labels for each item.
+    legendItems.append('text')
+      .attr('x', 70)
+      .attr('y', 4)
+      .text(function(d) { return d.label; });
   }
 };
