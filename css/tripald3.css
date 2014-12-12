@@ -14,7 +14,17 @@
     stroke: #5DA047;
 }
 .link.is-paternal-parent-of {
-    stroke: #004080;
+    stroke: #3A6A93;
+}
+.link.is-selection-of {
+  stroke: #999999;
+  stroke-dasharray: 10,5;
+}
+.link.is-progeny-of-selfing-of {
+  stroke-dasharray: 20,5,5,5;
+}
+.link.is-registered-cultivar-of {
+  stroke: #777797;
 }
 .node {
     cursor: pointer;

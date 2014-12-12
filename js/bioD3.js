@@ -107,12 +107,12 @@ bioD3 = {
           // for use in flipping the tree to be bottom rooted.
           var maxDepth = 0;
           nodes.forEach(function (d) {
-              d.y = d.depth * 100;
+              d.y = d.depth * 75;
               if (d.depth > maxDepth) {
                   maxDepth = d.depth;
               }
           });
-          var offset = maxDepth * 100;
+          var offset = maxDepth * 75;
 
           // Flip the tree to be bottom rooted. (Default top rooted)
           // This is done by multiplying the y coord by -1 to flip
