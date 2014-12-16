@@ -29,9 +29,6 @@
 #tree .node {
     cursor: pointer;
 }
-#tree {
-  height: 800px;
-}
 
 #block-menu-menu-tree-legend {
   width: 280px;
