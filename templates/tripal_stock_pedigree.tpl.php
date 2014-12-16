@@ -20,7 +20,17 @@
 </script>
 
 <div class="tripal_stock-data-block-desc tripal-data-block-desc"></div>
+
 <!-- We need to create a div to attach our pedigree tree. -->
 <!-- NOTE: The id used is specified above as the elementId of the tree to
      ensure that the tree can find where to attach itself. -->
-<div id="tree"></div>
+<div id="tripald3-diagram">
+  <div id="tree"></div>
+  <div class="sidebar">
+    <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region">
+      <h2>Legend</h2>
+      <div id="legend" class="content">
+      </div>
+    </div>
+  </div>
+</div>

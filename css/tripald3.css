@@ -26,13 +26,13 @@
 .link.is-registered-cultivar-of {
   stroke: #777797;
 }
-.node {
+#tree .node {
     cursor: pointer;
 }
 #tree {
   height: 800px;
 }
 
-.legend {
-  border: 1px solid black;
+#block-menu-menu-tree-legend {
+  width: 280px;
 }

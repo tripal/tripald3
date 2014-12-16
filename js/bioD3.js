@@ -56,6 +56,9 @@ bioD3 = {
       if (!options.hasOwnProperty('backgroundColor')) {
         options.backgroundColor = '#FFF';
       }
+      if (!options.hasOwnProperty('key')) {
+        options.key = {};
+      }
 
       // Set up drawing area dimensions.
       var margin = options.margin,
@@ -95,6 +98,10 @@ bioD3 = {
        *   of the entire tree to be drawn.
        */
       function drawTree(source) {
+
+          // Keep track of the types of edges and nodes to display them
+          // later in a legend/key.
+          var keyData = [];
 
           // Compute the new tree layout
           // and the parent-child links between nodes.
@@ -150,6 +157,22 @@ bioD3 = {
           nodeEnter.append("circle")
           .attr("r", 6)
           .style("fill", function(d) { return d._children ? options.nodeFillCollapsed : options.nodeFill; });
+
+          // Add nodes to the key.
+          keyData.push({
+            'classes' : ['expanded'],
+            'groupClasses': ['node'],
+            'type': 'circle',
+            'label': 'Germplasm Node (Pedigree shown)',
+            'fillColor': '#FFF'
+          });
+          keyData.push({
+            'classes': ['collapsed'],
+            'groupClasses': ['node'],
+            'type': 'circle',
+            'label': 'Germplasm Node (Pedigree hidden)',
+            'fillColor': '#B3B3B3'
+          });
 
           // Draw a rectangle the same colour as the background
           // to ensure the label added next will be readable.
@@ -212,21 +235,25 @@ bioD3 = {
 
           // Select all the connecting lines into an array
           // of child ids for each child => parent link.
-          var link = svg.selectAll("path.link")
+          var link = svg.selectAll("path.tree-link")
           .data(links, function (d) {
                   return d.target.id;
               });
 
+          // Keep track of unique set of relationships for the key.
+          var relTypes = {};
+
           // Create the connecting path elements
           // wrapping them in <g class="node"></g>
           // and drawing them using the "diagonal" path function
-          // (function defined previously).
+          // (function defined previously)
           link.enter().insert("path", "g")
-              .attr("class", "link")
+              .attr("class", "link tree-link")
               .attr("class", function (d) {
                   var type = d.target.relationship.type.replace(/\s+/g, '-').toLowerCase();
                   type = type.replace(/_/g, '-').toLowerCase();
-                  return "link " + type;
+                  relTypes[type] = type;
+                  return "link tree-link " + type;
               })
               .attr("d", function(d) {
                 if (source.x0 || source.y0) {
@@ -236,6 +263,15 @@ bioD3 = {
                 }
                 return diagonal({source: o, target: o});
               });
+
+          // Add unique edge types to the key.
+          for (var type in relTypes) {
+            keyData.push({
+              'classes': ['link', type],
+              'type': 'path',
+              'label': type.replace(/-/g, ' ')
+            });
+          }
 
           // Transition links to their new position.
           link.transition()
@@ -253,7 +289,7 @@ bioD3 = {
 
           // Add tooltips to the connecting lines to make sure it's
           // clear what the relationship is.
-          var tooltips= d3.selectAll("path")
+          var tooltips= d3.selectAll("path.tree-link")
             .html(function(d,i) {
                 return '<title class="tooltip">' + d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object + '</title>';
               });
@@ -265,7 +301,7 @@ bioD3 = {
           });
 
           // Draw the key.
-          bioD3.drawKey(svg);
+          bioD3.drawKey(keyData, options.key);
       }
 
       /**
@@ -302,77 +338,104 @@ bioD3 = {
    * @param $options
    *   A javascript object with any of the following keys:
    */
-  drawKey: function(svg) {
+  drawKey: function(data, options) {
 
-    data = [
-      {
-        'classes': ['link', 'is-maternal-parent-of'],
-        'type': 'path',
-        'label': 'is maternal parent of'
-      },
-      {
-        'classes': ['link', 'is-paternal-parent-of'],
-        'type': 'path',
-        'label': 'is paternal parent of'
-      },
-      {
-        'classes': ['link', 'is-selection-of'],
-        'type': 'path',
-        'label': 'is selection of'
-      },
-      {
-        'classes': ['link', 'is-progeny-of-selfing-of'],
-        'type': 'path',
-        'label': 'is progeny of selfing of'
-      },
-      {
-        'classes': ['link', 'is-registered-cultivar-of'],
-        'type': 'path',
-        'label': 'is registered cultivar of'
+    if (d3.select("#legend svg").empty()) {
+      // Set defaults.
+      if (!options.hasOwnProperty('elementId')) {
+        options.elementId = 'legend';
       }
-    ];
+      if (!options.hasOwnProperty('margin')) {
+        options.margin = {
+            'top': 10,
+            'right': 0,
+            'bottom': 10,
+            'left': 0
+        };
+      }
+      if (!options.hasOwnProperty('width')) {
+        options.width = document.getElementById(options.elementId).offsetWidth;
+      }
+      if (!options.hasOwnProperty('height')) {
+        options.height = data.length * 18;
+      } else if (options.height == 'auto') {
+        options.height = document.getElementById(options.elementId).offsetHeight;
+      }
 
-    var legendSpacing = 18;
+      var width = options.width - options.margin.right - options.margin.left,
+      height = options.height - options.margin.top - options.margin.bottom;
 
-    // Create a g legend container to hold the entire legend.
-    var legend = svg.append('g')
-      .attr('class', 'legend')
-      .attr('transform', 'translate(10,550)');
+      var legendSpacing = 18;
 
-    // Now for each item in the data array, create a g legend-item
-    // and move it to where we want each member of the lengend to go.
-    var legendItems = legend.selectAll('.legend-item')
-      .data(data)
-      .enter()
-      .append('g')
-      .attr('class', 'legend-item')
-      .attr('transform', function(d, i) {
-        var horz = 0;
-        var vert = i * legendSpacing;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
+      // Create canvas to draw the key on.
+      var svg = d3.select('#legend')
+        .append('svg')
+        .attr('width', options.width)
+        .attr('height', options.height)
+        .append('g')
+        .attr("transform", "translate(" + options.margin.left + "," + options.margin.top + ")");
 
-    // Define a function to draw the line.
-    var lineFunction = d3.svg.line()
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-      .interpolate("linear");
+      // Now for each item in the data array, create a g legend-item
+      // and move it to where we want each member of the lengend to go.
+      var legendItems = svg.selectAll('.legend-item')
+        .data(data)
+        .enter()
+        .append('g')
+        .attr('class', function(d) {
+          if (d.groupClasses) {
+            return 'legend-item ' + d.type + ' ' + d.groupClasses.join(' ');
+          } else {
+            return 'legend-item ' + d.type;
+          }
+        })
+        .attr('transform', function(d, i) {
+          var horz = 0;
+          var vert = i * legendSpacing;
+          return 'translate(' + horz + ',' + vert + ')';
+        });
 
-    // For each legend-item add a path element with the classes specified
-    // in data and a length similar to the lines drawn in the diagram.
-    legendItems.append('path')
-      .attr('class', function( i, val ) {
-        return data[val].classes.join(' ');
-      })
-      .attr("d", function(d) {
-        // Draw a line 60px long.
-        return lineFunction([{x:0, y:0},{x:55, y:0}]);
-      });
+      // Draw any lines:
+      //---------------------------------
+      // Define a function to draw the line.
+      var lineFunction = d3.svg.line()
+        .x(function(d) { return d.x; })
+        .y(function(d) { return d.y; })
+        .interpolate("linear");
 
-    // Add the labels for each item.
-    legendItems.append('text')
-      .attr('x', 70)
-      .attr('y', 4)
-      .text(function(d) { return d.label; });
+      // For each legend-item of type path, add a path element with the
+      // classes specified in data and a length similar to the lines
+      // drawn in the diagram.
+      var lineLegendItems = svg.selectAll('.legend-item.path');
+
+      lineLegendItems.append('path')
+        .attr('class', function( i, val ) {
+          return i.classes.join(' ');
+        })
+        .attr("d", function(d) {
+          // Draw a line 60px long.
+          return lineFunction([{x:0, y:0},{x:55, y:0}]);
+        });
+
+      // Draw any circles:
+      //---------------------------------
+      // For each legend-item of type circle, add a circle element with the
+      // classes specified in data.
+      var circleLegendItems = svg.selectAll('.legend-item.circle');
+
+      circleLegendItems.append('circle')
+        .attr("r", 6)
+        .attr('class', function( i, val ) {
+          return i.classes.join(' ');
+        })
+        .style("fill", function(d) { return d.fillColor; })
+        .attr('transform','translate(27,0)');
+
+      // Add the labels for each item:
+      //---------------------------------
+      legendItems.append('text')
+        .attr('x', 70)
+        .attr('y', 4)
+        .text(function(d) { return d.label; });
+    }
   }
 };
