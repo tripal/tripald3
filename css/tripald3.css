@@ -30,6 +30,21 @@
     cursor: pointer;
 }
 
+.sidebar.content-sidebar-bottom {
+  width: 100%;
+}
+
+#block-menu-menu-tree-description {
+  margin-left: 10px;
+  width: 420px;
+  float: left;
+  border-color: #FFF;
+}
 #block-menu-menu-tree-legend {
+  width: 280px;
+  float: right;
+  margin-right: 10px;
+}
+#legend {
   width: 280px;
 }

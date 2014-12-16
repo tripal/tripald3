@@ -344,8 +344,8 @@ bioD3 = {
    *   A javascript object with any of the following keys:
    */
   drawKey: function(data, options) {
-
     if (d3.select("#legend svg").empty()) {
+
       // Set defaults.
       if (!options.hasOwnProperty('elementId')) {
         options.elementId = 'legend';
