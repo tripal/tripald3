@@ -87,6 +87,29 @@ bioD3 = {
 
         // Call the function to actually draw the tree.
         drawTree(root);
+
+        window.addEventListener('resize', function() {
+          d3.select("#tree svg").remove();
+
+          width = document.getElementById(options.elementId).offsetWidth;
+          height = document.getElementById(options.elementId).offsetHeight;
+
+          // Initialize the tree.
+          tree = d3.layout.tree()
+              .size([
+                width - margin.right - margin.left,
+                height - margin.top - margin.bottom
+              ]);
+
+          // Append our drawing area to the id="tree" element.
+          svg = d3.select("#tree").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          drawTree(root);
+        });
       });
 
       /**
@@ -102,6 +125,9 @@ bioD3 = {
           // Keep track of the types of edges and nodes to display them
           // later in a legend/key.
           var keyData = [];
+
+
+          tree = tree.size([width, height]);
 
           // Compute the new tree layout
           // and the parent-child links between nodes.
