@@ -359,7 +359,7 @@ bioD3 = {
         };
       }
       if (!options.hasOwnProperty('width')) {
-        options.width = document.getElementById(options.elementId).offsetWidth;
+        options.width = '100%';//document.getElementById(options.elementId).offsetWidth;
       }
       if (!options.hasOwnProperty('height')) {
         options.height = data.length * 18;
