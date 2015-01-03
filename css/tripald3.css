@@ -46,3 +46,11 @@
   float: right;
   margin-right: 10px;
 }
+
+/**
+ * Popover
+ */
+.popover-content {
+  padding: 10px;
+  margin: 0;
+}
