@@ -193,8 +193,6 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       $subnode['relationship']->object = $child->name;
       $subnode['relationship']->subject = $data['current']->name;
 
-      $subnode['popover'] = tripald3_stock_pedigree_popover_content($subnode['current']);
-
       // Now recursively add children.
       // NOTE: since we support folloing relationships from both directions
       // we need to be careful how we which id we recursively follow to ensure
@@ -230,8 +228,6 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       );
       $subnode['relationship']->subject = $child->name;
       $subnode['relationship']->object = $data['current']->name;
-
-      $subnode['popover'] = tripald3_stock_pedigree_popover_content($subnode['current']);
 
       // Now recursively add children.
       // NOTE: since we support folloing relationships from both directions
