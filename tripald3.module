@@ -133,7 +133,6 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       'children' => array(),
     );
     $data['current']->nid = $root->nid;
-    $data['popover'] = tripald3_stock_pedigree_popover_content($data['current']);
   }
 
   // Base Case: there are no additional relationships.

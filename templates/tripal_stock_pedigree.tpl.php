@@ -18,29 +18,29 @@
         "dataJSONpath": jsonurl,
         "height": 800,
         "popoverContent": function (popover, d) {
-          if (d.current.nid) {
-                  uniquename = '<a xlink:href="/portal/node/'
-                    + d.current.nid + '">'
-                    + d.current.uniquename
-                    + '</a>';
-                } else {
-                  uniquename = d.current.uniquename;
-                }
                 var body = popover.append('text')
                   .attr('dy', '0.4em')
                   .attr('font-size', '15')
                   .attr('x', popover.left + 10)
                   .attr('y', popover.top + 25 + 10);
-                body.append('tspan')
+                firstLine = body.append('tspan')
                   .attr('x', popover.left + 10)
                   .attr('y', popover.top + 25 + 13 + (18 * 0))
                   .attr('dy', '0.4em')
                   .attr('font-size', 12)
                   .attr('font-family','Verdana')
-                  .attr('text-decoration',function () {
-                    if (d.current.nid) { return 'underline'; }
-                    else { return 'none'; }})
-                  .html(uniquename);
+                if (d.current.nid) {
+                  firstLine
+                    .attr('text-decoration', 'underline')
+                    .append('a')
+                      .attr('xlink:href',
+                        Drupal.settings.basePath + 'node/'
+                        + d.current.nid)
+                      .attr('target','_blank')
+                    .text(d.current.uniquename);
+                } else {
+                  firstLine.text(d.current.uniquename);
+                }
                 body.append('tspan')
                   .attr('x', popover.left + 10)
                   .attr('y', popover.top + 25 + 13 + (18 * 1))
@@ -48,7 +48,7 @@
                   .attr('font-size', 12)
                   .attr('font-family','Verdana')
                   .attr('font-style','italic')
-                  .html(d.current.organism_id.genus + ' '
+                  .text(d.current.organism_id.genus + ' '
                     + d.current.organism_id.species);
                 body.append('tspan')
                   .attr('x', popover.left + 10)
@@ -56,7 +56,7 @@
                   .attr('dy', '0.4em')
                   .attr('font-size', 12)
                   .attr('font-family','Verdana')
-                  .html(d.current.type_id.name);
+                  .text(d.current.type_id.name);
         }
       });
     }
