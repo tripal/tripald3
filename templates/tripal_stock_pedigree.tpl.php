@@ -8,13 +8,56 @@
   Drupal.behaviors.stockPedigree = {
     attach: function (context, settings) {
 
+      jsonurl = <?php print '"' . url('ajax/tripal/d3-json/relationships/stock/' . $node->stock->stock_id) . '"'; ?>;
+
       // The following code uses the Tripal D3 module to draw a pedigree tree
       // and attach it to an #tree element. Furthermore, it specifies a path
       // to get the data for the tree from.
       bioD3.drawPedigreeTree({
         "elementId": "tree",
-        "dataJSONpath": <?php print '"' . url('ajax/tripal/d3-json/relationships/stock/' . $node->stock->stock_id) . '"'; ?>,
-        "height": 800
+        "dataJSONpath": jsonurl,
+        "height": 800,
+        "popoverContent": function (popover, d) {
+          if (d.current.nid) {
+                  uniquename = '<a xlink:href="/portal/node/'
+                    + d.current.nid + '">'
+                    + d.current.uniquename
+                    + '</a>';
+                } else {
+                  uniquename = d.current.uniquename;
+                }
+                var body = popover.append('text')
+                  .attr('dy', '0.4em')
+                  .attr('font-size', '15')
+                  .attr('x', popover.left + 10)
+                  .attr('y', popover.top + 25 + 10);
+                body.append('tspan')
+                  .attr('x', popover.left + 10)
+                  .attr('y', popover.top + 25 + 13 + (18 * 0))
+                  .attr('dy', '0.4em')
+                  .attr('font-size', 12)
+                  .attr('font-family','Verdana')
+                  .attr('text-decoration',function () {
+                    if (d.current.nid) { return 'underline'; }
+                    else { return 'none'; }})
+                  .html(uniquename);
+                body.append('tspan')
+                  .attr('x', popover.left + 10)
+                  .attr('y', popover.top + 25 + 13 + (18 * 1))
+                  .attr('dy', '0.4em')
+                  .attr('font-size', 12)
+                  .attr('font-family','Verdana')
+                  .attr('font-style','italic')
+                  .html(d.current.organism_id.genus + ' '
+                    + d.current.organism_id.species);
+                body.append('tspan')
+                  .attr('x', popover.left + 10)
+                  .attr('y', popover.top + 25 + 13 + (18 * 2))
+                  .attr('dy', '0.4em')
+                  .attr('font-size', 12)
+                  .attr('font-family','Verdana')
+                  .html(d.current.type_id.name);
+        }
       });
     }
   };
@@ -38,7 +81,7 @@
     <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region">
       <h2>Description</h2>
       <div id="description" class="content">
-      <p>The above tree depicts the parentage of <em><?php print $node->stock->name; ?></em> where each germplasm involved is indicated using a "Germplasm Node" and the relationships between the germplasm are represented as lines connecting Germplasm nodes. Specifically the type of relationship is indicated both using line styles defined in the legend to the right and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by hovering over a Germplasm node. Furthermore, parts of the pedigree diagram can be collapsed or expanded (depending on the state) by clicking on a Germplasm node.</p>
+      <p>The above tree depicts the parentage of <em><?php print $node->stock->name; ?></em> where each germplasm involved is indicated using a "Germplasm Node" and the relationships between the germplasm are represented as lines connecting Germplasm nodes. Specifically the type of relationship is indicated both using line styles defined in the legend to the right and also in sentence form when you hover your mouse over the relationship lines. <strong><em>Additional information about each germplasm can be obtained by clicking on a Germplasm node</em></strong>. Furthermore, parts of the pedigree diagram can be collapsed or expanded (depending on the state) by double-clicking on a Germplasm node.</p>
       <p>See the legend to the right for a visual reference of the types of relationships shown in the pedigree diagram above.</p>
       </div>
     </div>

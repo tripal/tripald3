@@ -168,7 +168,7 @@ bioD3 = {
           // and moving them into the correct positions using the
           // canvas transform() function.
           var nodeEnter = node.enter().append("g")
-              .attr("class", "node")
+              .attr("class", "node tree-node")
               .attr("transform", function (d) {
                 if (source.x0 || source.y0) {
                   return "translate(" + source.x0 + "," + source.y0 + ")";
@@ -219,7 +219,7 @@ bioD3 = {
               .attr("dy", ".35em")
               .attr("text-anchor", "middle")
               .text(function (d) {
-                  return d.name;
+                  return d.current.name;
               })
               .style("fill-opacity", 1);
 
@@ -338,12 +338,15 @@ bioD3 = {
           // Initialize popover functionality.
           var nodePopover = bioD3.popover({
             'diagramId': options.elementId,
-            'margin': {'left': margin.left, 'top': margin.top}
+            'margin': {'left': margin.left, 'top': margin.top},
+            'popoverContent': options.popoverContent
           });
 
-          d3.selectAll('.node')
-            .on('mouseover', function(d) { nodePopover.show(d); })
-            .on('mouseleave', function(d) { nodePopover.hide(d); });
+          d3.selectAll('.tree-node')
+            //.on('mouseenter', function(d) { nodePopover.show(d); })
+            .on('click', function(d) { nodePopover.toggle(d); })
+            .append('svg:title')
+              .text('Click on the node for more information or double-click it to collapse.');
       }
 
       /**
@@ -486,7 +489,7 @@ bioD3 = {
    *
    * @TODO: support top, left, right popovers and ensure the correct orientation is used
    *   to ensure the popover is always on the screen.
-   * @TODO: content needs to be set from the JSON not hardcoded.
+   * @TODO: a default function needs to be set for options.popoverContent function.
    *
    * @param options
    *   A javascript object with any of the following keys:
@@ -520,6 +523,22 @@ bioD3 = {
     }
 
     /**
+     * Toggle the visibility fo the popover.
+     */
+    popover.toggle = function(d) {
+      popoverContent =  popover.selectAll("*");
+      if (popoverContent.empty()) {
+        popover.show(d);
+      }
+      else if (d != node) {
+        popover.show(d);
+      }
+      else {
+        popoverContent.remove();
+      }
+    }
+
+    /**
      * Show the popover for a given node (d)
      */
     popover.show = function(d) {
@@ -532,8 +551,8 @@ bioD3 = {
       // Settings:
       var orientation = 'bottom',
           arrowLength = 15;
-      var popoverLeft = d.x0 - (150/2),
-          popoverTop = d.y0 + 6 + arrowLength;
+      popover.left = d.x0 - (150/2);
+      popover.top = d.y0 + 6 + arrowLength;
 
       // Helper Functions:
       // Draw Triangle.
@@ -574,20 +593,20 @@ bioD3 = {
       var popoverHeader = popover.append('path')
         .attr('id', 'popover1-header')
         .classed('popover-box', true)
-        .attr("d", headerRectFunction(popoverLeft, popoverTop, 150-2, 25, 7))
+        .attr("d", headerRectFunction(popover.left, popover.top, 150-2, 25, 7))
         .attr('fill', '#F5F5F5')
         .attr('stroke','#B3B3B3');
       //    - body.
       var popoverBody = popover.append('path')
         .attr('id', 'popover1-body')
         .classed('popover-box', true)
-        .attr("d", bodyRectFunction(popoverLeft, popoverTop + 25, 150-2, 75, 7))
+        .attr("d", bodyRectFunction(popover.left, popover.top + 25, 150-2, 75, 7))
         .attr('fill', '#FFF')
         .attr('stroke','#B3B3B3');
       //    - arrow pointing to node.
       popover.append('path')
         .classed('popover-box', true)
-        .attr("d", triangleFunction(d, popoverTop, arrowLength))
+        .attr("d", triangleFunction(d, popover.top, arrowLength))
         .attr('fill', function(d) {
             if (orientation == 'bottom') { return '#F5F5F5';
             } else { return '#FFF';
@@ -600,19 +619,11 @@ bioD3 = {
         .attr('text-anchor', 'middle')
         .attr('dy', '0.4em')
         .attr('font-size', '15')
-        .attr('x', popoverLeft + 150/2)
-        .attr('y', popoverTop + 25/2)
-        .text(d.name);
+        .attr('x', popover.left + 150/2)
+        .attr('y', popover.top + 25/2)
+        .text(d.current.name);
       //    - Body
-      var content = '<div><a href="/dev/main/node/976234?pane=pedigree">' + d.uniquename + '</a></div><div><i>Lens culinaris</i></div><div>Individual</div>';
-      popover.append('foreignObject')
-        .attr('x', popoverLeft)
-        .attr('y', popoverTop + 25)
-        .attr("width", 150)
-        .attr("height", 75)
-        .html('<div id="' + popoverId + '-content" class="popover-content">' + content + '</div>')
-        .on('mouseover', function() { popoverSelected = true; popover.show(d); })
-        .on('mouseleave', function() { popoverSelected = false; popover.hide(d); });
+      options.popoverContent(popover, d);
 
       // make it visible.
       popover.transition()

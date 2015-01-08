@@ -108,6 +108,7 @@ function tripald3_get_relationship_json($base_table, $id) {
     )
   );
 
+  //return '<pre>' . print_r($relationships, TRUE) . '</pre>';
   return drupal_json_output($relationships);
 }
 
@@ -124,13 +125,15 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   $is_root = FALSE;
   if (empty($data)) {
     $is_root = TRUE;
-    $root = chado_select_record($base_table, array('name, uniquename'), array($base_table_pkey => $id));
+    $root = chado_generate_var($base_table, array($base_table_pkey => $id));//chado_select_record($base_table, array('stock_id', 'name, uniquename'), array($base_table_pkey => $id));
+    $root = chado_expand_var($root, 'node','stock');
     $data = array(
-        'name' => $root[0]->name,
-        'uniquename' => $root[0]->uniquename,
-        'parent' => "null",
-        'children' => array()
+      'current' => $root->stock,
+      'parent' => array('stock_id' => "null", 'name' => "null"),
+      'children' => array(),
     );
+    $data['current']->nid = $root->nid;
+    $data['popover'] = tripald3_stock_pedigree_popover_content($data['current']);
   }
 
   // Base Case: there are no additional relationships.
@@ -141,17 +144,11 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   // Retrieve relationships where the passed in record is the object.
   $sql = 'SELECT
             r.subject_id,
-            sub.name as subject,
-            sub.uniquename as subject_uniquename,
             r.type_id,
             cvt.name as type,
-            r.object_id,
-            ob.name as object,
-            ob.uniquename as object_uniquename
+            r.object_id
           FROM {' . $rel_table . '} r
           LEFT JOIN {cvterm} cvt ON cvt.cvterm_id=r.type_id
-          LEFT JOIN {' . $base_table . '} sub ON sub.' . $base_table_pkey . '=r.subject_id
-          LEFT JOIN {' . $base_table . '} ob ON ob.' . $base_table_pkey . '=r.object_id
           WHERE ';
   if (isset($options['restrict relationships'])) {
     $where = array();
@@ -172,17 +169,31 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
 
     // If we are dealing with a subject rooted relationship:
     if ($rel->subject_id == $id) {
+
+      $child = chado_generate_var($base_table, array('stock_id' => $rel->object_id));
+      $child = chado_expand_var($child, 'node','stock');
+
+      if (isset($child->nid)) {
+        $stock = $child->stock;
+        $stock->nid = $child->nid;
+      }
+      else {
+        $stock = $child;
+      }
+
       $subnode = array(
-        'name' => $rel->object,
-        'uniquename' => $rel->subject_uniquename,
-        'parent' => $rel->subject,
-        'relationship' => array(
-          'subject' => $rel->subject,
-          'type' => $rel->type,
-          'object' => $rel->object
+        'current' => $stock,
+        'parent' => array(
+          'parent_id' => $rel->subject_id,
+          'name' => '',
         ),
+        'relationship' => $rel,
         'children' => array()
       );
+      $subnode['relationship']->object = $child->name;
+      $subnode['relationship']->subject = $data['current']->name;
+
+      $subnode['popover'] = tripald3_stock_pedigree_popover_content($subnode['current']);
 
       // Now recursively add children.
       // NOTE: since we support folloing relationships from both directions
@@ -197,17 +208,30 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
 
     // Otherwise we're dealing with an object rooted relationship:
     } else {
+
+      $child = chado_generate_var($base_table, array('stock_id' => $rel->subject_id));
+
+      if (isset($child->nid)) {
+        $stock = $child->stock;
+        $stock->nid = $child->nid;
+      }
+      else {
+        $stock = $child;
+      }
+
       $subnode = array(
-        'name' => $rel->subject,
-        'uniquename' => $rel->object_uniquename,
-        'parent' => $rel->object,
-        'relationship' => array(
-          'subject' => $rel->subject,
-          'type' => $rel->type,
-          'object' => $rel->object
+        'current' => $stock,
+        'parent' => array(
+          'parent_id' => $rel->object_id,
+          'name' => '',
         ),
+        'relationship' => $rel,
         'children' => array()
       );
+      $subnode['relationship']->subject = $child->name;
+      $subnode['relationship']->object = $data['current']->name;
+
+      $subnode['popover'] = tripald3_stock_pedigree_popover_content($subnode['current']);
 
       // Now recursively add children.
       // NOTE: since we support folloing relationships from both directions
