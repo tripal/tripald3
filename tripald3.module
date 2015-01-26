@@ -125,7 +125,7 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   $is_root = FALSE;
   if (empty($data)) {
     $is_root = TRUE;
-    $root = chado_generate_var($base_table, array($base_table_pkey => $id));//chado_select_record($base_table, array('stock_id', 'name, uniquename'), array($base_table_pkey => $id));
+    $root = chado_generate_var($base_table, array($base_table_pkey => $id));
     $root = chado_expand_var($root, 'node','stock');
     $data = array(
       'current' => $root->stock,
@@ -184,12 +184,12 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
         'current' => $stock,
         'parent' => array(
           'parent_id' => $rel->subject_id,
-          'name' => '',
+          'name' => $data['current']->name,
         ),
         'relationship' => $rel,
         'children' => array()
       );
-      $subnode['relationship']->object = $child->name;
+      $subnode['relationship']->object = $stock->name;
       $subnode['relationship']->subject = $data['current']->name;
 
       // Now recursively add children.
@@ -207,6 +207,7 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
     } else {
 
       $child = chado_generate_var($base_table, array('stock_id' => $rel->subject_id));
+      $child = chado_expand_var($child, 'node','stock');
 
       if (isset($child->nid)) {
         $stock = $child->stock;
@@ -220,12 +221,12 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
         'current' => $stock,
         'parent' => array(
           'parent_id' => $rel->object_id,
-          'name' => '',
+          'name' => $data['current']->name,
         ),
         'relationship' => $rel,
         'children' => array()
       );
-      $subnode['relationship']->subject = $child->name;
+      $subnode['relationship']->subject = $stock->name;
       $subnode['relationship']->object = $data['current']->name;
 
       // Now recursively add children.

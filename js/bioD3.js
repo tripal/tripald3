@@ -180,6 +180,7 @@ bioD3 = {
               // call the "click" function.
               .on("dblclick", collapse);
 
+
           // Draw a circle to denote the node.
           nodeEnter.append("circle")
           .attr("r", 6)
@@ -212,16 +213,45 @@ bioD3 = {
           .style("fill", options.backgroundColor)
           .style("opacity",0.9);
 
-          // Draw the node label.
-          nodeEnter.append("text")
-              .attr("y", function(d) {
-                  return d.children || d._children ? 14 : -14; })
-              .attr("dy", ".35em")
-              .attr("text-anchor", "middle")
-              .text(function (d) {
-                  return d.current.name;
-              })
-              .style("fill-opacity", 1);
+          // Add labels to the node.
+          // NOTE: this has to be done using each so that we can determine
+          //   which ones have urls associated with them and thus are "linkable"
+          //   and which do not, since we have to treat them differently.
+          nodeEnter.each(function(d,i) {
+            d.current.label = {
+              'url': options.nodeURL(d),
+              'text': d.current.name
+            };
+
+            // If the current node is linkable then add a link around the label.
+            if (d.current.label.url) {
+
+              d3.select(this)
+                .classed('linkable', true)
+                .append('a')
+                  .attr('xlink:href', function(d) { return d.current.label.url; })
+                  .attr('target','_blank')
+                .append("text")
+                  .attr("y", function(d) {
+                      return d.children || d._children ? 14 : -14; })
+                  .attr("dy", ".35em")
+                  .attr("text-anchor", "middle")
+                  .text(function (d) { return d.current.label.text; })
+                  .style("fill-opacity", 1);
+            // Otherwise just add the text.
+            } else {
+
+              d3.select(this)
+                .classed('text-only', true)
+                .append("text")
+                  .attr("y", function(d) {
+                      return d.children || d._children ? 14 : -14; })
+                  .attr("dy", ".35em")
+                  .attr("text-anchor", "middle")
+                  .text(function (d) { return d.current.label.text; })
+                  .style("fill-opacity", 1);
+            }
+          });
 
           // Transition nodes to their new position.
           var nodeUpdate = node.transition()
@@ -317,8 +347,9 @@ bioD3 = {
           // Add tooltips to the connecting lines to make sure it's
           // clear what the relationship is.
           var tooltips= d3.selectAll("path.tree-link")
-            .html(function(d,i) {
-                return '<title class="tooltip">' + d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object + '</title>';
+            .append('title')
+              .text(function(d,i) {
+                return d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object;
               });
 
           // Stash the old positions for transition.
@@ -335,18 +366,6 @@ bioD3 = {
           // Draw the key.
           bioD3.drawKey(keyData, options.key);
 
-          // Initialize popover functionality.
-          var nodePopover = bioD3.popover({
-            'diagramId': options.elementId,
-            'margin': {'left': margin.left, 'top': margin.top},
-            'popoverContent': options.popoverContent
-          });
-
-          d3.selectAll('.tree-node')
-            //.on('mouseenter', function(d) { nodePopover.show(d); })
-            .on('click', function(d) { nodePopover.toggle(d); })
-            .append('svg:title')
-              .text('Click on the node for more information or double-click it to collapse.');
       }
 
       /**

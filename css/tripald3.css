@@ -4,6 +4,7 @@
 }
 .node text {
     font: 12px sans-serif;
+    fill: currentColor;
 }
 .link {
     fill: none;
@@ -26,7 +27,7 @@
 .link.is-registered-cultivar-of {
   stroke: #777797;
 }
-#tree .node {
+#tree .tree-node {
     cursor: pointer;
 }
 
