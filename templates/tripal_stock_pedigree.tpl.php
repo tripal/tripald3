@@ -1,9 +1,15 @@
 <?php
+
 /**
+ * This template adds a "pedigree" pane to stock pages.
  *
- */
-?>
-<h2 align="center" style="color:red;">EXPERIMENTAL</h2>
+ * Specifically, this pane displays a d3.js pedigree diagram based on the
+ * chado.stock and chado.stock_relationship data stored for the current stock.
+ *
+ * NOTE: Relationship information is available in JSON at
+ *  [Your Drupal Site]/ajax/tripal/d3-json/relationships/stock/[root stock_id]
+ */?>
+
 <script type="text/javascript">
   Drupal.behaviors.stockPedigree = {
     attach: function (context, settings) {
@@ -32,19 +38,28 @@
 
 <div class="tripal_stock-data-block-desc tripal-data-block-desc"></div>
 
-<!-- We need to create a div to attach our pedigree tree. -->
-<!-- NOTE: The id used is specified above as the elementId of the tree to
-     ensure that the tree can find where to attach itself. -->
 <div id="tripald3-diagram">
+
+  <!-- We need to create a div to attach our pedigree tree. -->
+  <!-- NOTE: The id used is specified above as the elementId of the tree to
+       ensure that the tree can find where to attach itself. -->
   <div id="tree"></div>
+
+  <!-- Add the Description/Legend in a KnowPulse theme-like manner -->
   <div class="sidebar content-sidebar-bottom">
 
-    <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region">
+    <!-- Legend -->
+    <!-- NOTE: The legend is added by the bioD3.drawPedigreeTree js function
+         and where it is added is hard-coded as the element with #legend -->
+     <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region">
       <h2>Legend</h2>
       <div id="legend" class="content">
       </div>
     </div>
 
+    <!-- Description -->
+    <!-- NOTE: This is just information to the user which makes
+         the legend not look out of place. -->
     <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region">
       <h2>Description</h2>
       <div id="description" class="content">
