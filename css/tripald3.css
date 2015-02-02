@@ -8,9 +8,10 @@
 }
 .link {
     fill: none;
-    stroke: black;
+    /*stroke: black;*/
     stroke-width: 4px;
 }
+/**
 .link.is-maternal-parent-of {
     stroke: #5DA047;
 }
@@ -26,7 +27,7 @@
 }
 .link.is-registered-cultivar-of {
   stroke: #777797;
-}
+}*/
 #tree .tree-node {
     cursor: pointer;
 }

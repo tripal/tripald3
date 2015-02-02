@@ -1,6 +1,7 @@
 <?php
 
 require_once('includes/stock_pedigree.inc');
+require_once('includes/color_scheme.inc');
 
 /**
  * Implements hook_menu().
@@ -15,6 +16,35 @@ function tripald3_menu() {
     'access arguments' => array('view tripald3 json'),
     'type' => MENU_CALLBACK
   );
+
+  $items['admin/tripal/extension/tripald3'] = array(
+    'title' => 'Tripal D3 Diagrams',
+    'description' => 'Adds d3.js diagrams to existing pages as well as providing an API for creating custom diagrams.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripald3_common_settings_form'),
+    'access arguments' => array('tripal administration'),
+    'file' => 'includes/settings_forms.inc',
+  );
+
+  $items['admin/tripal/extension/tripald3/general'] = array(
+    'title' => 'General',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripald3_common_settings_form'),
+    'access arguments' => array('tripal administration'),
+    'file' => 'includes/settings_forms.inc',
+    'type' => MENU_DEFAULT_LOCAL_TASK
+  );
+
+/**
+  $items['admin/tripal/extension/tripald3/stock_pedigree'] = array(
+    'title' => 'Stock Pedigree',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripald3_stock_pedigree_settings_form'),
+    'access arguments' => array('tripal administration'),
+    'file' => 'includes/settings_forms.inc',
+    'type' => MENU_LOCAL_TASK
+  );
+*/
 
   return $items;
 }

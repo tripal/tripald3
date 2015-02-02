@@ -81,6 +81,9 @@ function tripald3_preprocess_tripald3_stock_pedigree(&$vars) {
   drupal_add_js($path . '/js/bioD3.js');
   drupal_add_css($path . '/css/tripald3.css', array('group' => CSS_DEFAULT, 'type' => 'file'));
 
+  //-- Add settings bioB3 might need
+  tripald3_register_colorschemes();
+
 }
 
 /**
