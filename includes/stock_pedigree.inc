@@ -94,24 +94,38 @@ function tripald3_get_relationship_json($base_table, $id) {
   drupal_add_http_header('Content-Type', 'application/json');
   drupal_add_http_header('Access-Control-Allow-Origin', "*");
 
+  $rels_to_restrict = variable_get('tripald3_stock_pedigree_rels', NULL);
+  if (!$rels_to_restrict) {
+
+    // Get relationships used in stock table.
+    $rels = array();
+    $sql = "SELECT sr.type_id, cvt.name as type_name
+            FROM {stock_relationship} sr
+            LEFT JOIN {cvterm} cvt ON cvt.cvterm_id=sr.type_id
+            GROUP BY sr.type_id, cvt.name
+            ORDER BY count(sr.*) desc";
+    $rel_query = chado_query($sql);
+    foreach ($rel_query as $r) {
+      $rels[$r->type_id] = $r->type_name;
+    }
+
+    $rels_to_restrict = array(
+      'object' => array(),
+      'subject' => $rels
+    );
+  }
+  else {
+    $rels_to_restrict = unserialize($rels_to_restrict);
+  }
+
   $relationships = tripald3_get_relationship_tree_data(
     $base_table,
     $id,
     array(
-      'restrict relationships' => array(
-        'object' => array(
-          'is_maternal_parent_of', 'is_paternal_parent_of',
-        ),
-        'subject' => array(
-          'is_registered_cultivar_of',
-          'is_progeny_of_selfing_of',
-          'is_selection_of'
-        )
-      ),
+      'restrict relationships' => $rels_to_restrict
     )
   );
 
-  //return '<pre>' . print_r($relationships, TRUE) . '</pre>';
   return drupal_json_output($relationships);
 }
 
@@ -126,11 +140,15 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   $rel_table = $base_table . '_relationship';
   $base_table_pkey = $base_table . '_id';
 
+  $generate_var_options = array(
+    'include_fk' => array()
+  );
+
   // Get the root details if none were provided.
   $is_root = FALSE;
   if (empty($data)) {
     $is_root = TRUE;
-    $root = chado_generate_var($base_table, array($base_table_pkey => $id));
+    $root = chado_generate_var($base_table, array($base_table_pkey => $id), $generate_var_options);
     $root = chado_expand_var($root, 'node','stock');
     $data = array(
       'current' => $root->stock,
@@ -174,7 +192,7 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
     // If we are dealing with a subject rooted relationship:
     if ($rel->subject_id == $id) {
 
-      $child = chado_generate_var($base_table, array('stock_id' => $rel->object_id));
+      $child = chado_generate_var($base_table, array('stock_id' => $rel->object_id), $generate_var_options);
       $child = chado_expand_var($child, 'node','stock');
 
       if (isset($child->nid)) {
@@ -211,7 +229,7 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
     // Otherwise we're dealing with an object rooted relationship:
     } else {
 
-      $child = chado_generate_var($base_table, array('stock_id' => $rel->subject_id));
+      $child = chado_generate_var($base_table, array('stock_id' => $rel->subject_id), $generate_var_options);
       $child = chado_expand_var($child, 'node','stock');
 
       if (isset($child->nid)) {

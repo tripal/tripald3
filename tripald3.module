@@ -35,7 +35,6 @@ function tripald3_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK
   );
 
-/**
   $items['admin/tripal/extension/tripald3/stock_pedigree'] = array(
     'title' => 'Stock Pedigree',
     'page callback' => 'drupal_get_form',
@@ -44,7 +43,6 @@ function tripald3_menu() {
     'file' => 'includes/settings_forms.inc',
     'type' => MENU_LOCAL_TASK
   );
-*/
 
   return $items;
 }
