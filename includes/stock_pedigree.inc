@@ -15,44 +15,41 @@
  */
 function tripald3_is_node_leafless_tree($stock_id) {
 
-  $relationship_types = array(
-        'object' => array(
-          'is_maternal_parent_of', 'is_paternal_parent_of',
-        ),
-        'subject' => array(
-          'is_registered_cultivar_of',
-          'is_progeny_of_selfing_of',
-          'is_selection_of'
-        )
-      );
+  $relationship_types = tripald3_get_pedigree_relationship_types();
 
   // Check relationships where the root is the subject.
-  $vars = array(':stock_id' => $stock_id);
-  $rel_placeholders = array();
-  foreach ($relationship_types['subject'] as $k => $type_name) {
-    $vars[':reltype' . $k] = $type_name;
-    $rel_placeholders[] = ':reltype' . $k;
+  $subject_rels = 0;
+  if (!empty($relationship_types['subject'])) {
+    $vars = array(':stock_id' => $stock_id);
+    $rel_placeholders = array();
+    foreach ($relationship_types['subject'] as $k => $type_name) {
+      $vars[':reltype' . $k] = $type_name;
+      $rel_placeholders[] = ':reltype' . $k;
+    }
+    $sql = 'SELECT count(*) as num_relationships
+            FROM {stock_relationship} sr
+            LEFT JOIN {cvterm} cvt ON sr.type_id=cvt.cvterm_id
+            WHERE subject_id=:stock_id
+              AND cvt.name IN (' . implode(',', $rel_placeholders) . ')';
+    $subject_rels = chado_query($sql, $vars)->fetchField();
   }
-  $sql = 'SELECT count(*) as num_relationships
-          FROM {stock_relationship} sr
-          LEFT JOIN {cvterm} cvt ON sr.type_id=cvt.cvterm_id
-          WHERE subject_id=:stock_id
-            AND cvt.name IN (' . implode(',', $rel_placeholders) . ')';
-  $subject_rels = chado_query($sql, $vars)->fetchField();
 
   // Check relationships where the root is the object.
-  $vars = array(':stock_id' => $stock_id);
-  $rel_placeholders = array();
-  foreach ($relationship_types['object'] as $k => $type_name) {
-    $vars[':reltype' . $k] = $type_name;
-    $rel_placeholders[] = ':reltype' . $k;
+  $object_rels = 0;
+  if (!empty($relationship_types['object'])) {
+    $vars = array(':stock_id' => $stock_id);
+    $rel_placeholders = array();
+    foreach ($relationship_types['object'] as $k => $type_name) {
+      $vars[':reltype' . $k] = $type_name;
+      $rel_placeholders[] = ':reltype' . $k;
+    }
+    $sql = 'SELECT count(*) as num_relationships
+            FROM {stock_relationship} sr
+            LEFT JOIN {cvterm} cvt ON sr.type_id=cvt.cvterm_id
+            WHERE object_id=:stock_id
+              AND cvt.name IN (' . implode(',', $rel_placeholders) . ')';
+    $object_rels = chado_query($sql, $vars)->fetchField();
   }
-  $sql = 'SELECT count(*) as num_relationships
-          FROM {stock_relationship} sr
-          LEFT JOIN {cvterm} cvt ON sr.type_id=cvt.cvterm_id
-          WHERE object_id=:stock_id
-            AND cvt.name IN (' . implode(',', $rel_placeholders) . ')';
-  $object_rels = chado_query($sql, $vars)->fetchField();
 
   // If there are any relationships then return FALSE else return TRUE
   $total = $subject_rels + $object_rels;
@@ -94,35 +91,11 @@ function tripald3_get_relationship_json($base_table, $id) {
   drupal_add_http_header('Content-Type', 'application/json');
   drupal_add_http_header('Access-Control-Allow-Origin', "*");
 
-  $rels_to_restrict = variable_get('tripald3_stock_pedigree_rels', NULL);
-  if (!$rels_to_restrict) {
-
-    // Get relationships used in stock table.
-    $rels = array();
-    $sql = "SELECT sr.type_id, cvt.name as type_name
-            FROM {stock_relationship} sr
-            LEFT JOIN {cvterm} cvt ON cvt.cvterm_id=sr.type_id
-            GROUP BY sr.type_id, cvt.name
-            ORDER BY count(sr.*) desc";
-    $rel_query = chado_query($sql);
-    foreach ($rel_query as $r) {
-      $rels[$r->type_id] = $r->type_name;
-    }
-
-    $rels_to_restrict = array(
-      'object' => array(),
-      'subject' => $rels
-    );
-  }
-  else {
-    $rels_to_restrict = unserialize($rels_to_restrict);
-  }
-
   $relationships = tripald3_get_relationship_tree_data(
     $base_table,
     $id,
     array(
-      'restrict relationships' => $rels_to_restrict
+      'restrict relationships' => tripald3_get_pedigree_relationship_types()
     )
   );
 
@@ -274,4 +247,36 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   }
 
   return $data;
+}
+
+/**
+ *
+ */
+function tripald3_get_pedigree_relationship_types() {
+
+  $rels_to_restrict = variable_get('tripald3_stock_pedigree_rels', NULL);
+  if (!$rels_to_restrict) {
+
+    // Get relationships used in stock table.
+    $rels = array();
+    $sql = "SELECT sr.type_id, cvt.name as type_name
+            FROM {stock_relationship} sr
+            LEFT JOIN {cvterm} cvt ON cvt.cvterm_id=sr.type_id
+            GROUP BY sr.type_id, cvt.name
+            ORDER BY count(sr.*) desc";
+    $rel_query = chado_query($sql);
+    foreach ($rel_query as $r) {
+      $rels[$r->type_id] = $r->type_name;
+    }
+
+    $rels_to_restrict = array(
+      'object' => array(),
+      'subject' => $rels
+    );
+  }
+  else {
+    $rels_to_restrict = unserialize($rels_to_restrict);
+  }
+
+  return $rels_to_restrict;
 }

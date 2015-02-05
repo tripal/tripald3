@@ -84,7 +84,7 @@ function tripald3_permission() {
 function tripald3_node_view($node, $view_mode, $langcode) {
 
   switch ($node->type) {
-    case 'tripal_germplasm':
+    case 'chado_stock':
       if ($view_mode == 'full') {
         if(user_access('view tripald3 pedigree')) {
 
