@@ -45,28 +45,29 @@
        ensure that the tree can find where to attach itself. -->
   <div id="tree"></div>
 
-  <!-- Add the Description/Legend in a KnowPulse theme-like manner -->
-  <div class="sidebar content-sidebar-bottom">
-
-    <!-- Legend -->
-    <!-- NOTE: The legend is added by the bioD3.drawPedigreeTree js function
-         and where it is added is hard-coded as the element with #legend -->
+  <!-- Legend -->
+  <!-- NOTE: The legend is added by the bioD3.drawPedigreeTree js function
+       and where it is added is hard-coded as the element with #legend -->
+  <div id="tripald3-pedigree-legend-sidebar" class="sidebar content-sidebar-bottom tripald3-legend-sidebar">
      <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region">
       <h2>Legend</h2>
       <div id="legend" class="content">
       </div>
     </div>
 
-    <!-- Description -->
-    <!-- NOTE: This is just information to the user which makes
-         the legend not look out of place. -->
-    <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region">
+  <!-- Description of the pedigree to help users interpret & interact with it -->
+     <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region">
       <h2>Description</h2>
-      <div id="description" class="content">
-      <p>The above tree depicts the parentage of <em><?php print $node->stock->name; ?></em> where each germplasm involved is indicated using a "Germplasm Node" and the relationships between the germplasm are represented as lines connecting Germplasm nodes. Specifically the type of relationship is indicated both using line styles defined in the legend to the right and also in sentence form when you hover your mouse over the relationship lines. <strong><em>Additional information about each germplasm can be obtained by clicking on a Germplasm node</em></strong>. Furthermore, parts of the pedigree diagram can be collapsed or expanded (depending on the state) by double-clicking on a Germplasm node.</p>
-      <p>See the legend to the right for a visual reference of the types of relationships shown in the pedigree diagram above.</p>
+      <div class="content">
+        <p>The above tree depicts the parentage of <em><?php print $node->stock->name; ?></em>.
+        The type of relationship is indicated both using line styles defined in
+        the legend and also in sentence form when you hover your mouse over the
+        relationship lines. <strong><em>Additional information about each
+        germplasm can be obtained by clicking on the Germplasm name</em></strong>.
+        Furthermore, parts of the pedigree diagram can be collapsed or expanded
+        by double-clicking on a Germplasm node.</p>
       </div>
     </div>
-
   </div>
+
 </div>

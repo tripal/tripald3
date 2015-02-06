@@ -89,28 +89,30 @@ bioD3 = {
         drawTree(root);
 
         // Resize when window changes size.
-        window.addEventListener('resize', function() {
-          d3.select("#tree svg").remove();
+        if (Drupal.settings.tripalD3.autoResize) {
+          window.addEventListener('resize', function() {
+            d3.select("#tree svg").remove();
 
-          width = document.getElementById(options.elementId).offsetWidth;
-          height = document.getElementById(options.elementId).offsetHeight;
+            width = document.getElementById(options.elementId).offsetWidth;
+            height = document.getElementById(options.elementId).offsetHeight;
 
-          // Initialize the tree.
-          tree = d3.layout.tree()
-              .size([
-                width - margin.right - margin.left,
-                height - margin.top - margin.bottom
-              ]);
+            // Initialize the tree.
+            tree = d3.layout.tree()
+                .size([
+                  width - margin.right - margin.left,
+                  height - margin.top - margin.bottom
+                ]);
 
-          // Append our drawing area to the id="tree" element.
-          svg = d3.select("#tree").append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // Append our drawing area to the id="tree" element.
+            svg = d3.select("#tree").append("svg")
+              .attr("width", width)
+              .attr("height", height)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-          drawTree(root);
-        });
+            drawTree(root);
+          });
+        }
       });
 
       /**

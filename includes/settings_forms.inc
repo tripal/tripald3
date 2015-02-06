@@ -14,6 +14,18 @@ function tripald3_common_settings_form($form, $form_state) {
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/bioD3.js';
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/colorscheme_display.js';
 
+  $form['general'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'General',
+  );
+
+  $form['general']['auto_resize'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Auto-Resize',
+    '#description' => 'Select this option if your theme is fuild-width and would like TripalD3 diagrams to resize themeselves when users resize the page. If your theme is fixed-width the option will cause the diagram to be redrawn the same whenever the window size has been changed.',
+    '#default_value' => variable_get('tripald3_autoResize', FALSE)
+  );
+
   $form['colors'] = array(
     '#type' => 'fieldset',
     '#title' => 'Color Schemes',
@@ -52,6 +64,7 @@ function tripald3_common_settings_form_validate($form, $form_state) {}
 function tripald3_common_settings_form_submit($form, $form_state) {
 
   variable_set('tripald3_colorScheme', $form_state['values']['color_scheme']);
+  variable_set('tripald3_autoResize', $form_state['values']['auto_resize']);
 }
 
 /**

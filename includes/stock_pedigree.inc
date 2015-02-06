@@ -81,6 +81,8 @@ function tripald3_preprocess_tripald3_stock_pedigree(&$vars) {
   //-- Add settings bioB3 might need
   tripald3_register_colorschemes();
 
+  $jsSettings['tripalD3']['autoResize'] = variable_get('tripald3_autoResize', FALSE);
+  drupal_add_js($jsSettings, 'setting');
 }
 
 /**

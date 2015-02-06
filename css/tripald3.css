@@ -1,3 +1,7 @@
+
+/**
+ * Pedigree
+ */
 .node circle {
     stroke: #333333;
     stroke-width: 2px;
@@ -8,34 +12,23 @@
 }
 .link {
     fill: none;
-    /*stroke: black;*/
     stroke-width: 4px;
 }
-/**
-.link.is-maternal-parent-of {
-    stroke: #5DA047;
-}
-.link.is-paternal-parent-of {
-    stroke: #3A6A93;
-}
-.link.is-selection-of {
-  stroke: #999999;
-  stroke-dasharray: 10,2;
-}
-.link.is-progeny-of-selfing-of {
-  stroke-dasharray: 20,5,5,5;
-}
-.link.is-registered-cultivar-of {
-  stroke: #777797;
-}*/
 #tree .tree-node {
     cursor: pointer;
 }
 
-.sidebar.content-sidebar-bottom {
+/**
+ * Legend
+ */
+.sidebar.tripald3-legend-sidebar .block {
   width: 100%;
 }
 
+/**
+ * Float the legend
+ * so that the description is on the left and the key on the right.
+ *
 #block-menu-menu-tree-description {
   margin-left: 10px;
   width: 100%;
@@ -48,11 +41,4 @@
   float: right;
   margin-right: 10px;
 }
-
-/**
- * Popover
- */
-.popover-content {
-  padding: 10px;
-  margin: 0;
-}
+*/
