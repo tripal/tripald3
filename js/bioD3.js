@@ -79,41 +79,53 @@ bioD3 = {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+      // Start the throbber going to provide progress.
+      var throbber = bioD3.ellipsisThrobber(svg, {'left':options.width/2, 'top':50});
+
       // Retrieve data.
-      d3.json(options.dataJSONpath, function(error, treeData) {
+      var treeData = d3.json(options.dataJSONpath)
+        .get(function(error, treeData) {
 
-        // Declare the root.
-        root = treeData[0];
+          // Remove throbber.
+          throbber.remove();
 
-        // Call the function to actually draw the tree.
-        drawTree(root);
+          // Draw tree.
+          root = treeData[0];
+          drawTree(root);
 
-        // Resize when window changes size.
-        if (Drupal.settings.tripalD3.autoResize) {
-          window.addEventListener('resize', function() {
-            d3.select("#tree svg").remove();
+          // Register resize of tree if config is set.
+          if (Drupal.settings.tripalD3.autoResize) {
+            resizeTree();
+          }
+        });
 
-            width = document.getElementById(options.elementId).offsetWidth;
-            height = document.getElementById(options.elementId).offsetHeight;
+      /**
+       * Resize the tree when the window size changes
+       */
+      function resizeTree() {
+        window.addEventListener('resize', function() {
+          d3.select("#tree svg").remove();
 
-            // Initialize the tree.
-            tree = d3.layout.tree()
-                .size([
-                  width - margin.right - margin.left,
-                  height - margin.top - margin.bottom
-                ]);
+          width = document.getElementById(options.elementId).offsetWidth;
+          height = document.getElementById(options.elementId).offsetHeight;
 
-            // Append our drawing area to the id="tree" element.
-            svg = d3.select("#tree").append("svg")
-              .attr("width", width)
-              .attr("height", height)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          // Initialize the tree.
+          tree = d3.layout.tree()
+              .size([
+                width - margin.right - margin.left,
+                height - margin.top - margin.bottom
+              ]);
 
-            drawTree(root);
-          });
-        }
-      });
+          // Append our drawing area to the id="tree" element.
+          svg = d3.select("#tree").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          drawTree(root);
+        });
+      }
 
       /**
        * Function used to draw the tree. We use a function to allow
@@ -516,6 +528,84 @@ bioD3 = {
         .attr('y', 4)
         .text(function(d) { return d.label; });
     }
+  },
+
+  /**
+   * Provides an infinite progress throbber in the form of an Ellipsis
+   *
+   * USE: this function returns the throbber so simple use .remove()
+   * throbber = ellipsisThrobber(svg, {'left':50, 'top':50});
+   * setTimeout(function(){ throbber.remove() }, 3000);
+   *
+   * @param svg
+   *   The svg canvas to draw the throbber on.
+   * @param dimensions
+   *   An object specifying the left and top coordinates for the center
+   *   of the throbber.
+   * @return
+   *   The D3.js throbber object
+   */
+  ellipsisThrobber: function(svg, dimensions) {
+
+    var radius = 8,
+      color = 'black';
+
+    var circleData = [
+      {
+        'cx': -25,
+        'i': 0,
+        'n': 1
+      },
+      {
+        'cx': 0,
+        'i': 1,
+        'n': 1
+      },
+      {
+        'cx': 25,
+        'i': 2,
+        'n': 1
+      }
+    ];
+
+    var meter = svg.append("g")
+        .attr("class", "progress-meter")
+        .attr("transform", "translate(" + dimensions.left + "," + dimensions.top + ")");
+
+    var circles = meter.selectAll('circle')
+      .data(circleData)
+        .enter()
+      .append('circle')
+        .attr('cx', function(d) { return d.cx; })
+        .attr('cy', 15)
+        .attr('r', radius)
+        .attr('fill',color)
+        .attr('opacity', 0.5)
+    .transition()
+      .duration(500)
+      .delay(function(d) { return d.i * 200; })
+      .each(fade);
+
+    function fade() {
+      var circle = d3.select(this);
+      (function repeat() {
+        circle = circle.transition()
+            .attr('opacity', function(d) {
+
+                if (d.n == 0) {
+                  d.n = 1;
+                  return 0.05;
+                } else {
+                  d.n = 0;
+                  return 1;
+                }
+              })
+            .each("end", repeat);
+      })();
+    }
+
+    return meter;
+
   },
 
   /**
