@@ -10,7 +10,7 @@
 function tripald3_common_settings_form($form, $form_state) {
 
   tripald3_register_colorschemes();
-  $form['#attached']['js'][] = 'http://d3js.org/d3.v3.js';
+  $form['#attached']['libraries_load'][] = array('d3');
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/bioD3.js';
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/colorscheme_display.js';
 
@@ -78,7 +78,7 @@ function tripald3_stock_pedigree_settings_form($form, &$form_state) {
     'data' => 'select.form-select {width: 350px; }'
   );
 
-  $form['#attached']['js'][] = 'http://d3js.org/d3.v3.js';
+  $form['#attached']['libraries_load'][] = array('d3');
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/relsetting_diagrams.js';
 
   // Used to allow admin to choose colors per relationship.

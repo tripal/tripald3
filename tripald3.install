@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Installation file for Tripal D3
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function tripald3_requirements($phase) {
+  $requirements = array();
+
+  // Ensure translations do not break at install time
+  $t = get_t();
+
+  $requirements['d3'] = array(
+    'title' => $t('D3.js'),
+  );
+
+  $libraries = libraries_get_libraries();
+  if (isset($libraries['d3'])) {
+    $requirements['d3']['value'] = $t('Installed');
+    $requirements['d3']['severity'] = REQUIREMENT_OK;
+  }
+  else {
+    $requirements['d3']['value'] = $t('Not Installed');
+    $requirements['d3']['severity'] = REQUIREMENT_ERROR;
+    $requirements['d3']['description'] = $t('Please install the d3.js library (available <a href="@url" target="_blank"> here</a>).', array('@url' => 'http://d3js.org/'));
+  }
+
+  return $requirements;
+}

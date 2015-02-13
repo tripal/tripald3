@@ -72,7 +72,7 @@ function tripald3_preprocess_tripald3_stock_pedigree(&$vars) {
 
   // Add the JS and CSS needed for the template.
   //-- D3.js Library
-  drupal_add_js('http://d3js.org/d3.v3.js', 'external');
+  libraries_load('d3');
 
   //-- module-specific JS/CSS
   drupal_add_js($path . '/js/bioD3.js');

@@ -4,6 +4,29 @@ require_once('includes/stock_pedigree.inc');
 require_once('includes/color_scheme.inc');
 
 /**
+ * Implements hook_libraries_info()
+ */
+function tripald3_libraries_info() {
+  $libraries = array();
+  $libraries['d3'] = array(
+    'name' => 'D3.js',
+    'vendor url' => 'http://d3js.org/',
+    'download url' => 'https://github.com/mbostock/d3',
+    'version arguments' => array(
+      'file' => 'd3.js',
+      'pattern' => '/\s*version: "(\d+\.\d+\.\d+)"/',
+    ),
+    'files' => array(
+      'js' => array(
+        'd3.min.js',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
  * Implements hook_menu().
  */
 function tripald3_menu() {
