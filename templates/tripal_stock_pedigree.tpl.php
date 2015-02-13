@@ -49,14 +49,14 @@
   <!-- NOTE: The legend is added by the bioD3.drawPedigreeTree js function
        and where it is added is hard-coded as the element with #legend -->
   <div id="tripald3-pedigree-legend-sidebar" class="sidebar content-sidebar-bottom tripald3-legend-sidebar">
-     <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region">
+     <div id="block-menu-menu-tree-legend" class="block block-menu contextual-links-region tree-legend">
       <h2>Legend</h2>
       <div id="legend" class="content">
       </div>
     </div>
 
   <!-- Description of the pedigree to help users interpret & interact with it -->
-     <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region">
+     <div id="block-menu-menu-tree-description" class="block block-menu contextual-links-region tree-description">
       <h2>Description</h2>
       <div class="content">
         <p>The above tree depicts the parentage of <em><?php print $node->stock->name; ?></em>.

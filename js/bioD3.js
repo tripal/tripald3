@@ -84,19 +84,50 @@ bioD3 = {
 
       // Retrieve data.
       var treeData = d3.json(options.dataJSONpath)
+        .on("error", function(error) { console.log('failure!'); })
         .get(function(error, treeData) {
 
           // Remove throbber.
           throbber.remove();
 
-          // Draw tree.
-          root = treeData[0];
-          drawTree(root);
+          // Only attempt to draw the tree if the JSON was returned properly.
+          if (treeData) {
+            // Draw tree.
+            root = treeData[0];
+            drawTree(root);
 
-          // Register resize of tree if config is set.
-          if (Drupal.settings.tripalD3.autoResize) {
-            resizeTree();
+            // Register resize of tree if config is set.
+            if (Drupal.settings.tripalD3.autoResize) {
+              resizeTree();
+            }
+          } else {
+
+            // Remove throbber & canvas
+            d3.select('#tree svg')
+              .remove();
+
+            // Report a regular drupal_set_message.
+            var errorDiv = d3.select("#tree")
+              .append('div')
+              .attr('class', 'messages error');
+
+            errorDiv.append('h2')
+              .classed('element-invisible', true)
+              .html('Error Messages');
+
+            var errorList = errorDiv.append('ul');
+
+            errorList.append('li')
+              .html('Unable to retrieve tree data. This might be due to a circular relationship within your tree. If not, tell your administrator to check that the JSON callback is able to retrieve data for this stock/germplasm.');
+
+            // Remove legend and tree description.
+            d3.select('.tree-legend')
+              .remove();
+
+            d3.select('.tree-description')
+              .remove();
           }
+
         });
 
       /**
