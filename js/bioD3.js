@@ -418,7 +418,7 @@ bioD3 = {
           // Change the size to match the new tree.
           d3.select("#tree svg").transition()
             .duration(options.collapseDuration)
-            .style('height', offset + margin.top + margin.bottom);
+            .attr('height', offset + margin.top + margin.bottom);
 
           // Draw the key.
           bioD3.drawKey(keyData, options.key);

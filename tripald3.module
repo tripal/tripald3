@@ -45,7 +45,7 @@ function tripald3_menu() {
     'description' => 'Adds d3.js diagrams to existing pages as well as providing an API for creating custom diagrams.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('tripald3_common_settings_form'),
-    'access arguments' => array('tripal administration'),
+    'access arguments' => array('administer tripal'),
     'file' => 'includes/settings_forms.inc',
   );
 
@@ -53,7 +53,7 @@ function tripald3_menu() {
     'title' => 'General',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('tripald3_common_settings_form'),
-    'access arguments' => array('tripal administration'),
+    'access arguments' => array('administer tripal'),
     'file' => 'includes/settings_forms.inc',
     'type' => MENU_DEFAULT_LOCAL_TASK
   );
@@ -62,7 +62,7 @@ function tripald3_menu() {
     'title' => 'Stock Pedigree',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('tripald3_stock_pedigree_settings_form'),
-    'access arguments' => array('tripal administration'),
+    'access arguments' => array('administer tripal'),
     'file' => 'includes/settings_forms.inc',
     'type' => MENU_LOCAL_TASK
   );
