@@ -1,7 +1,7 @@
-name = Tripal D3
-description = Provides D3.js integration and diagrams for tripal.
+name = Tripal D3.js
+description = An API for D3.js integration and diagrams for Tripal.
 core = 7.x
 package = Tripal Extensions
 
-dependencies[] = tripal_core
+dependencies[] = tripal
 dependencies[] = libraries
