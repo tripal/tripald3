@@ -29,26 +29,13 @@ Drupal.behaviors.TripalD3_colorscheme_display = {
             .attr('height', 50)
             .attr('x', function(d) { swatchIndex = swatchIndex + 1; return 22 * swatchIndex; })
             .attr('fill', function (d) { return d; });
-/**
-      var palletCategory = svg.append('g')
-          .classed('pallet',true)
-          .classed('categorical',true)
-          .attr("transform", "translate(" + (marginLeft + 350) + "," + marginTop + ")");
 
-      var swatchIndex = 0;
-      palletCategory.selectAll('rect')
-        .data(Drupal.settings.tripalD3.colorSchemes[id].categorical)
-        .enter()
-          .append('rect')
-            .attr('width', 20)
-            .attr('height', 50)
-            .attr('x', function(d) { swatchIndex = swatchIndex + 1; return 22 * swatchIndex; })
-            .attr('fill', function (d) { return d; });
-*/
     }
 
     Object.keys(Drupal.settings.tripalD3.colorSchemes).forEach(function (schemeId) {
-      createPallet(schemeId);
+      if (typeof Drupal.settings.tripalD3.colorSchemes[schemeId] === 'object') {
+        createPallet(schemeId);
+      }
     });
 
   }
