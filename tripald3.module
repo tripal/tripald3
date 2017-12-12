@@ -16,7 +16,7 @@ function tripald3_libraries_info() {
     'download url' => 'https://github.com/mbostock/d3',
     'version arguments' => array(
       'file' => 'd3.js',
-      'pattern' => '/var version = "(\d+\.\d+\.\d+)";/',
+      'pattern' => '/\s*version: "(\d+\.\d+\.\d+)"\s*/',
     ),
     'files' => array(
       'js' => array(
@@ -58,7 +58,17 @@ function tripald3_menu() {
     'page arguments' => array('tripald3_common_settings_form'),
     'access arguments' => array('administer tripal'),
     'file' => 'includes/settings_forms.inc',
-    'type' => MENU_DEFAULT_LOCAL_TASK
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 0,
+  );
+
+  $items['admin/tripal/extension/tripald3/demo'] = array(
+    'title' => 'Demo',
+    'page callback' => 'theme',
+    'page arguments' => array('tripald3_demo_page'),
+    'access arguments' => array('administer tripal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
   );
 
   /** @pedigree Comment out pedigree's until re-vamped.
@@ -87,6 +97,11 @@ function tripald3_theme($existing, $type, $theme, $path) {
     'variables' => array('node' => NULL),
   );
   */
+
+  $items['tripald3_demo_page'] = array(
+    'template' => 'tripald3_demo_page',
+    'path' => $path.'/templates',
+  );
 
   return $items;
 }

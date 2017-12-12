@@ -3,7 +3,7 @@ Provides d3.js integration for Tripal. It provides an API for developing consist
 biological diagrams with a common configuration, as well as, providing some
 common diagrams such as pie, bar, column and hierarchy/pedigree diagrams.
 
-** NOTE: ** This module is an API and does not provide user facing diagrams.
+**NOTE:** This module is an API and does not provide user facing diagrams.
 Rather, you would develop your own diagrams. Diagram functionality is
 demonstrated at Admin » Tripal » Extension Modules » Tripal D3 Diagrams » Demo.
 
@@ -27,7 +27,7 @@ Furthermore, all diagrams have a consistent, configurable colour scheme.
 - Pie Chart (under development)
 - Bar Chart (under development)
 - Column Chart (under development)
-- Top-rooted relationship/hierarchy Diagram
+- Bottom-rooted relationship/hierarchy/pedigree Diagram
 
 ## Documentation
 Documentation and coding examples will be added to the Wiki of this respository.

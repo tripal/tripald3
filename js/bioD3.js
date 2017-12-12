@@ -10,8 +10,7 @@ bioD3 = {
      *
      * @param options
      *   A javascript object with any of the following keys:
-     *    - dataJSONpath: (REQUIRED) The path to the JSON array providing data
-     *        for this pedigree.
+     *    - data: (REQUIRED) The data to draw the tree for.
      *    - elementId : The ID of the HTML element the diagram should be attached to.
      *    - margin: an object with 'top', 'right','bottom','left' keys. Values
      *        are in pixels and all four keys must be set.
@@ -73,62 +72,23 @@ bioD3 = {
           .size([width, height]);
 
       // Append our drawing area to the id="tree" element.
-      var svg = d3.select("#tree").append("svg")
+      var svg = d3.select("#" + options.elementId).append("svg")
           .attr("width", options.width)
           .attr("height", options.height)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      // Start the throbber going to provide progress.
-      var throbber = bioD3.ellipsisThrobber(svg, {'left':options.width/2, 'top':50});
+      // Grab the data.
+      var treeData = options.data;
 
-      // Retrieve data.
-      var treeData = d3.json(options.dataJSONpath)
-        .on("error", function(error) { console.log('failure!'); })
-        .get(function(error, treeData) {
+      // Draw tree.
+      root = treeData[0];
+      drawTree(root);
 
-          // Remove throbber.
-          throbber.remove();
-
-          // Only attempt to draw the tree if the JSON was returned properly.
-          if (treeData) {
-            // Draw tree.
-            root = treeData[0];
-            drawTree(root);
-
-            // Register resize of tree if config is set.
-            if (Drupal.settings.tripalD3.autoResize) {
-              resizeTree();
-            }
-          } else {
-
-            // Remove throbber & canvas
-            d3.select('#tree svg')
-              .remove();
-
-            // Report a regular drupal_set_message.
-            var errorDiv = d3.select("#tree")
-              .append('div')
-              .attr('class', 'messages error');
-
-            errorDiv.append('h2')
-              .classed('element-invisible', true)
-              .html('Error Messages');
-
-            var errorList = errorDiv.append('ul');
-
-            errorList.append('li')
-              .html('Unable to retrieve tree data. This might be due to a circular relationship within your tree. If not, tell your administrator to check that the JSON callback is able to retrieve data for this stock/germplasm.');
-
-            // Remove legend and tree description.
-            d3.select('.tree-legend')
-              .remove();
-
-            d3.select('.tree-description')
-              .remove();
-          }
-
-        });
+      // Register resize of tree if config is set.
+      if (Drupal.settings.tripalD3.autoResize) {
+        resizeTree();
+      }
 
       /**
        * Resize the tree when the window size changes
