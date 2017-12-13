@@ -2,14 +2,17 @@
  * A collection of biological diagrams created using d3.js and encapsulated
  * for easy use.
  */
-bioD3 = {
-  'version': '0.1-dev',
+tripalD3 = {
+  'version': '1.0-dev',
 
     /**
      * Pedigree Tree
      *
      * @param options
      *   A javascript object with any of the following keys:
+     *    - title: the title of the pedigree diagram.
+     *    - legend: a longer description of the diagram to be used as the figure
+     *        legend following the title.
      *    - data: (REQUIRED) The data to draw the tree for.
      *    - elementId : The ID of the HTML element the diagram should be attached to.
      *    - margin: an object with 'top', 'right','bottom','left' keys. Values
@@ -22,12 +25,19 @@ bioD3 = {
      *    - nodeFill: The color of the node when it is fully expanded.
      *    - backgroundColor: The color of the background of the diagram. This
      *        is used to add the transparent backing to labels.
+     *    - nodeLinks: a function used to make the node labels links.
      */
     drawPedigreeTree: function(options) {
 
       // Set Defaults.
       if (!options.hasOwnProperty('elementId')) {
         options.elementId = 'tree';
+      }
+      if (!options.hasOwnProperty('title')) {
+        options.title = 'Pedigree Diagram';
+      }
+      if (!options.hasOwnProperty('legend')) {
+        options.legend = '';
       }
       if (!options.hasOwnProperty('margin')) {
         options.margin = {
@@ -40,6 +50,7 @@ bioD3 = {
       if (!options.hasOwnProperty('width')) {
         options.width = document.getElementById(options.elementId).offsetWidth;
       }
+      // @todo better default for height.
       if (!options.hasOwnProperty('height')) {
         options.height = document.getElementById(options.elementId).offsetHeight;
       }
@@ -57,6 +68,9 @@ bioD3 = {
       }
       if (!options.hasOwnProperty('key')) {
         options.key = {};
+      }
+      if (!options.hasOwnProperty('nodeLinks')) {
+        options.nodeLinks = function(d) { return null; }
       }
 
       // Set up drawing area dimensions.
@@ -77,6 +91,18 @@ bioD3 = {
           .attr("height", options.height)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      // Add the figure legend to the indicated element.
+      // @todo move this into a helper function to ensure consistency across diagrams.
+      var figLegend = d3.select("#" + options.elementId).append("div")
+        .attr("class", "tripald3-legend");
+
+      figLegend.append("span")
+        .attr("class", "tripald3-title")
+        .html("Figure: " + options.title + ". ");
+      figLegend.append("span")
+        .attr("class", "tripald3-desc")
+        .html(options.legend + ".");
 
       // Grab the data.
       var treeData = options.data;
@@ -224,7 +250,7 @@ bioD3 = {
           //   and which do not, since we have to treat them differently.
           nodeEnter.each(function(d,i) {
             d.current.label = {
-              'url': options.nodeURL(d),
+              'url': options.nodeLinks(d),
               'text': d.current.name
             };
 
@@ -381,7 +407,7 @@ bioD3 = {
             .attr('height', offset + margin.top + margin.bottom);
 
           // Draw the key.
-          bioD3.drawKey(keyData, options.key);
+          tripalD3.drawKey(keyData, options.key);
 
       }
 

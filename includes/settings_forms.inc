@@ -22,7 +22,7 @@ function tripald3_common_settings_form($form, $form_state) {
   }
 
   // Javascript to demo the colour schemes.
-  $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/bioD3.js';
+  $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/tripalD3.js';
   $form['#attached']['js'][] = drupal_get_path('module', 'tripald3') . '/js/colorscheme_display.js';
 
   $form['general'] = array(

@@ -1,6 +1,7 @@
 
 <?php
 
+  // @todo move this into an API function.
   // D3.js
   $library = libraries_load('d3');
   // If the library didn't load then provide an error to the admin.
@@ -13,7 +14,7 @@
 
   // BioD3.js
   $path = drupal_get_path('module','tripald3');
-  drupal_add_js($path . '/js/bioD3.js');
+  drupal_add_js($path . '/js/tripalD3.js');
 
   // CSS.
   drupal_add_css($path . '/css/tripald3.css', array('group' => CSS_DEFAULT, 'type' => 'file'));
@@ -39,7 +40,7 @@
   Drupal.behaviors.stockPedigree = {
     attach: function (context, settings) {
 
-      // @todo figure out what we want to use here.
+      // @todo move data into a separate file for better readability.
       var treedata = [
         {
           current: {
@@ -189,18 +190,14 @@
       // The following code uses the Tripal D3 module to draw a pedigree tree
       // and attach it to an #tripald3-pedigree-diagram element.
       // Notice that the data for the tree is passed in directly.
-      bioD3.drawPedigreeTree({
+      // @todo style the figure legend
+      // @todo where is the key?
+      tripalD3.drawPedigreeTree({
         "elementId": "tripald3-pedigree-diagram",
         "data": treedata,
-        "height": 800,
-        "nodeURL": function(d) {
-          if (d.current.nid) {
-            return Drupal.settings.basePath + 'node/' + d.current.nid;
-          }
-          else {
-            return null;
-          }
-        }
+        "height": 320,
+        "title": "<em>Heart Olive</em> Parental Pedigree",
+        "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
       });
     }
   };
