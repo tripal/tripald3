@@ -190,7 +190,6 @@
       // The following code uses the Tripal D3 module to draw a pedigree tree
       // and attach it to an #tripald3-pedigree element.
       // Notice that the data for the tree is passed in directly.
-      // @todo style the figure
       tripalD3.drawPedigreeTree({
         "elementId": "tripald3-pedigree",
         "data": treedata,

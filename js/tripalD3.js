@@ -8,6 +8,9 @@ tripalD3 = {
     /**
      * Pedigree Tree
      *
+     * @todo add options for key placement. This would allow me to use js to
+     *   calculate the width of the chart/key such that they can stay side-by-side.
+     *   Include a min-width for the key or calculate the width needed.
      * @param options
      *   A javascript object with any of the following keys:
      *    - title: the title of the pedigree diagram.

@@ -14,31 +14,24 @@
     fill: none;
     stroke-width: 4px;
 }
-#tree .tree-node {
+svg.tripald3-tree .tree-node {
     cursor: pointer;
 }
 
 /**
  * Legend
  */
-.sidebar.tripald3-legend-sidebar {
-  width: 100%;
+.tripald3-legend {
+  font-style: italic;
+  font-size: 0.9em;
+}
+.tripald3-title {
+  font-weight: bold;
 }
 
 /**
- * Float the legend
- * so that the description is on the left and the key on the right.
- *
-#block-menu-menu-tree-description {
-  margin-left: 10px;
-  width: 100%;
-  border-color: #FFF;
-  width: auto;
-  overflow: hidden;
+ * Key
+ */
+.tripald3-key {
+  font-style: italic;
 }
-#block-menu-menu-tree-legend {
-  width: 280px;
-  float: right;
-  margin-right: 10px;
-}
-*/
