@@ -29,10 +29,19 @@ tripalD3 = {
      */
     drawPedigreeTree: function(options) {
 
-      // Set Defaults.
+      // Select container.
       if (!options.hasOwnProperty('elementId')) {
         options.elementId = 'tree';
       }
+      var container = d3.select("#" + options.elementId);
+
+      // Check our container exists and warn the admin if not.
+      if (container.empty()) {
+        console.error("Element for Tripal D3 Chart not found: #" + options.elementId);
+        return;
+      }
+
+      // Set Defaults.
       if (!options.hasOwnProperty('title')) {
         options.title = 'Pedigree Diagram';
       }
@@ -69,6 +78,12 @@ tripalD3 = {
       if (!options.hasOwnProperty('key')) {
         options.key = {};
       }
+      if (!options.key.hasOwnProperty('title')) {
+        options.key.title = 'Legend';
+      }
+      if (!options.key.hasOwnProperty('parentId')) {
+        options.key.parentId = options.elementId;
+      }
       if (!options.hasOwnProperty('nodeLinks')) {
         options.nodeLinks = function(d) { return null; }
       }
@@ -86,15 +101,26 @@ tripalD3 = {
           .size([width, height]);
 
       // Append our drawing area to the id="tree" element.
-      var svg = d3.select("#" + options.elementId).append("svg")
+      var svg = container.append("svg")
+          .attr("class", "tripald3-tree tripald3-chart")
           .attr("width", options.width)
           .attr("height", options.height)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+      // Add the div to hold the key.
+      var figKey = container.append("div")
+        .attr("id", options.elementId + "-key")
+        .attr("class", "tripald3-key");
+
+      figKey.append("span")
+        .attr("class", "tripald3-title")
+        .html(options.key.title);
+
       // Add the figure legend to the indicated element.
       // @todo move this into a helper function to ensure consistency across diagrams.
-      var figLegend = d3.select("#" + options.elementId).append("div")
+      var figLegend = container.append("div")
+        .attr("id", options.elementId + "-legend")
         .attr("class", "tripald3-legend");
 
       figLegend.append("span")
@@ -155,7 +181,7 @@ tripalD3 = {
       function drawTree(source) {
 
           // Keep track of the types of edges and nodes to display them
-          // later in a legend/key.
+          // later in a key.
           var keyData = [];
 
 
@@ -446,37 +472,37 @@ tripalD3 = {
    *   A javascript object with any of the following keys:
    */
   drawKey: function(data, options) {
-    if (d3.select("#legend svg").empty()) {
 
-      // Set defaults.
-      if (!options.hasOwnProperty('elementId')) {
-        options.elementId = 'legend';
-      }
-      if (!options.hasOwnProperty('margin')) {
-        options.margin = {
-            'top': 10,
-            'right': 0,
-            'bottom': 10,
-            'left': 0
-        };
-      }
-      if (!options.hasOwnProperty('width')) {
-        options.width = '100%';//document.getElementById(options.elementId).offsetWidth;
-      }
-      if (!options.hasOwnProperty('height')) {
-        options.height = data.length * 18;
-      } else if (options.height == 'auto') {
-        options.height = document.getElementById(options.elementId).offsetHeight;
-      }
+    // Set defaults.
+    if (!options.hasOwnProperty('elementId')) {
+      options.elementId = options.parentId + '-key';
+    }
+    if (!options.hasOwnProperty('margin')) {
+      options.margin = {
+          'top': 10,
+          'right': 0,
+          'bottom': 10,
+          'left': 0
+      };
+    }
+    if (!options.hasOwnProperty('width')) {
+      options.width = '100%';//document.getElementById(options.elementId).offsetWidth;
+    }
+    if (!options.hasOwnProperty('height')) {
+      options.height = data.length * 18;
+    } else if (options.height == 'auto') {
+      options.height = document.getElementById(options.elementId).offsetHeight;
+    }
+
+    if (d3.select("#" + options.elementId + " svg").empty()) {
 
       var width = options.width - options.margin.right - options.margin.left,
       height = options.height - options.margin.top - options.margin.bottom;
 
-      var legendSpacing = 18;
+      var keySpacing = 18;
 
       // Create canvas to draw the key on.
-      var svg = d3.select('#legend')
-        .append('svg')
+      var svg = d3.select("#" + options.elementId).append('svg')
         .attr('width', options.width)
         .attr('height', options.height)
         .append('g')
@@ -484,20 +510,20 @@ tripalD3 = {
 
       // Now for each item in the data array, create a g legend-item
       // and move it to where we want each member of the lengend to go.
-      var legendItems = svg.selectAll('.legend-item')
+      var keyItems = svg.selectAll('.key-item')
         .data(data)
         .enter()
         .append('g')
         .attr('class', function(d) {
           if (d.groupClasses) {
-            return 'legend-item ' + d.type + ' ' + d.groupClasses.join(' ');
+            return 'key-item ' + d.type + ' ' + d.groupClasses.join(' ');
           } else {
-            return 'legend-item ' + d.type;
+            return 'key-item ' + d.type;
           }
         })
         .attr('transform', function(d, i) {
           var horz = 0;
-          var vert = i * legendSpacing;
+          var vert = i * keySpacing;
           return 'translate(' + horz + ',' + vert + ')';
         });
 
@@ -509,12 +535,12 @@ tripalD3 = {
         .y(function(d) { return d.y; })
         .interpolate("linear");
 
-      // For each legend-item of type path, add a path element with the
+      // For each key-item of type path, add a path element with the
       // classes specified in data and a length similar to the lines
       // drawn in the diagram.
-      var lineLegendItems = svg.selectAll('.legend-item.path');
+      var linekeyItems = svg.selectAll('.key-item.path');
 
-      lineLegendItems.append('path')
+      linekeyItems.append('path')
         .attr('class', function( i, val ) {
           return i.classes.join(' ');
         })
@@ -526,11 +552,11 @@ tripalD3 = {
 
       // Draw any circles:
       //---------------------------------
-      // For each legend-item of type circle, add a circle element with the
+      // For each key-item of type circle, add a circle element with the
       // classes specified in data.
-      var circleLegendItems = svg.selectAll('.legend-item.circle');
+      var circlekeyItems = svg.selectAll('.key-item.circle');
 
-      circleLegendItems.append('circle')
+      circlekeyItems.append('circle')
         .attr("r", 6)
         .attr('class', function( i, val ) {
           return i.classes.join(' ');
@@ -540,7 +566,7 @@ tripalD3 = {
 
       // Add the labels for each item:
       //---------------------------------
-      legendItems.append('text')
+      keyItems.append('text')
         .attr('x', 70)
         .attr('y', 4)
         .text(function(d) { return d.label; });

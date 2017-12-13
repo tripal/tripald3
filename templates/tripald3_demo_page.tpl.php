@@ -188,12 +188,11 @@
     ];
 
       // The following code uses the Tripal D3 module to draw a pedigree tree
-      // and attach it to an #tripald3-pedigree-diagram element.
+      // and attach it to an #tripald3-pedigree element.
       // Notice that the data for the tree is passed in directly.
-      // @todo style the figure legend
-      // @todo where is the key?
+      // @todo style the figure
       tripalD3.drawPedigreeTree({
-        "elementId": "tripald3-pedigree-diagram",
+        "elementId": "tripald3-pedigree",
         "data": treedata,
         "height": 320,
         "title": "<em>Heart Olive</em> Parental Pedigree",
@@ -203,6 +202,6 @@
   };
 </script>
 
-<div id="tripald3-pedigree-diagram" class="tripald3-diagram">
+<div id="tripald3-pedigree" class="tripald3-diagram">
   <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here -->
 </div>
