@@ -23,7 +23,11 @@ tripalD3 = {
      *   of this object depend on the chart being drawn.
      * @param options
      *   A javascript object with any of the following keys:
-     *   - chartType: the type of chart to draw; one of pedigree.
+     *   - chartType: the type of chart to draw; one of pedigree (REQUIRED).
+     *   - keyPosition: control the position of the key on your figure;
+     *       supported options include right (default), left.
+     *       @todo implement top, bottom (note: we don't know the height ahead of time)
+     *   - keyWidth: the key is fixed width; default width is 250 (pixels).
      *   - chartOptions: an object containing options to be passed to the chart.
      *       See chart documentation to determine what options are available.
      *    - title: the title of the pedigree diagram.
@@ -62,6 +66,12 @@ tripalD3 = {
       if (!options.hasOwnProperty('legend')) {
         options.legend = "";
       }
+      if (!options.hasOwnProperty('keyPosition')) {
+        options.keyPosition = "right";
+      }
+      if (!options.hasOwnProperty('keyWidth')) {
+        options.keyWidth = "250";
+      }
       if (!options.hasOwnProperty('margin')) {
         options.margin = {
             'top': 50,
@@ -88,6 +98,17 @@ tripalD3 = {
       if (!options.key.hasOwnProperty('parentId')) {
         options.key.parentId = options.elementId;
       }
+      if (!options.key.hasOwnProperty('width')) {
+        options.key.width = options.keyWidth;
+      }
+      if (!options.key.hasOwnProperty('margin')) {
+        options.key.margin = {
+            'top': 50,
+            'right': 0,
+            'bottom': 50,
+            'left': 0
+        };
+      }
 
       // Chart Option Defaults.
       if (!options.hasOwnProperty('chartOptions')) {
@@ -102,23 +123,25 @@ tripalD3 = {
       var margin = options.chartOptions.margin = options.margin;
       options.chartOptions.width = options.width - margin.right - margin.left;
       options.chartOptions.height = options.height - margin.top - margin.bottom;
+      // Take into account the key positions when determining the chart
+      // drawing area.
+      if (options.keyPosition == "left" || options.keyPosition == "right") {
+        options.chartOptions.width -= options.keyWidth;
+        if (options.keyPosition == "left") {
+          options.margin.left += options.keyWidth;
+        }
+        if (options.keyPosition == "right") {
+          options.key.margin.left += options.chartOptions.width + 10;
+        }
+      }
 
-      // Append our drawing area to the id="tree" element.
+      // Append our drawing area to the element specified.
       var svg = container.append("svg")
           .attr("class", "tripald3-tree tripald3-chart")
           .attr("width", options.width)
           .attr("height", options.height)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      // Add the div to hold the key.
-      var figKey = container.append("div")
-        .attr("id", options.elementId + "-key")
-        .attr("class", "tripald3-key");
-
-      figKey.append("span")
-        .attr("class", "tripald3-title")
-        .html(options.key.title);
 
       // Add the figure legend to the indicated element.
       var figLegend = container.append("div")
@@ -136,14 +159,11 @@ tripalD3 = {
       if (options.chartType === "pedigree") {
         tripalD3.drawPedigreeTree(svg, data, options.chartOptions);
       }
-     },
+    },
 
     /**
      * Pedigree Tree
      *
-     * @todo add options for key placement. This would allow me to use js to
-     *   calculate the width of the chart/key such that they can stay side-by-side.
-     *   Include a min-width for the key or calculate the width needed.
      * @param svg
      *   A D3.js selected SVG element to draw the chart on.
      * @param data
@@ -300,14 +320,14 @@ tripalD3 = {
             'classes' : ['expanded'],
             'groupClasses': ['node'],
             'type': 'circle',
-            'label': 'Germplasm Node (Pedigree shown)',
+            'label': 'Germplasm (Pedigree shown)',
             'fillColor': '#FFF'
           });
           keyData.push({
             'classes': ['collapsed'],
             'groupClasses': ['node'],
             'type': 'circle',
-            'label': 'Germplasm Node (Pedigree hidden)',
+            'label': 'Germplasm (Pedigree hidden)',
             'fillColor': '#B3B3B3'
           });
 
@@ -530,35 +550,47 @@ tripalD3 = {
       options.elementId = options.parentId + '-key';
     }
     if (!options.hasOwnProperty('margin')) {
-      options.margin = {
-          'top': 10,
-          'right': 0,
-          'bottom': 10,
-          'left': 0
-      };
+      console.error("Key margins are required because the chart canvas needs to have been set up appropriately.");
     }
     if (!options.hasOwnProperty('width')) {
-      options.width = '100%';//document.getElementById(options.elementId).offsetWidth;
+      console.error("Key Width is required because the chart canvas needs to have been set up appropriately.");
+      return;
     }
     if (!options.hasOwnProperty('height')) {
       options.height = data.length * 18;
     } else if (options.height == 'auto') {
       options.height = document.getElementById(options.elementId).offsetHeight;
     }
+    var keySpacing = 18;
 
-    if (d3.select("#" + options.elementId + " svg").empty()) {
+    var chartContainer = d3.select("#" + options.parentId + " svg");
+    if (!chartContainer.empty()) {
 
+      // Determine dimenstions of drawing area.
       var width = options.width - options.margin.right - options.margin.left,
       height = options.height - options.margin.top - options.margin.bottom;
 
-      var keySpacing = 18;
+      // Determine transform, taking into account key position.
+      var leftMargin = options.margin.left;
+      var topMargin = options.margin.top;
+      if (options.position === "right") {
+        leftMargin = 0 - options.margin.left;
+        console.log(options.margin.left + ' vs. ' + leftMargin);
+      }
 
       // Create canvas to draw the key on.
-      var svg = d3.select("#" + options.elementId).append('svg')
-        .attr('width', options.width)
-        .attr('height', options.height)
-        .append('g')
-        .attr("transform", "translate(" + options.margin.left + "," + options.margin.top + ")");
+      var svg = chartContainer.append('g')
+        .attr("class", "tripald3-key")
+        .attr("transform", "translate(" + leftMargin + "," + topMargin + ")");
+
+      // Add the title.
+      svg.append("g")
+        .attr("class", "key-title")
+        .append('text')
+          .attr("x", 70)
+          .attr('y', 4)
+          .style({"font-size": "1.1em", "font-weight": "bold", "text-decoration": "underline"})
+          .text(options.title);
 
       // Now for each item in the data array, create a g legend-item
       // and move it to where we want each member of the lengend to go.
@@ -575,7 +607,8 @@ tripalD3 = {
         })
         .attr('transform', function(d, i) {
           var horz = 0;
-          var vert = i * keySpacing;
+          // Note: use i+1 to take into account title.
+          var vert = (i+1) * keySpacing;
           return 'translate(' + horz + ',' + vert + ')';
         });
 
