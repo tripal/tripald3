@@ -190,13 +190,16 @@
       // The following code uses the Tripal D3 module to draw a pedigree tree
       // and attach it to an #tripald3-pedigree element.
       // Notice that the data for the tree is passed in directly.
-      tripalD3.drawPedigreeTree({
-        "elementId": "tripald3-pedigree",
-        "data": treedata,
-        "height": 320,
-        "title": "<em>Heart Olive</em> Parental Pedigree",
-        "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
-      });
+      tripalD3.drawFigure(
+        treedata,
+        {
+          "chartType" : "pedigree",
+          "elementId": "tripald3-pedigree",
+          "height": 320,
+          "title": "<em>Heart Olive</em> Parental Pedigree",
+          "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
+        }
+      );
     }
   };
 </script>

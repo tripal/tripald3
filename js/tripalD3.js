@@ -6,35 +6,40 @@ tripalD3 = {
   'version': '1.0-dev',
 
     /**
-     * Pedigree Tree
+     * Draw Chart.
      *
-     * @todo add options for key placement. This would allow me to use js to
-     *   calculate the width of the chart/key such that they can stay side-by-side.
-     *   Include a min-width for the key or calculate the width needed.
+     * This function is a common set-up function meant to ensure that figures
+     * are consistent, as well as, to facilitate common options. Furthermore,
+     * it should make it easier for developers as they only need to remember the
+     * name of a single function.
+     *
+     * Specifically, this function adds the necessary markup for a figure
+     * containing chart svg, figure legend and key. It also ensures that any
+     * pre-existing chart, legend, key are removed prior to drawing of the chart.
+     * Furthermore, it calls the specific chart drawing functions.
+     *
+     * @param data
+     *   A javascript object with the data required to draw the chart. The specifics
+     *   of this object depend on the chart being drawn.
      * @param options
      *   A javascript object with any of the following keys:
+     *   - chartType: the type of chart to draw; one of pedigree.
+     *   - chartOptions: an object containing options to be passed to the chart.
+     *       See chart documentation to determine what options are available.
      *    - title: the title of the pedigree diagram.
      *    - legend: a longer description of the diagram to be used as the figure
      *        legend following the title.
-     *    - data: (REQUIRED) The data to draw the tree for.
      *    - elementId : The ID of the HTML element the diagram should be attached to.
      *    - margin: an object with 'top', 'right','bottom','left' keys. Values
      *        are in pixels and all four keys must be set.
      *    - width: The width of the diagram.
      *    - height: The height of the diagram.
-     *    - collapseDuration: The duration of the transition effect used to
-     *        collapse the tree.
-     *    - nodeFillCollapsed: The fill color of the node when it's subtree is collapsed.
-     *    - nodeFill: The color of the node when it is fully expanded.
-     *    - backgroundColor: The color of the background of the diagram. This
-     *        is used to add the transparent backing to labels.
-     *    - nodeLinks: a function used to make the node labels links.
      */
-    drawPedigreeTree: function(options) {
+     drawFigure: function(data, options) {
 
       // Select container.
       if (!options.hasOwnProperty('elementId')) {
-        options.elementId = 'tree';
+        options.elementId = 'tripald3-figure';
       }
       var container = d3.select("#" + options.elementId);
 
@@ -44,12 +49,18 @@ tripalD3 = {
         return;
       }
 
-      // Set Defaults.
+      // Check they supplied chartType which is REQUIRED.
+      if (!options.hasOwnProperty('chartType')) {
+        console.error("You must supply a chart type when using tripalD3.drawFigure.");
+        return;
+      }
+
+      // General Defaults.
       if (!options.hasOwnProperty('title')) {
-        options.title = 'Pedigree Diagram';
+        options.title = options.chartType.charAt(0).toUpperCase() + options.chartType.slice(1) + " Chart";
       }
       if (!options.hasOwnProperty('legend')) {
-        options.legend = '';
+        options.legend = "";
       }
       if (!options.hasOwnProperty('margin')) {
         options.margin = {
@@ -66,18 +77,8 @@ tripalD3 = {
       if (!options.hasOwnProperty('height')) {
         options.height = document.getElementById(options.elementId).offsetHeight;
       }
-      if (!options.hasOwnProperty('collapseDuration')) {
-        options.collapseDuration = 750;
-      }
-      if (!options.hasOwnProperty('nodeFillCollapsed')) {
-        options.nodeFillCollapsed = '#B3B3B3';
-      }
-      if (!options.hasOwnProperty('nodeFill')) {
-        options.nodeFill = '#FFF';
-      }
-      if (!options.hasOwnProperty('backgroundColor')) {
-        options.backgroundColor = '#FFF';
-      }
+
+      // Key Defaults.
       if (!options.hasOwnProperty('key')) {
         options.key = {};
       }
@@ -87,21 +88,20 @@ tripalD3 = {
       if (!options.key.hasOwnProperty('parentId')) {
         options.key.parentId = options.elementId;
       }
-      if (!options.hasOwnProperty('nodeLinks')) {
-        options.nodeLinks = function(d) { return null; }
+
+      // Chart Option Defaults.
+      if (!options.hasOwnProperty('chartOptions')) {
+        options.chartOptions = {};
       }
+      if (!options.chartOptions.hasOwnProperty('elementId')) {
+        options.chartOptions.elementId = options.elementId;
+      }
+      options.chartOptions.key = options.key;
 
       // Set up drawing area dimensions.
-      var margin = options.margin,
-      width = options.width - margin.right - margin.left,
-      height = options.height - margin.top - margin.bottom;
-
-      // Used to generate unique ids for the nodes.
-      var i = 0;
-
-      // Initialize the tree.
-      var tree = d3.layout.tree()
-          .size([width, height]);
+      var margin = options.chartOptions.margin = options.margin;
+      options.chartOptions.width = options.width - margin.right - margin.left;
+      options.chartOptions.height = options.height - margin.top - margin.bottom;
 
       // Append our drawing area to the id="tree" element.
       var svg = container.append("svg")
@@ -121,7 +121,6 @@ tripalD3 = {
         .html(options.key.title);
 
       // Add the figure legend to the indicated element.
-      // @todo move this into a helper function to ensure consistency across diagrams.
       var figLegend = container.append("div")
         .attr("id", options.elementId + "-legend")
         .attr("class", "tripald3-legend");
@@ -131,10 +130,60 @@ tripalD3 = {
         .html("Figure: " + options.title + ". ");
       figLegend.append("span")
         .attr("class", "tripald3-desc")
-        .html(options.legend + ".");
+        .html(options.legend);
 
-      // Grab the data.
-      var treeData = options.data;
+      // Finally, draw the appropriate chart.
+      if (options.chartType === "pedigree") {
+        tripalD3.drawPedigreeTree(svg, data, options.chartOptions);
+      }
+     },
+
+    /**
+     * Pedigree Tree
+     *
+     * @todo add options for key placement. This would allow me to use js to
+     *   calculate the width of the chart/key such that they can stay side-by-side.
+     *   Include a min-width for the key or calculate the width needed.
+     * @param svg
+     *   A D3.js selected SVG element to draw the chart on.
+     * @param data
+     *   The data to draw the chart for.
+     * @param options
+     *   A javascript object with any of the following keys:
+     *    - elementId: The element to add the svg chart to.
+     *    - collapseDuration: The duration of the transition effect used to
+     *        collapse the tree.
+     *    - nodeFillCollapsed: The fill color of the node when it's subtree is collapsed.
+     *    - nodeFill: The color of the node when it is fully expanded.
+     *    - backgroundColor: The color of the background of the diagram. This
+     *        is used to add the transparent backing to labels.
+     *    - nodeLinks: a function used to make the node labels links.
+     */
+    drawPedigreeTree: function(svg, treeData, options) {
+
+      // Set Defaults.
+      if (!options.hasOwnProperty('collapseDuration')) {
+        options.collapseDuration = 750;
+      }
+      if (!options.hasOwnProperty('nodeFillCollapsed')) {
+        options.nodeFillCollapsed = '#B3B3B3';
+      }
+      if (!options.hasOwnProperty('nodeFill')) {
+        options.nodeFill = '#FFF';
+      }
+      if (!options.hasOwnProperty('backgroundColor')) {
+        options.backgroundColor = '#FFF';
+      }
+      if (!options.hasOwnProperty('nodeLinks')) {
+        options.nodeLinks = function(d) { return null; }
+      }
+
+      // Used to generate unique ids for the nodes.
+      var i = 0;
+
+      // Initialize the tree.
+      var tree = d3.layout.tree()
+          .size([options.width, options.height]);
 
       // Draw tree.
       root = treeData[0];
@@ -188,7 +237,7 @@ tripalD3 = {
           var keyData = [];
 
 
-          tree = tree.size([width, height]);
+          tree = tree.size([options.width, options.height]);
 
           // Compute the new tree layout
           // and the parent-child links between nodes.
@@ -433,7 +482,7 @@ tripalD3 = {
           // Change the size to match the new tree.
           d3.select("#tree svg").transition()
             .duration(options.collapseDuration)
-            .attr('height', offset + margin.top + margin.bottom);
+            .attr('height', offset + options.margin.top + options.margin.bottom);
 
           // Draw the key.
           tripalD3.drawKey(keyData, options.key);
