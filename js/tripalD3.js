@@ -135,9 +135,11 @@ tripalD3 = {
         }
       }
 
+      console.log(options);
+
       // Append our drawing area to the element specified.
       var svg = container.append("svg")
-          .attr("class", "tripald3-tree tripald3-chart")
+          .attr("class", "tripald3-chart")
           .attr("width", options.width)
           .attr("height", options.height)
           .append("g")
@@ -197,6 +199,9 @@ tripalD3 = {
       if (!options.hasOwnProperty('nodeLinks')) {
         options.nodeLinks = function(d) { return null; }
       }
+      if (!options.hasOwnProperty('drawKey')) {
+        options.drawKey = true;
+      }
 
       // Used to generate unique ids for the nodes.
       var i = 0;
@@ -207,7 +212,7 @@ tripalD3 = {
 
       // Draw tree.
       root = treeData[0];
-      drawTree(root);
+      drawTree(root, options);
 
       // Register resize of tree if config is set.
       if (Drupal.settings.tripalD3.autoResize) {
@@ -219,26 +224,35 @@ tripalD3 = {
        */
       function resizeTree() {
         window.addEventListener('resize', function() {
-          d3.select("#tree svg").remove();
+
+          // @todo: figure legend ends up at the top.
+          // @todo: key is not drawn in the new location.
+          console.error("Known Bug: Resize disabled at this time.");
+          return;
+
+          d3.select("#" + options.elementId + " svg").remove();
 
           width = document.getElementById(options.elementId).offsetWidth;
-          height = document.getElementById(options.elementId).offsetHeight;
+          height = options.height + options.margin.top + options.margin.bottom;
 
           // Initialize the tree.
           tree = d3.layout.tree()
               .size([
-                width - margin.right - margin.left,
-                height - margin.top - margin.bottom
+                width - options.margin.right - options.margin.left,
+                height - options.margin.top - options.margin.bottom
               ]);
 
-          // Append our drawing area to the id="tree" element.
-          svg = d3.select("#tree").append("svg")
+          // Append our drawing area to the specified element.
+          svg = d3.select("#" + options.elementId).append("svg")
             .attr("width", width)
             .attr("height", height)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + options.margin.left + "," + options.margin.top + ")");
 
-          drawTree(root);
+          // No need to clone options in this case because we want the original
+          // behaviour to be used. This assumes that the drawTree function itself
+          // does not change options ;-).
+          drawTree(root, options);
         });
       }
 
@@ -249,13 +263,18 @@ tripalD3 = {
        * @param source
        *   The root of the tree which includes the definition
        *   of the entire tree to be drawn.
+       * @param drawingOptions
+       *   Options specific to this particular drawing of the tree. These options
+       *   ensure that the original options are not changed. Supported options
+       *   include all of those supported by the drawPedgreeTree function.
+       *   NOTE: DO NOT CHANGE the options within this function. They are
+       *   sometimes passed by reference if changes are not needed.
        */
-      function drawTree(source) {
+      function drawTree(source, drawingOptions) {
 
           // Keep track of the types of edges and nodes to display them
           // later in a key.
           var keyData = [];
-
 
           tree = tree.size([options.width, options.height]);
 
@@ -505,8 +524,9 @@ tripalD3 = {
             .attr('height', offset + options.margin.top + options.margin.bottom);
 
           // Draw the key.
-          tripalD3.drawKey(keyData, options.key);
-
+          if (drawingOptions.drawKey === true) {
+            tripalD3.drawKey(keyData, options.key);
+          }
       }
 
       /**
@@ -529,7 +549,12 @@ tripalD3 = {
               d.children = d._children;
               d._children = null;
           }
-          drawTree(d);
+
+          // Create new options and set drawKey to false. The key does not need
+          // to be drawn because nothing has changed in that respect.
+          newOptions = Object.assign({}, options);
+          newOptions.drawKey = false;
+          drawTree(d, newOptions);
       }
   },
 

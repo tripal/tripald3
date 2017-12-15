@@ -19,12 +19,62 @@
   and, as such, none of these diagrams are available to your users without
   you first developing pages or fields that connect data to them.</p>
 
-<h3>Bottom-rooted relationship/hierarchy Diagram</h3>
-<p>This diagram was initially developed to display parental pedigree information
-  but can be used for any application where you would like to show relationship information.</p>
+<!---------------------------------------------------------------------------->
+<h3>Simple Pie Chart</h3>
+<p>This following is a simple pie chart ideal for showing proportions or ratios.</p>
 
 <script type="text/javascript">
-  Drupal.behaviors.stockPedigree = {
+  Drupal.behaviors.tripalD3demoSimplePie = {
+    attach: function (context, settings) {
+
+      // @todo move data into a separate file for better readability.
+      var simplePieData = [
+        {
+          "label": "Accession",
+          "count": "2,390",
+        },
+        {
+          "label": "Cultivated Variety",
+          "count": "78",
+        },
+        {
+          "label": "Recombinant Inbred Line",
+          "count": "115",
+        },
+        {
+          "label": "Breeders Cross",
+          "count": "37,567",
+        }
+      ];
+
+      // The following code uses the Tripal D3 module to draw a pedigree tree
+      // and attach it to an #tripald3-pedigree element.
+      // Notice that the data for the tree is passed in directly.
+      tripalD3.drawFigure(
+        simplePieData,
+        {
+          "chartType" : "simplepie",
+          "elementId": "tripald3-simplepie",
+          "height": 350,
+          "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
+          "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-simplepie" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
+</div>
+
+<!---------------------------------------------------------------------------->
+<h3>Pedigree Diagram</h3>
+<p>This diagram was developed to mimic plant breeder pedigrees with additional
+  features such as collapsible nodes and colour-coded relationships.</p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoPedigree = {
     attach: function (context, settings) {
 
       // @todo move data into a separate file for better readability.
