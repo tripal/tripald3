@@ -1,24 +1,5 @@
 
 /**
- * Pedigree
- */
-.node circle {
-    stroke: #333333;
-    stroke-width: 2px;
-}
-.node text {
-    font: 12px sans-serif;
-    fill: currentColor;
-}
-.link {
-    fill: none;
-    stroke-width: 4px;
-}
-svg.tripald3-tree .tree-node {
-    cursor: pointer;
-}
-
-/**
  * Legend
  */
 .tripald3-legend {
@@ -27,4 +8,29 @@ svg.tripald3-tree .tree-node {
 }
 .tripald3-title {
   font-weight: bold;
+}
+
+/**
+ * Key
+ */
+.tripald3-key .key-item {
+  font-size: 0.9em;
+}
+
+/**
+ * Pedigree
+ */
+.node circle {
+    stroke: #333333;
+    stroke-width: 2px;
+}
+.node text {
+    fill: currentColor;
+}
+.link {
+    fill: none;
+    stroke-width: 4px;
+}
+svg.tripald3-tree .tree-node {
+    cursor: pointer;
 }
