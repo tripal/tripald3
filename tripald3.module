@@ -3,6 +3,7 @@
   /** @pedigree Comment out pedigree's until re-vamped.
    * require_once('includes/stock_pedigree.inc');
    */
+require_once('includes/tripalD3.api.inc');
 require_once('includes/color_scheme.inc');
 
 /**
