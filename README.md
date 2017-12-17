@@ -24,10 +24,17 @@ All Diagrams Tested on:
 All of the following diagrams are presented to the user as a "Figure" with the
 title and description below the diagram in the style of scientific journals.
 Furthermore, all diagrams have a consistent, configurable colour scheme and key.
-- Pie Chart (Simple and Donut Types available)
-- Bar Chart (under development)
-- Column Chart (under development)
+- Simple Pie Chart
+- Donut Pie Chart
 - Pedigree Diagram
 
 ## Documentation
-Documentation is currently available in the Javascript files for each diagram. Furthermore, there are examples on how to use each chart in `templates/tripald3_demo_page.tpl.php`. Before release I will develop documentation in the Wiki as well.
+Documentation is currently available in the Javascript files for each diagram. 
+Furthermore, there are examples on how to use each chart in `templates/tripald3_demo_page.tpl.php`. 
+Before release I will develop documentation in the Wiki as well.
+
+## Future Work
+- Add additional diagrams including:
+   - Multi-ring Pie Chart
+   - Bar Chart
+   - Column Chart
