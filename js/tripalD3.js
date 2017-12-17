@@ -5,558 +5,564 @@
 tripalD3 = {
   'version': '1.0-dev',
 
+  /**
+   * Draw Chart.
+   *
+   * This function is a common set-up function meant to ensure that figures
+   * are consistent, as well as, to facilitate common options. Furthermore,
+   * it should make it easier for developers as they only need to remember the
+   * name of a single function.
+   *
+   * Specifically, this function adds the necessary markup for a figure
+   * containing chart svg, figure legend and key. It also ensures that any
+   * pre-existing chart, legend, key are removed prior to drawing of the chart.
+   * Furthermore, it calls the specific chart drawing functions.
+   *
+   * @param data
+   *   A javascript object with the data required to draw the chart. The specifics
+   *   of this object depend on the chart being drawn.
+   * @param options
+   *   A javascript object with any of the following keys:
+   *   - chartType: the type of chart to draw; one of pedigree (REQUIRED).
+   *   - keyPosition: control the position of the key on your figure;
+   *       supported options include right (default), left.
+   *       @todo implement top, bottom (note: we don't know the height ahead of time)
+   *   - keyWidth: the key is fixed width; default width is 250 (pixels).
+   *   - chartOptions: an object containing options to be passed to the chart.
+   *       See chart documentation to determine what options are available.
+   *    - title: the title of the pedigree diagram.
+   *    - legend: a longer description of the diagram to be used as the figure
+   *        legend following the title.
+   *    - elementId : The ID of the HTML element the diagram should be attached to.
+   *    - margin: an object with 'top', 'right','bottom','left' keys. Values
+   *        are in pixels and all four keys must be set.
+   *    - width: The width of the diagram.
+   *    - height: The height of the diagram.
+   */
+   drawFigure: function(data, options) {
+
+    // Select container.
+    if (!options.hasOwnProperty('elementId')) {
+      options.elementId = 'tripald3-figure';
+    }
+    var container = d3.select("#" + options.elementId);
+
+    // Check our container exists and warn the admin if not.
+    if (container.empty()) {
+      console.error("Element for Tripal D3 Chart not found: #" + options.elementId);
+      return;
+    }
+
+    // Check they supplied chartType which is REQUIRED.
+    if (!options.hasOwnProperty('chartType')) {
+      console.error("You must supply a chart type when using tripalD3.drawFigure.");
+      return;
+    }
+
+    // General Defaults.
+    if (!options.hasOwnProperty('title')) {
+      options.title = options.chartType.charAt(0).toUpperCase() + options.chartType.slice(1) + " Chart";
+    }
+    if (!options.hasOwnProperty('legend')) {
+      options.legend = "";
+    }
+    if (!options.hasOwnProperty('keyPosition')) {
+      options.keyPosition = "right";
+    }
+    if (!options.hasOwnProperty('keyWidth')) {
+      options.keyWidth = 250;
+    }
+    if (!options.hasOwnProperty('margin')) {
+      options.margin = {
+          'top': 20,
+          'right': 20,
+          'bottom': 0,
+          'left': 20
+      };
+    }
+    if (!options.hasOwnProperty('width')) {
+      options.width = document.getElementById(options.elementId).offsetWidth;
+    }
+    // @todo better default for height.
+    if (!options.hasOwnProperty('height')) {
+      options.height = document.getElementById(options.elementId).offsetHeight;
+    }
+
+    // Key Defaults.
+    if (!options.hasOwnProperty('key')) {
+      options.key = {};
+    }
+    if (!options.key.hasOwnProperty('title')) {
+      options.key.title = 'Legend';
+    }
+    if (!options.key.hasOwnProperty('parentId')) {
+      options.key.parentId = options.elementId;
+    }
+    if (!options.key.hasOwnProperty('width')) {
+      options.key.width = options.keyWidth;
+    }
+    if (!options.key.hasOwnProperty('margin')) {
+      options.key.margin = Object.assign({}, options.margin);
+      options.key.margin.top += 10;
+    }
+
+    // Chart Option Defaults.
+    if (!options.hasOwnProperty('chartOptions')) {
+      options.chartOptions = {};
+    }
+    if (!options.chartOptions.hasOwnProperty('elementId')) {
+      options.chartOptions.elementId = options.elementId;
+    }
+    options.chartOptions.key = options.key;
+
+    // Set up drawing area dimensions.
+    var margin = options.chartOptions.margin = options.margin;
+    options.chartOptions.width = options.width - margin.right - margin.left;
+    options.chartOptions.height = options.height - margin.top - margin.bottom;
+    // Take into account the key positions when determining the chart
+    // drawing area.
+    if (options.keyPosition == "left" || options.keyPosition == "right") {
+      options.chartOptions.width -= options.keyWidth;
+      if (options.keyPosition == "left") {
+        options.margin.left += options.keyWidth;
+      }
+      if (options.keyPosition == "right") {
+        options.key.margin.left += options.chartOptions.width + 10;
+      }
+    }
+
+    console.log(options);
+
+    // Make our container the size of the chart.
+    container.style({"width": options.width + "px"});
+
+    // Append our drawing area to the element specified.
+    var svg = container.append("svg")
+        .attr("class", "tripald3-chart")
+        .attr("width", options.width)
+        .attr("height", options.height)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add the figure legend to the indicated element.
+    var figLegend = container.append("div")
+      .attr("id", options.elementId + "-legend")
+      .attr("class", "tripald3-legend");
+
+    figLegend.append("span")
+      .attr("class", "tripald3-title")
+      .html("Figure: " + options.title + ". ");
+    figLegend.append("span")
+      .attr("class", "tripald3-desc")
+      .html(options.legend);
+
+    // Finally, draw the appropriate chart.
+    if (options.chartType === "pedigree") {
+      tripalD3.drawPedigreeTree(svg, data, options.chartOptions);
+    }
+    else if (options.chartType === 'simplepie') {
+      tripalD3.pie.drawSimplePie(svg, data, options.chartOptions);
+    }
+    else if (options.chartType === 'simpledonut') {
+      tripalD3.pie.drawSimpleDonut(svg, data, options.chartOptions);
+    }
+  },
+
+  /**
+   * Pedigree Tree
+   *
+   * @param svg
+   *   A D3.js selected SVG element to draw the chart on.
+   * @param data
+   *   The data to draw the chart for.
+   * @param options
+   *   A javascript object with any of the following keys:
+   *    - elementId: The element to add the svg chart to.
+   *    - collapseDuration: The duration of the transition effect used to
+   *        collapse the tree.
+   *    - nodeFillCollapsed: The fill color of the node when it's subtree is collapsed.
+   *    - nodeFill: The color of the node when it is fully expanded.
+   *    - backgroundColor: The color of the background of the diagram. This
+   *        is used to add the transparent backing to labels.
+   *    - nodeLinks: a function used to make the node labels links.
+   *    - drawKey: whether or not to draw the key; the default is true.
+   */
+  drawPedigreeTree: function(svg, treeData, options) {
+
+    // Set Defaults.
+    if (!options.hasOwnProperty('collapseDuration')) {
+      options.collapseDuration = 750;
+    }
+    if (!options.hasOwnProperty('nodeFillCollapsed')) {
+      options.nodeFillCollapsed = '#B3B3B3';
+    }
+    if (!options.hasOwnProperty('nodeFill')) {
+      options.nodeFill = '#FFF';
+    }
+    if (!options.hasOwnProperty('backgroundColor')) {
+      options.backgroundColor = '#FFF';
+    }
+    if (!options.hasOwnProperty('nodeLinks')) {
+      options.nodeLinks = function(d) { return null; }
+    }
+    if (!options.hasOwnProperty('drawKey')) {
+      options.drawKey = true;
+    }
+
+    // Used to generate unique ids for the nodes.
+    var i = 0;
+
+    // Initialize the tree.
+    var tree = d3.layout.tree()
+        .size([options.width, options.height]);
+
+    // Draw tree.
+    root = treeData[0];
+    drawTree(root, options);
+
+    // Register resize of tree if config is set.
+    if (Drupal.settings.tripalD3.autoResize) {
+      resizeTree();
+    }
+
     /**
-     * Draw Chart.
-     *
-     * This function is a common set-up function meant to ensure that figures
-     * are consistent, as well as, to facilitate common options. Furthermore,
-     * it should make it easier for developers as they only need to remember the
-     * name of a single function.
-     *
-     * Specifically, this function adds the necessary markup for a figure
-     * containing chart svg, figure legend and key. It also ensures that any
-     * pre-existing chart, legend, key are removed prior to drawing of the chart.
-     * Furthermore, it calls the specific chart drawing functions.
-     *
-     * @param data
-     *   A javascript object with the data required to draw the chart. The specifics
-     *   of this object depend on the chart being drawn.
-     * @param options
-     *   A javascript object with any of the following keys:
-     *   - chartType: the type of chart to draw; one of pedigree (REQUIRED).
-     *   - keyPosition: control the position of the key on your figure;
-     *       supported options include right (default), left.
-     *       @todo implement top, bottom (note: we don't know the height ahead of time)
-     *   - keyWidth: the key is fixed width; default width is 250 (pixels).
-     *   - chartOptions: an object containing options to be passed to the chart.
-     *       See chart documentation to determine what options are available.
-     *    - title: the title of the pedigree diagram.
-     *    - legend: a longer description of the diagram to be used as the figure
-     *        legend following the title.
-     *    - elementId : The ID of the HTML element the diagram should be attached to.
-     *    - margin: an object with 'top', 'right','bottom','left' keys. Values
-     *        are in pixels and all four keys must be set.
-     *    - width: The width of the diagram.
-     *    - height: The height of the diagram.
+     * Resize the tree when the window size changes
      */
-     drawFigure: function(data, options) {
+    function resizeTree() {
+      window.addEventListener('resize', function() {
 
-      // Select container.
-      if (!options.hasOwnProperty('elementId')) {
-        options.elementId = 'tripald3-figure';
-      }
-      var container = d3.select("#" + options.elementId);
-
-      // Check our container exists and warn the admin if not.
-      if (container.empty()) {
-        console.error("Element for Tripal D3 Chart not found: #" + options.elementId);
+        // @todo: figure legend ends up at the top.
+        // @todo: key is not drawn in the new location.
+        console.error("Known Bug: Resize disabled at this time.");
         return;
-      }
 
-      // Check they supplied chartType which is REQUIRED.
-      if (!options.hasOwnProperty('chartType')) {
-        console.error("You must supply a chart type when using tripalD3.drawFigure.");
-        return;
-      }
+        d3.select("#" + options.elementId + " svg").remove();
 
-      // General Defaults.
-      if (!options.hasOwnProperty('title')) {
-        options.title = options.chartType.charAt(0).toUpperCase() + options.chartType.slice(1) + " Chart";
-      }
-      if (!options.hasOwnProperty('legend')) {
-        options.legend = "";
-      }
-      if (!options.hasOwnProperty('keyPosition')) {
-        options.keyPosition = "right";
-      }
-      if (!options.hasOwnProperty('keyWidth')) {
-        options.keyWidth = "250";
-      }
-      if (!options.hasOwnProperty('margin')) {
-        options.margin = {
-            'top': 50,
-            'right': 0,
-            'bottom': 50,
-            'left': 0
-        };
-      }
-      if (!options.hasOwnProperty('width')) {
-        options.width = document.getElementById(options.elementId).offsetWidth;
-      }
-      // @todo better default for height.
-      if (!options.hasOwnProperty('height')) {
-        options.height = document.getElementById(options.elementId).offsetHeight;
-      }
+        width = document.getElementById(options.elementId).offsetWidth;
+        height = options.height + options.margin.top + options.margin.bottom;
 
-      // Key Defaults.
-      if (!options.hasOwnProperty('key')) {
-        options.key = {};
-      }
-      if (!options.key.hasOwnProperty('title')) {
-        options.key.title = 'Legend';
-      }
-      if (!options.key.hasOwnProperty('parentId')) {
-        options.key.parentId = options.elementId;
-      }
-      if (!options.key.hasOwnProperty('width')) {
-        options.key.width = options.keyWidth;
-      }
-      if (!options.key.hasOwnProperty('margin')) {
-        options.key.margin = {
-            'top': 50,
-            'right': 0,
-            'bottom': 50,
-            'left': 0
-        };
-      }
+        // Initialize the tree.
+        tree = d3.layout.tree()
+            .size([
+              width - options.margin.right - options.margin.left,
+              height - options.margin.top - options.margin.bottom
+            ]);
 
-      // Chart Option Defaults.
-      if (!options.hasOwnProperty('chartOptions')) {
-        options.chartOptions = {};
-      }
-      if (!options.chartOptions.hasOwnProperty('elementId')) {
-        options.chartOptions.elementId = options.elementId;
-      }
-      options.chartOptions.key = options.key;
-
-      // Set up drawing area dimensions.
-      var margin = options.chartOptions.margin = options.margin;
-      options.chartOptions.width = options.width - margin.right - margin.left;
-      options.chartOptions.height = options.height - margin.top - margin.bottom;
-      // Take into account the key positions when determining the chart
-      // drawing area.
-      if (options.keyPosition == "left" || options.keyPosition == "right") {
-        options.chartOptions.width -= options.keyWidth;
-        if (options.keyPosition == "left") {
-          options.margin.left += options.keyWidth;
-        }
-        if (options.keyPosition == "right") {
-          options.key.margin.left += options.chartOptions.width + 10;
-        }
-      }
-
-      console.log(options);
-
-      // Append our drawing area to the element specified.
-      var svg = container.append("svg")
-          .attr("class", "tripald3-chart")
-          .attr("width", options.width)
-          .attr("height", options.height)
+        // Append our drawing area to the specified element.
+        svg = d3.select("#" + options.elementId).append("svg")
+          .attr("width", width)
+          .attr("height", height)
           .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          .attr("transform", "translate(" + options.margin.left + "," + options.margin.top + ")");
 
-      // Add the figure legend to the indicated element.
-      var figLegend = container.append("div")
-        .attr("id", options.elementId + "-legend")
-        .attr("class", "tripald3-legend");
-
-      figLegend.append("span")
-        .attr("class", "tripald3-title")
-        .html("Figure: " + options.title + ". ");
-      figLegend.append("span")
-        .attr("class", "tripald3-desc")
-        .html(options.legend);
-
-      // Finally, draw the appropriate chart.
-      if (options.chartType === "pedigree") {
-        tripalD3.drawPedigreeTree(svg, data, options.chartOptions);
-      }
-    },
+        // No need to clone options in this case because we want the original
+        // behaviour to be used. This assumes that the drawTree function itself
+        // does not change options ;-).
+        drawTree(root, options);
+      });
+    }
 
     /**
-     * Pedigree Tree
+     * Function used to draw the tree. We use a function to allow
+     * us to reuse code when re-drawing after click events.
      *
-     * @param svg
-     *   A D3.js selected SVG element to draw the chart on.
-     * @param data
-     *   The data to draw the chart for.
-     * @param options
-     *   A javascript object with any of the following keys:
-     *    - elementId: The element to add the svg chart to.
-     *    - collapseDuration: The duration of the transition effect used to
-     *        collapse the tree.
-     *    - nodeFillCollapsed: The fill color of the node when it's subtree is collapsed.
-     *    - nodeFill: The color of the node when it is fully expanded.
-     *    - backgroundColor: The color of the background of the diagram. This
-     *        is used to add the transparent backing to labels.
-     *    - nodeLinks: a function used to make the node labels links.
+     * @param source
+     *   The root of the tree which includes the definition
+     *   of the entire tree to be drawn.
+     * @param drawingOptions
+     *   Options specific to this particular drawing of the tree. These options
+     *   ensure that the original options are not changed. Supported options
+     *   include all of those supported by the drawPedgreeTree function.
+     *   NOTE: DO NOT CHANGE the options within this function. They are
+     *   sometimes passed by reference if changes are not needed.
      */
-    drawPedigreeTree: function(svg, treeData, options) {
+    function drawTree(source, drawingOptions) {
 
-      // Set Defaults.
-      if (!options.hasOwnProperty('collapseDuration')) {
-        options.collapseDuration = 750;
-      }
-      if (!options.hasOwnProperty('nodeFillCollapsed')) {
-        options.nodeFillCollapsed = '#B3B3B3';
-      }
-      if (!options.hasOwnProperty('nodeFill')) {
-        options.nodeFill = '#FFF';
-      }
-      if (!options.hasOwnProperty('backgroundColor')) {
-        options.backgroundColor = '#FFF';
-      }
-      if (!options.hasOwnProperty('nodeLinks')) {
-        options.nodeLinks = function(d) { return null; }
-      }
-      if (!options.hasOwnProperty('drawKey')) {
-        options.drawKey = true;
-      }
+        // Keep track of the types of edges and nodes to display them
+        // later in a key.
+        var keyData = [];
 
-      // Used to generate unique ids for the nodes.
-      var i = 0;
+        tree = tree.size([options.width, options.height]);
 
-      // Initialize the tree.
-      var tree = d3.layout.tree()
-          .size([options.width, options.height]);
+        // Compute the new tree layout
+        // and the parent-child links between nodes.
+        // NOTE: This computes x,y on an arbitray coordinate system.
+        var nodes = tree.nodes(root).reverse(),
+            links = tree.links(nodes);
 
-      // Draw tree.
-      root = treeData[0];
-      drawTree(root, options);
-
-      // Register resize of tree if config is set.
-      if (Drupal.settings.tripalD3.autoResize) {
-        resizeTree();
-      }
-
-      /**
-       * Resize the tree when the window size changes
-       */
-      function resizeTree() {
-        window.addEventListener('resize', function() {
-
-          // @todo: figure legend ends up at the top.
-          // @todo: key is not drawn in the new location.
-          console.error("Known Bug: Resize disabled at this time.");
-          return;
-
-          d3.select("#" + options.elementId + " svg").remove();
-
-          width = document.getElementById(options.elementId).offsetWidth;
-          height = options.height + options.margin.top + options.margin.bottom;
-
-          // Initialize the tree.
-          tree = d3.layout.tree()
-              .size([
-                width - options.margin.right - options.margin.left,
-                height - options.margin.top - options.margin.bottom
-              ]);
-
-          // Append our drawing area to the specified element.
-          svg = d3.select("#" + options.elementId).append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .append("g")
-            .attr("transform", "translate(" + options.margin.left + "," + options.margin.top + ")");
-
-          // No need to clone options in this case because we want the original
-          // behaviour to be used. This assumes that the drawTree function itself
-          // does not change options ;-).
-          drawTree(root, options);
-        });
-      }
-
-      /**
-       * Function used to draw the tree. We use a function to allow
-       * us to reuse code when re-drawing after click events.
-       *
-       * @param source
-       *   The root of the tree which includes the definition
-       *   of the entire tree to be drawn.
-       * @param drawingOptions
-       *   Options specific to this particular drawing of the tree. These options
-       *   ensure that the original options are not changed. Supported options
-       *   include all of those supported by the drawPedgreeTree function.
-       *   NOTE: DO NOT CHANGE the options within this function. They are
-       *   sometimes passed by reference if changes are not needed.
-       */
-      function drawTree(source, drawingOptions) {
-
-          // Keep track of the types of edges and nodes to display them
-          // later in a key.
-          var keyData = [];
-
-          tree = tree.size([options.width, options.height]);
-
-          // Compute the new tree layout
-          // and the parent-child links between nodes.
-          // NOTE: This computes x,y on an arbitray coordinate system.
-          var nodes = tree.nodes(root).reverse(),
-              links = tree.links(nodes);
-
-          // Normalize for fixed-depth
-          // and determin the max depth while you're at it
-          // for use in flipping the tree to be bottom rooted.
-          var maxDepth = 0;
-          nodes.forEach(function (d) {
-              d.y = d.depth * 75;
-              if (d.depth > maxDepth) {
-                  maxDepth = d.depth;
-              }
-          });
-          var offset = maxDepth * 75;
-
-          // Flip the tree to be bottom rooted. (Default top rooted)
-          // This is done by multiplying the y coord by -1 to flip
-          // the tree on the cartesian plane. Then to pull it back
-          // onto the canvas we apply the offset calculated above.
-          nodes.forEach(function (d) {
-              d.y = -d.y + offset;
-          });
-
-          // Select all the tree nodes into an array
-          // and add a calculated id.
-          var node = svg.selectAll("g.node")
-              .data(nodes, function (d) {
-              return d.id || (d.id = ++i);
-          });
-
-          // Create the node elements
-          // wrapping them in <g class="node"></g>
-          // and moving them into the correct positions using the
-          // canvas transform() function.
-          var nodeEnter = node.enter().append("g")
-              .attr("class", "node tree-node")
-              .attr("transform", function (d) {
-                if (source.x0 || source.y0) {
-                  return "translate(" + source.x0 + "," + source.y0 + ")";
-                } else {
-                  return "translate(" + source.x + "," + source.y + ")";
-                }
-              })
-              // Specify that on clicking of the node,
-              // call the "click" function.
-              .on("dblclick", collapse);
-
-
-          // Draw a circle to denote the node.
-          nodeEnter.append("circle")
-          .attr("r", 6)
-          .style("fill", function(d) { return d._children ? options.nodeFillCollapsed : options.nodeFill; });
-
-          // Add nodes to the key.
-          keyData.push({
-            'classes' : ['expanded'],
-            'groupClasses': ['node'],
-            'type': 'circle',
-            'label': 'Germplasm (Pedigree shown)',
-            'fillColor': '#FFF'
-          });
-          keyData.push({
-            'classes': ['collapsed'],
-            'groupClasses': ['node'],
-            'type': 'circle',
-            'label': 'Germplasm (Pedigree hidden)',
-            'fillColor': '#B3B3B3'
-          });
-
-          // Draw a rectangle the same colour as the background
-          // to ensure the label added next will be readable.
-          nodeEnter.append("rect")
-          .attr("width", 30)
-          .attr("height", 12)
-          .attr("x", -15)
-          .attr("y", function(d) {
-                  return d.children || d._children ? 8 : -20; })
-          .style("fill", options.backgroundColor)
-          .style("opacity",0.9);
-
-          // Add labels to the node.
-          // NOTE: this has to be done using each so that we can determine
-          //   which ones have urls associated with them and thus are "linkable"
-          //   and which do not, since we have to treat them differently.
-          nodeEnter.each(function(d,i) {
-            d.current.label = {
-              'url': options.nodeLinks(d),
-              'text': d.current.name
-            };
-
-            // If the current node is linkable then add a link around the label.
-            if (d.current.label.url) {
-
-              d3.select(this)
-                .classed('linkable', true)
-                .append('a')
-                  .attr('xlink:href', function(d) { return d.current.label.url; })
-                  .attr('target','_blank')
-                .append("text")
-                  .attr("y", function(d) {
-                      return d.children || d._children ? 14 : -14; })
-                  .attr("dy", ".35em")
-                  .attr("text-anchor", "middle")
-                  .text(function (d) { return d.current.label.text; })
-                  .style("fill-opacity", 1);
-            // Otherwise just add the text.
-            } else {
-
-              d3.select(this)
-                .classed('text-only', true)
-                .append("text")
-                  .attr("y", function(d) {
-                      return d.children || d._children ? 14 : -14; })
-                  .attr("dy", ".35em")
-                  .attr("text-anchor", "middle")
-                  .text(function (d) { return d.current.label.text; })
-                  .style("fill-opacity", 1);
+        // Normalize for fixed-depth
+        // and determin the max depth while you're at it
+        // for use in flipping the tree to be bottom rooted.
+        var maxDepth = 0;
+        nodes.forEach(function (d) {
+            d.y = d.depth * 75;
+            if (d.depth > maxDepth) {
+                maxDepth = d.depth;
             }
-          });
+        });
+        var offset = maxDepth * 75;
 
-          // Transition nodes to their new position.
-          var nodeUpdate = node.transition()
-              .duration(options.collapseDuration)
-              .attr("transform", function(d) {
-                  return "translate(" + d.x + "," + d.y + ")"; });
+        // Flip the tree to be bottom rooted. (Default top rooted)
+        // This is done by multiplying the y coord by -1 to flip
+        // the tree on the cartesian plane. Then to pull it back
+        // onto the canvas we apply the offset calculated above.
+        nodes.forEach(function (d) {
+            d.y = -d.y + offset;
+        });
 
-          // Update the circle color to indicate the node is collapsed.
-          nodeUpdate.select("circle")
-              .style("fill", function(d) {
-                  return d._children ? options.nodeFillCollapsed : options.nodeFill; });
+        // Select all the tree nodes into an array
+        // and add a calculated id.
+        var node = svg.selectAll("g.node")
+            .data(nodes, function (d) {
+            return d.id || (d.id = ++i);
+        });
 
-          // Transition exiting nodes to the parent's new position
-          // and then remove them.
-          var nodeExit = node.exit().transition()
-              .duration(options.collapseDuration)
-              .attr("transform", function(d) {
-                  return "translate(" + source.x + "," + source.y + ")";
-                })
-              .remove();
-
-          // Shrink the size of the exiting circle.
-          nodeExit.select("circle")
-              .attr("r", 1e-6);
-
-          // Fade the exiting text.
-          nodeExit.select("text")
-              .style("fill-opacity", 1e-6);
-
-          // Initialize the connecting lines function.
-          // d3.svg.diagonal() generates a cubic Bézier connecting the
-          // source (parent) and target (child) points.
-          // .projection specifies the ??location?? of the links.
-          var diagonal = d3.svg.diagonal()
-              .projection(function (d) {
-                  return [d.x, d.y];
-              });
-
-          // Select all the connecting lines into an array
-          // of child ids for each child => parent link.
-          var link = svg.selectAll("path.tree-link")
-          .data(links, function (d) {
-                  return d.target.id;
-              });
-
-          // Keep track of unique set of relationships for the key.
-          var relTypes = {};
-
-          // Create the connecting path elements
-          // wrapping them in <g class="node"></g>
-          // and drawing them using the "diagonal" path function
-          // (function defined previously)
-          link.enter().insert("path", "g")
-              .attr("class", "link tree-link")
-              .attr("class", function (d) {
-                  var type = d.target.relationship.type.replace(/\s+/g, '-').toLowerCase();
-                  type = type.replace(/_/g, '-').toLowerCase();
-                  relTypes[type] = type;
-                  return "link tree-link " + type;
-              })
-              .attr("d", function(d) {
-                if (source.x0 || source.y0) {
-                  var o = {x: source.x0, y: source.y0};
-                } else {
-                  var o = {x: source.x, y: source.y};
-                }
-                return diagonal({source: o, target: o});
-              });
-
-          var typeNum = 0;
-          var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
-          var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
-          for (var type in relTypes) {
-
-            // Add unique edge types to the key.
-            keyData.push({
-              'classes': ['link', type],
-              'type': 'path',
-              'label': type.replace(/-/g, ' '),
-              'stroke': colors[typeNum]
-            });
-
-            // Color the links based on the type.
-            // Color scheme can be set in the Drupal config for this module.
-            svg.selectAll('path.tree-link.' + type)
-              .attr('stroke', function (d) { return colors[typeNum]; });
-
-              typeNum = typeNum + 1;
-          }
-
-          // Transition links to their new position.
-          link.transition()
-            .duration(options.collapseDuration)
-            .attr("d", diagonal);
-
-          // Transition exiting nodes to the parent's new position.
-          link.exit().transition()
-              .duration(options.collapseDuration)
-            .attr("d", function(d) {
-              var o = {x: source.x, y: source.y};
-              return diagonal({source: o, target: o});
+        // Create the node elements
+        // wrapping them in <g class="node"></g>
+        // and moving them into the correct positions using the
+        // canvas transform() function.
+        var nodeEnter = node.enter().append("g")
+            .attr("class", "node tree-node")
+            .attr("transform", function (d) {
+              if (source.x0 || source.y0) {
+                return "translate(" + source.x0 + "," + source.y0 + ")";
+              } else {
+                return "translate(" + source.x + "," + source.y + ")";
+              }
             })
+            // Specify that on clicking of the node,
+            // call the "click" function.
+            .on("dblclick", collapse);
+
+
+        // Draw a circle to denote the node.
+        nodeEnter.append("circle")
+        .attr("r", 6)
+        .style("fill", function(d) { return d._children ? options.nodeFillCollapsed : options.nodeFill; });
+
+        // Add nodes to the key.
+        keyData.push({
+          'classes' : ['expanded'],
+          'groupClasses': ['node'],
+          'type': 'circle',
+          'label': 'Germplasm (Pedigree shown)',
+          'fillColor': '#FFF'
+        });
+        keyData.push({
+          'classes': ['collapsed'],
+          'groupClasses': ['node'],
+          'type': 'circle',
+          'label': 'Germplasm (Pedigree hidden)',
+          'fillColor': '#B3B3B3'
+        });
+
+        // Draw a rectangle the same colour as the background
+        // to ensure the label added next will be readable.
+        nodeEnter.append("rect")
+        .attr("width", 30)
+        .attr("height", 12)
+        .attr("x", -15)
+        .attr("y", function(d) {
+                return d.children || d._children ? 8 : -20; })
+        .style("fill", options.backgroundColor)
+        .style("opacity",0.9);
+
+        // Add labels to the node.
+        // NOTE: this has to be done using each so that we can determine
+        //   which ones have urls associated with them and thus are "linkable"
+        //   and which do not, since we have to treat them differently.
+        nodeEnter.each(function(d,i) {
+          d.current.label = {
+            'url': options.nodeLinks(d),
+            'text': d.current.name
+          };
+
+          // If the current node is linkable then add a link around the label.
+          if (d.current.label.url) {
+
+            d3.select(this)
+              .classed('linkable', true)
+              .append('a')
+                .attr('xlink:href', function(d) { return d.current.label.url; })
+                .attr('target','_blank')
+              .append("text")
+                .attr("y", function(d) {
+                    return d.children || d._children ? 14 : -14; })
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .text(function (d) { return d.current.label.text; })
+                .style("fill-opacity", 1);
+          // Otherwise just add the text.
+          } else {
+
+            d3.select(this)
+              .classed('text-only', true)
+              .append("text")
+                .attr("y", function(d) {
+                    return d.children || d._children ? 14 : -14; })
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .text(function (d) { return d.current.label.text; })
+                .style("fill-opacity", 1);
+          }
+        });
+
+        // Transition nodes to their new position.
+        var nodeUpdate = node.transition()
+            .duration(options.collapseDuration)
+            .attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y + ")"; });
+
+        // Update the circle color to indicate the node is collapsed.
+        nodeUpdate.select("circle")
+            .style("fill", function(d) {
+                return d._children ? options.nodeFillCollapsed : options.nodeFill; });
+
+        // Transition exiting nodes to the parent's new position
+        // and then remove them.
+        var nodeExit = node.exit().transition()
+            .duration(options.collapseDuration)
+            .attr("transform", function(d) {
+                return "translate(" + source.x + "," + source.y + ")";
+              })
             .remove();
 
-          // Add tooltips to the connecting lines to make sure it's
-          // clear what the relationship is.
-          var tooltips= d3.selectAll("path.tree-link")
-            .append('title')
-              .text(function(d,i) {
-                return d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object;
-              });
+        // Shrink the size of the exiting circle.
+        nodeExit.select("circle")
+            .attr("r", 1e-6);
 
-          // Stash the old positions for transition.
-          nodes.forEach(function(d) {
-            d.x0 = d.x;
-            d.y0 = d.y;
+        // Fade the exiting text.
+        nodeExit.select("text")
+            .style("fill-opacity", 1e-6);
+
+        // Initialize the connecting lines function.
+        // d3.svg.diagonal() generates a cubic Bézier connecting the
+        // source (parent) and target (child) points.
+        // .projection specifies the ??location?? of the links.
+        var diagonal = d3.svg.diagonal()
+            .projection(function (d) {
+                return [d.x, d.y];
+            });
+
+        // Select all the connecting lines into an array
+        // of child ids for each child => parent link.
+        var link = svg.selectAll("path.tree-link")
+        .data(links, function (d) {
+                return d.target.id;
+            });
+
+        // Keep track of unique set of relationships for the key.
+        var relTypes = {};
+
+        // Create the connecting path elements
+        // wrapping them in <g class="node"></g>
+        // and drawing them using the "diagonal" path function
+        // (function defined previously)
+        link.enter().insert("path", "g")
+            .attr("class", "link tree-link")
+            .attr("class", function (d) {
+                var type = d.target.relationship.type.replace(/\s+/g, '-').toLowerCase();
+                type = type.replace(/_/g, '-').toLowerCase();
+                relTypes[type] = type;
+                return "link tree-link " + type;
+            })
+            .attr("d", function(d) {
+              if (source.x0 || source.y0) {
+                var o = {x: source.x0, y: source.y0};
+              } else {
+                var o = {x: source.x, y: source.y};
+              }
+              return diagonal({source: o, target: o});
+            });
+
+        var typeNum = 0;
+        var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
+        var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
+        for (var type in relTypes) {
+
+          // Add unique edge types to the key.
+          keyData.push({
+            'classes': ['link', type],
+            'type': 'path',
+            'label': type.replace(/-/g, ' '),
+            'stroke': colors[typeNum]
           });
 
-          // Change the size to match the new tree.
-          d3.select("#tree svg").transition()
+          // Color the links based on the type.
+          // Color scheme can be set in the Drupal config for this module.
+          svg.selectAll('path.tree-link.' + type)
+            .attr('stroke', function (d) { return colors[typeNum]; });
+
+            typeNum = typeNum + 1;
+        }
+
+        // Transition links to their new position.
+        link.transition()
+          .duration(options.collapseDuration)
+          .attr("d", diagonal);
+
+        // Transition exiting nodes to the parent's new position.
+        link.exit().transition()
             .duration(options.collapseDuration)
-            .attr('height', offset + options.margin.top + options.margin.bottom);
+          .attr("d", function(d) {
+            var o = {x: source.x, y: source.y};
+            return diagonal({source: o, target: o});
+          })
+          .remove();
 
-          // Draw the key.
-          if (drawingOptions.drawKey === true) {
-            tripalD3.drawKey(keyData, options.key);
-          }
-      }
+        // Add tooltips to the connecting lines to make sure it's
+        // clear what the relationship is.
+        var tooltips= d3.selectAll("path.tree-link")
+          .append('title')
+            .text(function(d,i) {
+              return d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object;
+            });
 
-      /**
-       * Handles the clicking of nodes to collapse them.
-       */
-      function collapse(d) {
-          // Essentially, since the drawTree() function looks for
-          // children at node.children, this function empties that
-          // array, moving it's contents into node._children. Thus when
-          // drawTree() is called, it doesn't find any children to draw,
-          // effectively collapsing it.
-          if (d.children) {
-              d._children = d.children;
-              d.children = null;
-          // If there is already no children then it looks to see if the
-          // node._children array exists (signalling this node was
-          // already collapsed) and moves it back to node.children,
-          // effectively uncollapsing the node.
-          } else {
-              d.children = d._children;
-              d._children = null;
-          }
+        // Stash the old positions for transition.
+        nodes.forEach(function(d) {
+          d.x0 = d.x;
+          d.y0 = d.y;
+        });
 
-          // Create new options and set drawKey to false. The key does not need
-          // to be drawn because nothing has changed in that respect.
-          newOptions = Object.assign({}, options);
-          newOptions.drawKey = false;
-          drawTree(d, newOptions);
-      }
-  },
+        // Change the size to match the new tree.
+        d3.select("#tree svg").transition()
+          .duration(options.collapseDuration)
+          .attr('height', offset + options.margin.top + options.margin.bottom);
+
+        // Draw the key.
+        if (drawingOptions.drawKey === true) {
+          tripalD3.drawKey(keyData, options.key);
+        }
+    }
+
+    /**
+     * Handles the clicking of nodes to collapse them.
+     */
+    function collapse(d) {
+        // Essentially, since the drawTree() function looks for
+        // children at node.children, this function empties that
+        // array, moving it's contents into node._children. Thus when
+        // drawTree() is called, it doesn't find any children to draw,
+        // effectively collapsing it.
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+        // If there is already no children then it looks to see if the
+        // node._children array exists (signalling this node was
+        // already collapsed) and moves it back to node.children,
+        // effectively uncollapsing the node.
+        } else {
+            d.children = d._children;
+            d._children = null;
+        }
+
+        // Create new options and set drawKey to false. The key does not need
+        // to be drawn because nothing has changed in that respect.
+        newOptions = Object.assign({}, options);
+        newOptions.drawKey = false;
+        drawTree(d, newOptions);
+    }
+},
 
   /**
    * Draws a graphical key on an existing diagram to explain the colours
@@ -648,9 +654,7 @@ tripalD3 = {
       // For each key-item of type path, add a path element with the
       // classes specified in data and a length similar to the lines
       // drawn in the diagram.
-      var linekeyItems = svg.selectAll('.key-item.path');
-
-      linekeyItems.append('path')
+      svg.selectAll('.key-item.path').append('path')
         .attr('class', function( i, val ) {
           return i.classes.join(' ');
         })
@@ -660,13 +664,25 @@ tripalD3 = {
         })
         .attr('stroke', function(d) { return d.stroke; });
 
+      // Draw any rectangles:
+      //---------------------------------
+      // For each key-item of type circle, add a circle element with the
+      // classes specified in data.
+      svg.selectAll('.key-item.rect').append('rect')
+        .attr("x", 45)
+        .attr("y", -7)
+        .attr("width", 14)
+        .attr("height", 14)
+        .attr('class', function( i, val ) {
+          return i.classes.join(' ');
+        })
+        .style("fill", function(d) { return d.fillColor; });
+
       // Draw any circles:
       //---------------------------------
       // For each key-item of type circle, add a circle element with the
       // classes specified in data.
-      var circlekeyItems = svg.selectAll('.key-item.circle');
-
-      circlekeyItems.append('circle')
+      svg.selectAll('.key-item.circle').append('circle')
         .attr("r", 6)
         .attr('class', function( i, val ) {
           return i.classes.join(' ');

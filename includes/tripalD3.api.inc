@@ -22,6 +22,7 @@ function tripald3_load_libraries() {
   // TripalD3.js
   $path = drupal_get_path('module','tripald3');
   drupal_add_js($path . '/js/tripalD3.js');
+  drupal_add_js($path . '/js/tripalD3.pie.js');
 
   // CSS.
   drupal_add_css($path . '/css/tripald3.css', array('group' => CSS_DEFAULT, 'type' => 'file'));

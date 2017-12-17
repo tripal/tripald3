@@ -21,7 +21,7 @@
 
 <!---------------------------------------------------------------------------->
 <h3>Simple Pie Chart</h3>
-<p>This following is a simple pie chart ideal for showing proportions or ratios.</p>
+<p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
 
 <script type="text/javascript">
   Drupal.behaviors.tripalD3demoSimplePie = {
@@ -31,31 +31,49 @@
       var simplePieData = [
         {
           "label": "Accession",
-          "count": "2,390",
+          "count": 2390,
         },
         {
           "label": "Cultivated Variety",
-          "count": "78",
+          "count": 78,
         },
         {
           "label": "Recombinant Inbred Line",
-          "count": "115",
+          "count": 115,
         },
         {
           "label": "Breeders Cross",
-          "count": "37,567",
+          "count": 567,
         }
       ];
 
-      // The following code uses the Tripal D3 module to draw a pedigree tree
-      // and attach it to an #tripald3-pedigree element.
-      // Notice that the data for the tree is passed in directly.
+      // The following code uses the Tripal D3 module to draw a pie chart
+      // and attach it to an #tripald3-simplepie element.
+      // Notice that the data for the pie chart is passed in directly.
       tripalD3.drawFigure(
         simplePieData,
         {
           "chartType" : "simplepie",
           "elementId": "tripald3-simplepie",
-          "height": 350,
+          "height": 250,
+          "width": 500,
+          "keyPosition": "left",
+          "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
+          "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
+        }
+      );
+
+      // The following code uses the Tripal D3 module to draw a donut pie chart
+      // and attach it to an #tripald3-simpledonut element.
+      // Notice that the data for the donut pie chart is passed in directly.
+      tripalD3.drawFigure(
+        simplePieData,
+        {
+          "chartType" : "simpledonut",
+          "elementId": "tripald3-simpledonut",
+          "height": 250,
+          "width": 500,
+          "keyPosition": "right",
           "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
           "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
         }
@@ -67,6 +85,14 @@
 <div id="tripald3-simplepie" class="tripald3-diagram">
   <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
 </div>
+
+<br />
+
+<div id="tripald3-simpledonut" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Donut Chart, Title and Figure legend here -->
+</div>
+
+<br />
 
 <!---------------------------------------------------------------------------->
 <h3>Pedigree Diagram</h3>
