@@ -312,8 +312,8 @@ tripalD3.pedigree = {
             });
 
         var typeNum = 0;
-        var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
-        var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
+        var colors = tripalD3.getColorScheme("categorical");
+
         for (var type in relTypes) {
 
           // Add unique edge types to the key.

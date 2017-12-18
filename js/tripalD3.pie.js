@@ -46,9 +46,8 @@ tripalD3.pie = {
     var centerLeft = options.maxRadius + options.margin.left;
     svg.attr("transform", "translate(" + centerLeft + "," + centerTop + ")");
 
-    // Retrieve a set of colours to use.
-    var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
-    var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
+    // Set-up the colors to use.
+    var colors = tripalD3.getColorScheme("categorical");
     var categories = [];
     data.forEach(function(d) {
       categories.push(d.label);
@@ -136,9 +135,8 @@ tripalD3.pie = {
     var centerLeft = options.maxRadius + options.margin.left;
     svg.attr("transform", "translate(" + centerLeft + "," + centerTop + ")");
 
-    // Retrieve a set of colours to use.
-    var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
-    var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
+    // Set-up the colors to use.
+    var colors = tripalD3.getColorScheme("categorical");
     var categories = [];
     data.forEach(function(d) {
       categories.push(d.label);
@@ -229,9 +227,8 @@ tripalD3.pie = {
     var centerLeft = options.maxRadius + options.margin.left;
     svg.attr("transform", "translate(" + centerLeft + "," + centerTop + ")");
 
-    // Retrieve a set of colours to use.
-    var colorSchemeId = Drupal.settings.tripalD3.colorSchemes.selected;
-    var colors = Drupal.settings.tripalD3.colorSchemes[colorSchemeId].categorical;
+    // Set-up the colors to use.
+    var colors = tripalD3.getColorScheme("categorical");
 
     // Determine the full set of categories...
     // @todo sort the categories by number of elements?

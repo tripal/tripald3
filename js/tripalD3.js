@@ -182,9 +182,26 @@ tripalD3 = {
    *
    * @param data
    *   An array of key items where each item is an object with the following keys:
-   *    - classes: the classes attached to the item represented.
+   *    - classes: the classes attached to the item represented. These are applied
+   *        to the colored item of the key (circle, rect, path).
+   *    - groupClasses: additional classes to attach to the grouping element in
+   *        the key. The type of element is added by default.
+   *    - label: The human-readable label for this key item.
+   *    - type: the type of svg element this key item represents.
+   *        Supported types include: circle, rect, path.
+   *    - fillColor: the color of the circle/rect.
+   *    - strokeColor: the color of the line.
+   *
    * @param $options
    *   A javascript object with any of the following keys:
+   *    - parentId: the ID of the parent element containing the SVG to draw
+   *        the key on (REQUIRED).
+   *    - elementId: the ID to use for the grouping element containing the key.
+   *    - width: the width of the key in pixels (REQUIRED).
+   *    - height: the height of the key in pixels. The default is calculated
+   *        based on the number of key elements passed in.
+   *    - margin: the margin to use for the key. an object with 'top', 'right',
+   *        'bottom','left' keys. Values are in pixels and all four keys must be set.
    */
   drawKey: function(data, options) {
 
@@ -311,11 +328,14 @@ tripalD3 = {
   },
 
   /**
-   * Provides an infinite progress throbber in the form of an Ellipsis
+   * Provides an infinite progress throbber in the form of an Ellipsis (3 dots).
    *
-   * USE: this function returns the throbber so simple use .remove()
-   * throbber = ellipsisThrobber(svg, {'left':50, 'top':50});
-   * setTimeout(function(){ throbber.remove() }, 3000);
+   * HOW TO USE:
+   *   This function returns the throbber so simply use .remove()
+   * @code
+       throbber = ellipsisThrobber(svg, {'left':50, 'top':50});
+       setTimeout(function(){ throbber.remove() }, 3000);
+   * @endcode
    *
    * @param svg
    *   The svg canvas to draw the throbber on.
@@ -551,45 +571,33 @@ tripalD3 = {
   },
 
   /**
-   * Allow for consistent cross-diagram color schemes
+   * Retrieve the colours for a given colour scheme.
+   *
+   * @param type
+   *   The type of scheme to return; one of quantitative or categorical (REQUIRED).
+   * @param schemeName
+   *   The machine name of the color scheme to return the colors of;
+   *   Defaults to the scheme chosen by the administrator.
+   *
+   * @return
+   *   An array of HEX codes in the order they should be applied to elements.
    */
-  colorSchemes: function(schemeName, type) {
-    var schemes = {
-      GrBuRr: {
-        quantitative: ['#008F09','#00E60F','#80FE89',     '#B69500','#FFD100','#FFE881',     '#20057D','#3C0EDB','#A88FFE',     '#B62300','#FF3100','#FF9981'],
-        categorical: ['#00E60F','#FFD100','#3C0EDB','#FF3100',        '#008F09','#B69500','#20057D','#B62300',        '#80FE89','#FFE881','#A88FFE','#FF9981']
-      },
-      RdBl: {
-        quantitative: ['#B65700','#FF7A00','#FFBD81',     '#B60500','#FF0700','#FF8481',     '#18067E','#2E0FDB','#A190FE',     '#033E76','#0971D6','#89C5FE'],
-        categorical: ['#FF7A00','#2E0FDB','#FF0700','#0971D6',        '#B65700','#18067E','#B60500','#033E76',        '#FFBD81','#A190FE','#FF8481','#89C5FE']
-      },
-      BlGn: {
-        quantitative: ['#3d4051', '#753fb0', '#8f7abf', '#294090', '#6683c3', '#0C6758','#7AB318', '#A0C55E', '#9fa7a3'],
-        categorical: [3, 6, 1, 4, 5, 8, 2, 7, 0]
-      /**
-        quantitative: ['#1B057E','#340FDB','#A490FE',     '#043378','#0A5DD7','#8BBAFE',     '#006D6D','#00D0D0','#80FDFD',     '#008824','#00E13B','#80FEA1'],
-        categorical: ['#340FDB','#00E13B','#0A5DD7','#00D0D0',        '#1B057E','#008824','#043378','#006D6D',        '#A490FE','#80FEA1','#8BBAFE','#80FDFD']*/
-      },
-      GnYl: {
-        quantitative: ['#007D47','#00DA7D','#80FEC8',     '#43A100','#64F100','#B5FF81',     '#80AD00','#B9F900','#DFFF81',     '#B6B400','#FFFC00','#FFFD81'],
-        categorical: ['#00DA7D','#FFFC00','#64F100','#B9F900',        '#007D47','#B6B400','#43A100','#80AD00',        '#80FEC8','#FFFD81','#B5FF81','#DFFF81']
-      },
-      YlRd: {
-        quantitative: ['#AD0018','#F90022','#FF8192',     '#B65A00','#FF7F00','#FFC081',     '#B68C00','#FFC500','#FFE281',     '#B6B200','#FFFA00','#FFFD81'],
-        categorical: ['#F90022','#FFFA00','#FF7F00','#FFC500',        '#AD0018','#B6B200','#B65A00','#B68C00',        '#FF8192','#FFFD81','#FFC081','#FFE281']
-      },
-    };
+  getColorScheme: function(type, schemeName) {
+
+    //Retrieve default color scheme; if not set.
+    if (!schemeName) {
+      schemeName = Drupal.settings.tripalD3.colorSchemes.selected;
+    }
+
+    // Grab the colour schemes added to Drupal settings by tripald3_load_libraries().
+    var schemes = Drupal.settings.tripalD3.colorSchemes;
 
     if (type == 'quantitative') {
       return schemes[schemeName].quantitative;
     }
 
     if (type == 'categorical') {
-      var categorical = [];
-      schemes[schemeName].categorical.forEach(function(key) {
-        categorical.push(schemes[schemeName].quantitative[key]);
-      });
-      return categorical;
+      return schemes[schemeName].categorical;
     }
   }
 };
