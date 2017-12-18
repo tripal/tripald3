@@ -10,81 +10,30 @@ tripalD3.pie = {
    * @param svg
    *   The canvas to draw the pie chart on.
    * @param data
-   *   The data to draw the pie chart with.
+   *   An array of objects (one object per category or pie-wedge)
+   *   with the following keys:
+   *     - label: the human-readable label for this category (pie-wdge).
+   *     - count: the number of items in the category. This is used to determine
+   *         the size of the wedge and MUST BE AN INTEGER.
    * @param options
-   *   An object containing options for this ring. Supported keys include:
-   *     - width: the width of the canvas
-   *     - height: the height of the canvas
+   *   An object containing options for this chart. Supported keys include:
+   *     - width: The width of the drawing canvas (including key and margins) in pixels.
+   *     - height: The height of the drawing canvas (including key and margins) in pixels.
    *     - maxRadius: the outside radius of the pie chart.
-   *     - labelPadding: the amount to pad the labels.
+   *     - donutWidth: the width of the donut (difference between inner
+   *         and outer radius).
+   *     - timbitRadius: the inside radius of the donut.
+   *     - labelPadding: the number of pixels between the series labels and
+   *         the right edge of the pie chart.
+   *     - drawKey: whether or not to draw the key; default is "true".
    */
   drawSimplePie: function(svg, data, options) {
 
-    // Set defaults.
-    if (!options.hasOwnProperty('width')) {
-      options.width = 250;
-    }
-    if (!options.hasOwnProperty('height')) {
-      options.height = 250;
-    }
-    if (!options.hasOwnProperty('maxRadius')) {
-      options.maxRadius = (options.height - options.margin.top - options.margin.bottom) / 2;
-    }
-    if (!options.hasOwnProperty('labelPadding')) {
-      options.labelPadding = options.width - options.height - 300;
-    }
-    if (!options.hasOwnProperty('drawKey')) {
-      options.drawKey = true;
-    }
-
-    // Set some additional values.
+    // A simple pie chart is basically a donut chart with no center cut-out.
     options.donutWidth = options.maxRadius;
     options.timbitRadius = 0;
+    tripalD3.pie.drawSimpleDonut(svg, data, options);
 
-    // Make sure we're drawing from the center of the canvas.
-    var centerTop = options.maxRadius + options.margin.top;
-    var centerLeft = options.maxRadius + options.margin.left;
-    svg.attr("transform", "translate(" + centerLeft + "," + centerTop + ")");
-
-    // Set-up the colors to use.
-    var colors = tripalD3.getColorScheme("categorical");
-    var categories = [];
-    data.forEach(function(d) {
-      categories.push(d.label);
-    });
-    var color = d3.scale.ordinal()
-      .range(colors)
-      .domain(categories);
-
-    // Draw the circle background.
-    svg.append("circle")
-      .attr("class", "pie-background")
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("r", options.maxRadius-1)
-      .attr("fill", "#808080");
-
-    // Actually draw each ring/donut in the pie chart based on the data provided.
-    var ringOptions = {
-      "donutWidth": options.donutWidth,
-      "color": color,
-    }
-    tripalD3.pie.drawRing(svg, data, 0, options.maxRadius-2, ringOptions);
-
-    // Draw the Key.
-    if (options.drawKey === true) {
-      var keyData = [];
-      data.forEach(function(d) {
-        var labelClass = d.label.replace(/ /g,'-').replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
-        keyData.push({
-          'classes': ['pie', 'category', labelClass],
-          'type': 'rect',
-          'label': d.label,
-          'fillColor': color(d.label)
-        });
-      });
-      tripalD3.drawKey(keyData, options.key);
-    }
   },
 
   /**
@@ -93,16 +42,22 @@ tripalD3.pie = {
    * @param svg
    *   The canvas to draw the pie chart on.
    * @param data
-   *   The data to draw the pie chart with.
+   *   An array of objects (one object per category or pie-wedge)
+   *   with the following keys:
+   *     - label: the human-readable label for this category (pie-wdge).
+   *     - count: the number of items in the category. This is used to determine
+   *         the size of the wedge and MUST BE AN INTEGER.
    * @param options
-   *   An object containing options for this ring. Supported keys include:
-   *     - width: the width of the canvas
-   *     - height: the height of the canvas
+   *   An object containing options for this chart. Supported keys include:
+   *     - width: The width of the drawing canvas (including key and margins) in pixels.
+   *     - height: The height of the drawing canvas (including key and margins) in pixels.
    *     - maxRadius: the outside radius of the pie chart.
    *     - donutWidth: the width of the donut (difference between inner
    *         and outer radius).
    *     - timbitRadius: the inside radius of the donut.
-   *     - labelPadding: the amount to pad the labels.
+   *     - labelPadding: the number of pixels between the series labels and
+   *         the right edge of the pie chart.
+   *     - drawKey: whether or not to draw the key; default is "true".
    */
   drawSimpleDonut: function(svg, data, options) {
 
@@ -188,12 +143,20 @@ tripalD3.pie = {
    * @param svg
    *   The canvas to draw the chart on.
    * @param data
-   *   The data to base the chart on.
+   *   An array of objects (one object per series or pie ring)
+   *   with the following keys:
+   *     - label: the human-readable label for the data series. This will be used
+   *       to label the ring.
+   *     - parts: an array of objects (one object per category or pie-wedge)
+   *         with the following keys:
+   *          - label: the human-readable label for this category (pie-wdge).
+   *          - count: the number of items in the category. This is used to
+   *             determine the size of the wedge and MUST BE AN INTEGER.
    * @param options
    *   A javascript object providing values to customization options. Supported
    *   options include:
-   *     - width: the width of the canvas, including key and margins.
-   *     - height: the height of the canvas including margins.
+   *     - width: The width of the drawing canvas (including key and margins) in pixels.
+   *     - height: The height of the drawing canvas (including key and margins) in pixels.
    *     - maxRadius: the maximum radius of the pie chart.
    *     - donutWidth: the width of each ring.
    *     - labelPadding: the number of pixels between the series labels and
@@ -303,25 +266,33 @@ tripalD3.pie = {
   },
 
   /**
-   * This function draws the segments of the pie chart. Each time this function
-   * is called it draws one of the rings/donuts. The data provided should be
-   * specific to that particular ring/donut, the index is the 0-indexed order
-   * and the radius is the maximum radius for this ring.
+   * HELPER FUNCTION: Draws a the segments/wedges of a single ring.
+   *
+   * The data provided should be specific to that particular ring/donut, the
+   * index is the 0-indexed order and the radius is the maximum radius
+   * for this ring.
    *
    * @param svg
    *   The canvas to draw the ring on.
    * @param _data
-   *   The data to draw the pie chart ring for.
+   *   The data specific to this particular ring of the pie chart.
+   *   Specifically, an array of objects (one object per category or pie-wedge)
+   *   with the following keys:
+   *     - label: the human-readable label for this category (pie-wdge).
+   *     - count: the number of items in the category. This is used to determine
+   *         the size of the wedge and MUST BE AN INTEGER.
    * @param index
    *   The index for this particular ring in the case that the completed pie
-   *   chart has multiple rings.
+   *   chart has multiple rings. If there is only a single ring then this
+   *   should be set to 0.
    * @param radius
-   *   The radius of the ring.
+   *   The outside radius of the ring.
    * @options
    *   An object containing options for this ring. Supported keys include:
+   *     - donutWidth: the width of the donut (REQUIRED).
    *     - label: the label for this ring. Helpful in the case of multiple
-   *         rings for a single pie chart.
-   *     - donutWidth: the width of the donut.
+   *         rings for a single pie chart. The label is used as a CSS class
+   *         with spaces transformed.
    */
   drawRing: function(svg, _data, index, radius, options) {
 
@@ -330,7 +301,8 @@ tripalD3.pie = {
       options.label = "";
     }
     if (!options.hasOwnProperty('donutWidth')) {
-      options.donutWidth = 62;
+      console.error("You must supplie the width of the donut to drawRing since it depends on the chart type and the number of rings.");
+      return;
     }
 
     // Set up function to draw the arc.
@@ -376,28 +348,32 @@ tripalD3.pie = {
   },
 
   /**
-   * This function draws the series labels for each donut/ring in the
-   * pie chart. The labels are aligned on the right side of the chart
+   * HELPER FUNCTION: Labels a single ring in a multi-series pie chart.
+   *
+   * The labels are aligned on the right side of the chart
    * and then lines connect the label to the outer boundry of each
    * ring.
    *
-   * @todo: Get this working ;-P
-   *
    * @param svg
-   *   The canvas to draw the ring on.
+   *   The canvas containing the pie chart to be labelled.
    * @param _data
-   *   The data to draw the pie chart ring for.
+   *   The same data passed into drawRing. The series label is pulled from here.
    * @param index
    *   The index for this particular ring in the case that the completed pie
    *   chart has multiple rings.
    * @param radius
-   *   The radius of the ring.
+   *   The outer radius of the current ring.
+   * @param outerRadius
+   *   The outer/maximum radius for the entire pie chart.
    * @options
-   *   An object containing the original options from the chart. Additional
-   *   label-specific options include:
+   *   An object containing the original options from the chart. The following
+   *   are the options specifically used: maxRadius, labelPadding, donutWidth.
+   *   Additional label-specific options include:
    *     - totalElements: the total number of rings/series in the chart.
    */
   drawDonutLabel: function(svg, _data, index, radius, outerRadius, options) {
+
+    console.log(_data);
 
     var seriesName = "m" + _data.label.replace(/ /g,'-').replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
 
