@@ -26,15 +26,15 @@ title and description below the diagram in the style of scientific journals.
 Furthermore, all diagrams have a consistent, configurable colour scheme and key.
 - Simple Pie Chart
 - Donut Pie Chart
+- Multi-Ring Pie Chart (Multiple series)
 - Pedigree Diagram
 
 ## Documentation
-Documentation is currently available in the Javascript files for each diagram. 
-Furthermore, there are examples on how to use each chart in `templates/tripald3_demo_page.tpl.php`. 
+Documentation is currently available in the Javascript files for each diagram.
+Furthermore, there are examples on how to use each chart in `templates/tripald3_demo_page.tpl.php`.
 Before release I will develop documentation in the Wiki as well.
 
 ## Future Work
-- Add additional diagrams including:
-   - Multi-ring Pie Chart
-   - Bar Chart
-   - Column Chart
+Add additional diagrams including:
+ - Bar Chart
+ - Column Chart

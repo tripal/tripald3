@@ -19,7 +19,7 @@
   and, as such, none of these diagrams are available to your users without
   you first developing pages or fields that connect data to them.</p>
 
-<!---------------------------------------------------------------------------->
+<!--------  PIE CHARTS ------------------------------------------------------->
 <h3>Simple Pie Chart</h3>
 <p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
 
@@ -34,17 +34,17 @@
           "count": 2390,
         },
         {
-          "label": "Cultivated Variety",
-          "count": 78,
+          "label": "Breeders Cross",
+          "count": 567,
         },
         {
           "label": "Recombinant Inbred Line",
           "count": 115,
         },
         {
-          "label": "Breeders Cross",
-          "count": 567,
-        }
+          "label": "Cultivated Variety",
+          "count": 78,
+        },
       ];
 
       // The following code uses the Tripal D3 module to draw a pie chart
@@ -57,7 +57,7 @@
           "elementId": "tripald3-simplepie",
           "height": 250,
           "width": 500,
-          "keyPosition": "left",
+          "keyPosition": "right",
           "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
           "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
         }
@@ -73,7 +73,7 @@
           "elementId": "tripald3-simpledonut",
           "height": 250,
           "width": 500,
-          "keyPosition": "right",
+          "keyPosition": "left",
           "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
           "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
         }
@@ -94,7 +94,90 @@
 
 <br />
 
-<!---------------------------------------------------------------------------->
+<h3>Multi-series Donut Chart</h3>
+<p>The following chart allows users to compare the ratios between multiple
+series of data.</p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoMultiDonut = {
+    attach: function (context, settings) {
+
+      // @todo move data into a separate file for better readability.
+      var multiDonutData = [
+        {
+          "label": "MarkerA",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 16,
+            },
+            {
+              "label": "AA",
+              "count": 10,
+            },
+            {
+              "label": "AG",
+              "count": 2,
+            },
+          ],
+        },
+        {
+          "label": "MarkerB",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 145,
+            },
+            {
+              "label": "AA",
+              "count": 99,
+            },
+            {
+              "label": "AG",
+              "count": 19,
+            },
+          ],
+        },
+        {
+          "label": "MarkerC",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 78,
+            },
+            {
+              "label": "AA",
+              "count": 73,
+            },
+          ],
+        },
+      ];
+
+      // The following code uses the Tripal D3 module to draw a multi-series chart
+      // and attach it to an #tripald3-multidonut element.
+      // Notice that the data for the pie chart is passed in directly.
+      tripalD3.drawFigure(
+        multiDonutData,
+        {
+          "chartType" : "multidonut",
+          "elementId": "tripald3-multidonut",
+          "height": 250,
+          "width": 650,
+          "keyPosition": "right",
+          "title": "Comparison of allele calls across 3 FBA-1 markers",
+          "legend": "The above chart shows the allele ratios for three seperate markers assaying the FBA-1 (fictional but amazing) gene.",
+          "key": {"title": "Alleles"},
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-multidonut" class="tripald3-diagram">
+  <!-- Javascript will add the Multiple Series Donut Chart, Title and Figure legend here -->
+</div>
+
+<!--------  PEDIGREE DIAGRAM ------------------------------------------------->
 <h3>Pedigree Diagram</h3>
 <p>This diagram was developed to mimic plant breeder pedigrees with additional
   features such as collapsible nodes and colour-coded relationships.</p>

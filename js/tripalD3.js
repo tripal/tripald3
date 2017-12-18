@@ -23,21 +23,28 @@ tripalD3 = {
    *   of this object depend on the chart being drawn.
    * @param options
    *   A javascript object with any of the following keys:
-   *   - chartType: the type of chart to draw; one of pedigree (REQUIRED).
-   *   - keyPosition: control the position of the key on your figure;
-   *       supported options include right (default), left.
-   *       @todo implement top, bottom (note: we don't know the height ahead of time)
-   *   - keyWidth: the key is fixed width; default width is 250 (pixels).
+   *   - chartType: the type of chart to draw; (REQUIRED)
+   *       one of pedigree, simplepie, simpledonut, multidonut.
+   *   - elementId : The ID of the HTML element the diagram should be attached to.
+   *   - width: The width of the drawing canvas (including key and margins) in pixels.
+   *   - height: The height of the drawing canvas (including key and margins) in pixels.
+   *   - title: the title of the figure diagram.
+   *   - legend: a longer description of the diagram to be used as the figure
+   *        legend following the title. This should include all  relevant scientific
+   *        information as well as instructions on how to interact with the chart.
+   *   - margin: an object with 'top', 'right','bottom','left' keys. Values
+   *        are in pixels and all four keys must be set.
    *   - chartOptions: an object containing options to be passed to the chart.
    *       See chart documentation to determine what options are available.
-   *    - title: the title of the pedigree diagram.
-   *    - legend: a longer description of the diagram to be used as the figure
-   *        legend following the title.
-   *    - elementId : The ID of the HTML element the diagram should be attached to.
-   *    - margin: an object with 'top', 'right','bottom','left' keys. Values
-   *        are in pixels and all four keys must be set.
-   *    - width: The width of the diagram.
-   *    - height: The height of the diagram.
+   *   - keyPosition: control the position of the key on your figure;
+   *       supported options include right (default) or left.
+   *       @todo implement top, bottom (note: we don't know the height ahead of time)
+   *   - keyWidth: the key is fixed width; default width is 250 (pixels).
+   *   - key: an object containing additional options for the key.
+   *       See "drawKey" function for all available options. Some include:
+   *       - title: the title of the key; default "Legend".
+   *       - margin: an object with 'top', 'right','bottom','left' keys.
+   *           Values are in pixels and all four keys must be set.
    */
    drawFigure: function(data, options) {
 
@@ -131,8 +138,6 @@ tripalD3 = {
       }
     }
 
-    console.log(options);
-
     // Make our container the size of the chart.
     container.style({"width": options.width + "px"});
 
@@ -165,6 +170,9 @@ tripalD3 = {
     }
     else if (options.chartType === 'simpledonut') {
       tripalD3.pie.drawSimpleDonut(svg, data, options.chartOptions);
+    }
+    else if (options.chartType === 'multidonut') {
+      tripalD3.pie.drawMultiDonut(svg, data, options.chartOptions);
     }
   },
 
@@ -210,7 +218,6 @@ tripalD3 = {
       var topMargin = options.margin.top;
       if (options.position === "right") {
         leftMargin = 0 - options.margin.left;
-        console.log(options.margin.left + ' vs. ' + leftMargin);
       }
 
       // Create canvas to draw the key on.

@@ -63,7 +63,7 @@ function tripald3_tripald3_color_schemes() {
     'colors' => array('#090C0E', '#253443', '#21597D', '#0C6758', '#7AB318', '#A0C55E', '#9fa7a3', '#BBC7BD', '#D5D4E6'),
     'pick order' => array(
       'quantitative' => array(0, 1, 2, 3, 4, 5, 6, 7, 8),
-      'categorical' => array(4,7,1,3,2,7,1,8,0)
+      'categorical' => array(4,3,1,7,2,5,8,6,0)
     ),
   );
 

@@ -20,7 +20,6 @@ Drupal.behaviors.TripalD3_colorscheme_display = {
           .attr("transform", "translate(" + marginLeft + "," + marginTop + ")");
 
       var swatchIndex = 0;
-      console.log(Drupal.settings.tripalD3.colorSchemes[id].quantitative);
       palletQuant.selectAll('rect')
         .data(Drupal.settings.tripalD3.colorSchemes[id].quantitative)
         .enter()
