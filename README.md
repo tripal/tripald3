@@ -29,12 +29,82 @@ Furthermore, all diagrams have a consistent, configurable colour scheme and key.
 - Multi-Ring Pie Chart (Multiple series)
 - Pedigree Diagram
 
-## Documentation
-Documentation is currently available in the Javascript files for each diagram.
-Furthermore, there are examples on how to use each chart in `templates/tripald3_demo_page.tpl.php`.
-Before release I will develop documentation in the Wiki as well.
+### How to draw a chart
+1. Load the API into the page you would like your diagram using `<php tripald3_load_libraries();?>`
+2. Retrieve you data and manipulate it into the structure required by the chart. This can be done a number of ways, the easiest of which is to query your database in your Drupal preprocess hook and then save the results as a javascript setting.
+ 
+```php
+/**
+ * Preprocess hook for template my_example.tpl.php
+ * The module name is demo.
+ */
+function demo_my_example_preprocess(&$variables) {
+
+  // Load the API (Step #1 above)
+  tripald3_load_libraries();
+
+  // Retrieve your data.
+  $resource = chado_query("SELECT feature_type, num_features FROM {organism_feature_count} WHERE organism_id=:id",
+    array(":id" => 1));
+  $data = array();
+  foreach ($resource as $r) {
+    // Save it in the structure required for a simple pie chart.
+    $data[] = array(
+      "label" => $r->feature_type,
+      "count" => $r->num_features,
+    );
+  }
+
+  // Make it available to javascript via settings.
+  $settings = array(
+    // Always namespace to your module to avoid collisions.
+    'demo' => array(
+      // Pass in your data using a descriptive settings key.
+      'featureTypePieData' => $data,
+    ),
+  );
+  drupal_add_js($settings, 'setting');
+}
+```
+
+3. Draw the chart in your template by calling `tripalD3.drawChart()`. This is done within a script tag using Drupal behaviours to ensure it is run at the correct point and the data prepared is passed in.
+
+```html
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimplePie = {
+    attach: function (context, settings) {
+
+      // Pull the data out of the javascript settings.
+      var data = Drupal.settings.demo.featureTypePieData;
+    
+      // Draw your chart.
+      tripalD3.drawFigure(
+        data,
+        {
+          "chartType" : "simplepie",
+          "elementId": "tripald3-simplepie",
+          "height": 250,
+          "width": 500,
+          "keyPosition": "right",
+          "title": "Proportion of <em>Tripalus databasica</em> Feature Types",
+          "legend": "The above pie chart depicts the ratio of feature types available for <em>Tripalus databasica</em>.",
+        }
+      );
+    }
+  };
+</script>
+```
+
+4. There is no step #4. You're done!
+
+## Additional Documentation
+1. Examples on how to use each chart in `templates/tripald3_demo_page.tpl.php` and viewed at Admin » Tripal » Extension Modules » Tripal D3 Diagrams » Demo
+2. In-code documentation for all functions and chart types in `js/tripalD3.*.js`
+3. Wiki at https://github.com/UofS-Pulse-Binfo/tripald3/wiki/General
 
 ## Future Work
 Add additional diagrams including:
  - Bar Chart
  - Column Chart
+ - Box Plot
+ - Heatmap
