@@ -67,7 +67,15 @@ function demo_my_example_preprocess(&$variables) {
 }
 ```
 
-3. Draw the chart in your template by calling `tripalD3.drawChart()`. This is done within a script tag using Drupal behaviours to ensure it is run at the correct point and the data prepared is passed in.
+3. Add a container element in your template where you would like the chart drawn.
+
+```html
+<div id="tripald3-simplepie" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
+</div>
+```
+
+4. Draw the chart in your template by calling `tripalD3.drawChart()`. This is done within a script tag using Drupal behaviours to ensure it is run at the correct point and the data prepared is passed in.
 
 ```html
 <script type="text/javascript">
@@ -95,7 +103,7 @@ function demo_my_example_preprocess(&$variables) {
 </script>
 ```
 
-4. There is no step #4. You're done!
+5. There is no step #5; you're done!
 
 ## Additional Documentation
 1. Examples on how to use each chart in `templates/tripald3_demo_page.tpl.php` and viewed at Admin » Tripal » Extension Modules » Tripal D3 Diagrams » Demo
