@@ -7,6 +7,8 @@ common diagrams such as pie, bar, column and pedigree diagrams.
 Rather, you would develop your own diagrams. Diagram functionality is
 demonstrated at Admin » Tripal » Extension Modules » Tripal D3 Diagrams » Demo.
 
+## STATUS: Charts are functioning and customizable. In final debugging stage.
+
 ## Installation & Setup
 1. Download the [D3 v3 javascript library](http://d3js.org/) (quick check, you should have a libraries/d3/d3.min.js file; for more information see the [drupal.org documentation](https://www.drupal.org/node/1440066))
 2. Download and install this module as you would any other Drupal module ([Documentation](https://www.drupal.org/documentation/install/modules-themes))
@@ -27,12 +29,13 @@ Furthermore, all diagrams have a consistent, configurable colour scheme and key.
 - Simple Pie Chart
 - Donut Pie Chart
 - Multi-Ring Pie Chart (Multiple series)
+- Simple Bar Chart
 - Pedigree Diagram
 
 ### How to draw a chart
 1. Load the API into the page you would like your diagram using `<php tripald3_load_libraries();?>`
 2. Retrieve you data and manipulate it into the structure required by the chart. This can be done a number of ways, the easiest of which is to query your database in your Drupal preprocess hook and then save the results as a javascript setting.
- 
+
 ```php
 /**
  * Preprocess hook for template my_example.tpl.php
@@ -76,7 +79,7 @@ function demo_my_example_preprocess(&$variables) {
 
       // Pull the data out of the javascript settings.
       var data = Drupal.settings.demo.featureTypePieData;
-    
+
       // Draw your chart.
       tripalD3.drawFigure(
         data,
@@ -104,7 +107,5 @@ function demo_my_example_preprocess(&$variables) {
 
 ## Future Work
 Add additional diagrams including:
- - Bar Chart
- - Column Chart
  - Box Plot
  - Heatmap

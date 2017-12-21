@@ -24,7 +24,7 @@ tripalD3 = {
    * @param options
    *   A javascript object with any of the following keys:
    *   - chartType: the type of chart to draw; (REQUIRED)
-   *       one of pedigree, simplepie, simpledonut, multidonut.
+   *       one of pedigree, simplepie, simpledonut, multidonut, simplebar.
    *   - elementId : The ID of the HTML element the diagram should be attached to.
    *   - width: The width of the drawing canvas (including key and margins) in pixels.
    *   - height: The height of the drawing canvas (including key and margins) in pixels.
@@ -36,6 +36,7 @@ tripalD3 = {
    *        are in pixels and all four keys must be set.
    *   - chartOptions: an object containing options to be passed to the chart.
    *       See chart documentation to determine what options are available.
+   *   - drawKey: whether or not to draw the key; default is "true".
    *   - keyPosition: control the position of the key on your figure;
    *       supported options include right (default) or left.
    *       @todo implement top, bottom (note: we don't know the height ahead of time)
@@ -120,6 +121,14 @@ tripalD3 = {
     if (!options.chartOptions.hasOwnProperty('elementId')) {
       options.chartOptions.elementId = options.elementId;
     }
+    if (!options.chartOptions.hasOwnProperty('drawKey')) {
+      if (options.chartType === 'simplebar') {
+        options.chartOptions.drawKey = false;
+      }
+      else {
+        options.chartOptions.drawKey = true;
+      }
+    }
     options.chartOptions.key = options.key;
 
     // Set up drawing area dimensions.
@@ -127,14 +136,16 @@ tripalD3 = {
     options.chartOptions.width = options.width - margin.right - margin.left;
     options.chartOptions.height = options.height - margin.top - margin.bottom;
     // Take into account the key positions when determining the chart
-    // drawing area.
-    if (options.keyPosition == "left" || options.keyPosition == "right") {
-      options.chartOptions.width -= options.keyWidth;
-      if (options.keyPosition == "left") {
-        options.margin.left += options.keyWidth;
-      }
-      if (options.keyPosition == "right") {
-        options.key.margin.left += options.chartOptions.width + 10;
+    // drawing area but only if we're drawing the key ;-).
+    if (options.chartOptions.drawKey) {
+      if (options.keyPosition == "left" || options.keyPosition == "right") {
+        options.chartOptions.width -= options.keyWidth;
+        if (options.keyPosition == "left") {
+          options.margin.left += options.keyWidth;
+        }
+        if (options.keyPosition == "right") {
+          options.key.margin.left += options.chartOptions.width + 10;
+        }
       }
     }
 
@@ -173,6 +184,9 @@ tripalD3 = {
     }
     else if (options.chartType === 'multidonut') {
       tripalD3.pie.drawMultiDonut(svg, data, options.chartOptions);
+    }
+    else if (options.chartType === 'simplebar') {
+      tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
     }
   },
 

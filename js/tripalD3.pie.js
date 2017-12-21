@@ -373,8 +373,6 @@ tripalD3.pie = {
    */
   drawDonutLabel: function(svg, _data, index, radius, outerRadius, options) {
 
-    console.log(_data);
-
     var seriesName = "m" + _data.label.replace(/ /g,'-').replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '');
 
     var label = svg.selectAll('.series-labels')
