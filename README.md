@@ -32,6 +32,10 @@ Furthermore, all diagrams have a consistent, configurable colour scheme and key.
 - Simple Bar Chart
 - Pedigree Diagram
 
+## Screenshots from Demo
+The following screenshots are from the Demo available on the Tripal D3 admin pages (Admin » Tripal » Extension Modules » Tripal D3 Diagrams » Demo) and are meant to give you an idea of what kind of charts can be created using this API.
+![screenshots](charts_screenshots.png)
+
 ### How to draw a chart
 1. Load the API into the page you would like your diagram using `<php tripald3_load_libraries();?>`
 2. Retrieve you data and manipulate it into the structure required by the chart. This can be done a number of ways, the easiest of which is to query your database in your Drupal preprocess hook and then save the results as a javascript setting.
