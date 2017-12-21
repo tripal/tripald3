@@ -98,8 +98,13 @@ tripalD3.bar = {
     svg.selectAll(".x.axis .tick text")
       .style("text-anchor", "end")
       .attr("transform", "rotate(-45)" )
-      .attr("x", -10)
-      .attr("y", 0);
+      .attr("x", -8)
+      .attr("y", 2);
+    // Make the ticks actually visible ;-).
+    svg.selectAll(".axis .tick line")
+      .style("stroke", "black")
+      .style("stroke-width", "1px")
+      .style("shape-rendering", "crispEdges");
 
     // Draw the bars :-).
     svg.selectAll("bar")
