@@ -58,13 +58,19 @@ tripalD3 = {
     // Check our container exists and warn the admin if not.
     if (container.empty()) {
       console.error("Element for Tripal D3 Chart not found: #" + options.elementId);
-      return;
+      return false;
     }
 
     // Check they supplied chartType which is REQUIRED.
     if (!options.hasOwnProperty('chartType')) {
       console.error("You must supply a chart type when using tripalD3.drawFigure.");
-      return;
+      return false;
+    }
+
+    // Check there even is any data!
+    if (data.length == 0) {
+      console.error("You must supply data when using tripalD3.drawFigure.");
+      return false;
     }
 
     // General Defaults.
@@ -90,6 +96,9 @@ tripalD3 = {
     }
     if (!options.hasOwnProperty('width')) {
       options.width = document.getElementById(options.elementId).offsetWidth;
+      if (options.width <= options.keyWidth) {
+        options.width = 50 + options.keyWidth;
+      }
     }
     // @todo better default for height.
     if (!options.hasOwnProperty('height')) {
@@ -130,6 +139,52 @@ tripalD3 = {
       }
     }
     options.chartOptions.key = options.key;
+
+    // Check for errors in the options!
+    //-------------------------------------------
+    // We do this here so we don't have to check existance of the key ;-).
+    // Check that the width is an integer
+    if (!(typeof options.width === 'number') || !((options.width % 1 ) === 0)) {
+      console.error("The width for a TripalD3 figure should be an integer. You supplied: " + options.width);
+      return false;
+    }
+    // Check that the height is an integer.
+    if (!(typeof options.height === 'number') || !((options.height % 1 ) === 0)) {
+      console.error("The height for a TripalD3 figure should be an integer. You supplied: '" + options.height + "'");
+      return false;
+    }
+    // Check that the keyWidth is an integer
+    if (!(typeof options.key.width === 'number') || !((options.key.width % 1 ) === 0)) {
+      console.error("The key width for a TripalD3 figure should be an integer. You supplied: '" + options.key.width + "'");
+      return false;
+    }
+    // Check that the key width is not more then the chart width ;-).
+    if (options.key.width >= options.width) {
+      console.error("The chart width includes the key width and as such the key width should be less than the chart width. You supplied key width: " + options.key.width + "; chart width: " + options.width);
+      return false;
+    }
+    // Check that the margin is an object.
+    if (options.margin === null || typeof options.margin !== 'object') {
+      console.log("The margin should be an object with right, left, top, and bottom keys.");
+      return false;
+    }
+    // Check that all keys have been supplied for the margin and that they're all integers.
+    var error = false;
+    ["right","left","top","bottom"].forEach(function(key) {
+      if (error === false) {
+        if (!(key in options.margin)) {
+          console.error("You must supply all keys (right, left, top, bottom) for the margin. You didn't supply the '"+key+"' margin.");
+          error = true;
+        }
+      }
+      if (error === false) {
+        if (!(typeof options.margin[key] === 'number') || !((options.margin[key] % 1 ) === 0)) {
+          console.error("The " + key + " margin for a TripalD3 figure should be an integer. You supplied: '" + options.margin[key] + "'");
+          error = true;
+        }
+      }
+    });
+    if (error === true) { return false; }
 
     // Set up drawing area dimensions.
     var margin = options.chartOptions.margin = options.margin;
@@ -173,21 +228,33 @@ tripalD3 = {
       .html(options.legend);
 
     // Finally, draw the appropriate chart.
+    var success = null;
     if (options.chartType === "pedigree") {
-      tripalD3.pedigree.drawPedigreeTree(svg, data, options.chartOptions);
+      success = tripalD3.pedigree.drawPedigreeTree(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'simplepie') {
-      tripalD3.pie.drawSimplePie(svg, data, options.chartOptions);
+      success = tripalD3.pie.drawSimplePie(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'simpledonut') {
-      tripalD3.pie.drawSimpleDonut(svg, data, options.chartOptions);
+      success = tripalD3.pie.drawSimpleDonut(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'multidonut') {
-      tripalD3.pie.drawMultiDonut(svg, data, options.chartOptions);
+      success = tripalD3.pie.drawMultiDonut(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'simplebar') {
-      tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
+      success = tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
     }
+
+    // If drawing the chart failed with an error message,
+    // remove the elements to clean up the canvas. The admin already
+    // knows what happened thanks to the message; we don't want to show
+    // the user a big mess ;-p.
+    if (success === false) {
+      container.selectAll("*").remove();
+    }
+
+    // Return the result of the chart function.
+    return success;
   },
 
   /**
@@ -228,7 +295,7 @@ tripalD3 = {
     }
     if (!options.hasOwnProperty('width')) {
       console.error("Key Width is required because the chart canvas needs to have been set up appropriately.");
-      return;
+      return false;
     }
     if (!options.hasOwnProperty('height')) {
       options.height = data.length * 18;
@@ -588,7 +655,7 @@ tripalD3 = {
    * Retrieve the colours for a given colour scheme.
    *
    * @param type
-   *   The type of scheme to return; one of quantitative or categorical (REQUIRED).
+   *   The type of scheme to return false; one of quantitative or categorical (REQUIRED).
    * @param schemeName
    *   The machine name of the color scheme to return the colors of;
    *   Defaults to the scheme chosen by the administrator.
@@ -613,5 +680,6 @@ tripalD3 = {
     if (type == 'categorical') {
       return schemes[schemeName].categorical;
     }
-  }
+  },
+
 };
