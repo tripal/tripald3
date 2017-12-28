@@ -72,6 +72,15 @@ function tripald3_menu() {
     'weight' => 1,
   );
 
+  $items['admin/tripal/extension/tripald3/test'] = array(
+    'title' => 'Test',
+    'page callback' => 'theme',
+    'page arguments' => array('tripald3_test_page'),
+    'access arguments' => array('administer tripal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+  );
+
   /** @pedigree Comment out pedigree's until re-vamped.
   $items['admin/tripal/extension/tripald3/stock_pedigree'] = array(
     'title' => 'Stock Pedigree',
@@ -101,6 +110,11 @@ function tripald3_theme($existing, $type, $theme, $path) {
 
   $items['tripald3_demo_page'] = array(
     'template' => 'tripald3_demo_page',
+    'path' => $path.'/templates',
+  );
+
+  $items['tripald3_test_page'] = array(
+    'template' => 'tripald3_test_page',
     'path' => $path.'/templates',
   );
 
