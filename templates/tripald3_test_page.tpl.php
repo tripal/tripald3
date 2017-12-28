@@ -39,7 +39,8 @@
 
       // Test #0
       // All the ones that should break ;-P.
-      d3.select("#test0 .data").html("<p>Tests associated with this block are expected to fail. As such you shouldn't see a chart in the box to the left and there should be errors in the developers console. Each error that is expected will be preceeded by a log message indicating such.</p><p><strong>Expect 33 Errors in Developers Console.</strong></p>");
+      d3.select("#test0 .data").html("<p>Tests associated with this block are expected to fail. As such you shouldn't see a chart in the box to the left and there should be errors in the developers console. Each error that is expected will be preceeded by a log message indicating such.</p>"
+        + "<p><strong>Expect 57 Errors in Developers Console.</strong></p>");
 
       // Option chartType not supplied.
       console.log("Test #0: no chartType supplied. ERROR EXPECTED.");
@@ -147,23 +148,83 @@
           }
         );
 
-        /*
         // Invalid draw key.
         console.log("Test #0: " + element + " string for drawKey. ERROR EXPECTED.");
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "drawKey": "no-shit-sherlock",
+          }
+        );
 
         // Invalid key position.
         console.log("Test #0: " + element + " unsupported keyPosition. ERROR EXPECTED.");
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "keyPosition": "top right",
+          }
+        );
 
         // Invalid key width.
         console.log("Test #0: " + element + " string for keyWidth. ERROR EXPECTED.");
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "keyWidth": "250px",
+          }
+        );
         console.log("Test #0: " + element + " keyWidth > svg width. ERROR EXPECTED.");
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "width": 50,
+            "keyWidth": 250,
+          }
+        );
 
         // Invalid key margin.
         console.log("Test #0: " + element + " string in key margin. ERROR EXPECTED.");
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "key": {
+              "margin": {
+                "left": 20,
+                "right": 20,
+                "top": "20px",
+                "bottom": 20,
+              },
+            },
+          }
+        );
         console.log("Test #0: " + element + " key margin missing parts. ERROR EXPECTED.");
-        */
+        tripalD3.drawFigure(
+          testData,
+          {
+            "chartType" : element,
+            "elementId": "test0-chart",
+            "key": {
+              "margin": {
+                "left": 20,
+                "right": 20,
+                "bottom": 20,
+              },
+            },
+          }
+        );
 
-      });
+      }); // End of for each chart type.
 
       // Test #1
       // Simple Pie Chart: 15 categories, count 1-500

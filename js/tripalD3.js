@@ -130,14 +130,15 @@ tripalD3 = {
     if (!options.chartOptions.hasOwnProperty('elementId')) {
       options.chartOptions.elementId = options.elementId;
     }
-    if (!options.chartOptions.hasOwnProperty('drawKey')) {
+    if (!options.hasOwnProperty('drawKey')) {
       if (options.chartType === 'simplebar') {
-        options.chartOptions.drawKey = false;
+        options.drawKey = false;
       }
       else {
-        options.chartOptions.drawKey = true;
+        options.drawKey = true;
       }
     }
+    options.chartOptions.drawKey = options.drawKey;
     options.chartOptions.key = options.key;
 
     // Check for errors in the options!
@@ -165,7 +166,7 @@ tripalD3 = {
     }
     // Check that the margin is an object.
     if (options.margin === null || typeof options.margin !== 'object') {
-      console.log("The margin should be an object with right, left, top, and bottom keys.");
+      console.error("The margin should be an object with right, left, top, and bottom keys.");
       return false;
     }
     // Check that all keys have been supplied for the margin and that they're all integers.
@@ -185,6 +186,37 @@ tripalD3 = {
       }
     });
     if (error === true) { return false; }
+    // Check that the margin is an object.
+    if (options.margin === null || typeof options.margin !== 'object') {
+      console.error("The margin should be an object with right, left, top, and bottom keys.");
+      return false;
+    }
+    // Check that all keys have been supplied for the key margin and that they're all integers.
+    ["right","left","top","bottom"].forEach(function(key) {
+      if (error === false) {
+        if (!(key in options.key.margin)) {
+          console.error("You must supply all keys (right, left, top, bottom) for the key margin. You didn't supply the '"+key+"' margin.");
+          error = true;
+        }
+      }
+      if (error === false) {
+        if (!(typeof options.key.margin[key] === 'number') || !((options.key.margin[key] % 1 ) === 0)) {
+          console.error("The " + key + " margin for a TripalD3 figure should be an integer. You supplied: '" + options.key.margin[key] + "'");
+          error = true;
+        }
+      }
+    });
+    if (error === true) { return false; }
+    // Check that drawKey is a boolean.
+    if (!(options.drawKey === false || options.drawKey === true)) {
+      console.error("The drawKey option should be one of 'true' or 'false', you supplied '" + options.drawKey + "'");
+      return false;
+    }
+    // Check that the keyPosition is supported.
+    if (!(options.keyPosition == "right" || options.keyPosition == "left")) {
+      console.error("The keyPosition supplied is not supported. Supported key positions are 'left' and 'right', you supplied '" + options.keyPosition + "'");
+      return false;
+    }
 
     // Set up drawing area dimensions.
     var margin = options.chartOptions.margin = options.margin;
