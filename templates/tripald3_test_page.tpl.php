@@ -39,8 +39,9 @@
 
       // Test #0
       // All the ones that should break ;-P.
+      //===================================================
       d3.select("#test0 .data").html("<p>Tests associated with this block are expected to fail. As such you shouldn't see a chart in the box to the left and there should be errors in the developers console. Each error that is expected will be preceeded by a log message indicating such.</p>"
-        + "<p><strong>Expect 57 Errors in Developers Console.</strong></p>");
+        + "<p><strong>Expect 68 Errors in Developers Console.</strong></p>");
 
       // Option chartType not supplied.
       console.log("Test #0: no chartType supplied. ERROR EXPECTED.");
@@ -49,7 +50,7 @@
         { "elementId": "test0-chart", }
       );
 
-      // For all chart types...
+      // Check general options for all chart types...
       ['simplepie', 'simpledonut', 'multidonut', 'simplebar'].forEach(function(element) {
 
         // No Data.
@@ -224,10 +225,115 @@
           }
         );
 
+        // Check simplepie, simpledonut and simplebar data compliance.
+        if (element == 'simplepie' || element == 'simpledonut' || element == 'simplebar') {
+          // Already checked that data is a non-empty array.
+          // Check that each element must have a label & count.
+          // Semi-deep clone testData 2X.
+          var dataMissingLabel = [];
+          var dataMissingCount = [];
+          testData.forEach(function(element) {
+            var newElement1 = Object.assign({}, element);
+            dataMissingLabel.push(newElement1);
+            var newElement2 = Object.assign({}, element);
+            dataMissingCount.push(newElement2);
+          });
+          console.log("Test #0: " + element + " data missing label (3rd element). ERROR EXPECTED.");
+          delete dataMissingLabel[2].label;
+          tripalD3.drawFigure(
+            dataMissingLabel,
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+          console.log("Test #0: " + element + " data missing count (4th element). ERROR EXPECTED.");
+          delete dataMissingCount[3].count;
+          tripalD3.drawFigure(
+            dataMissingCount,
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+        }
+        // Check simplepie, simpledonut and simplebar data compliance.
+        if (element == 'multidonut') {
+          // Already checked that data is a non-empty array.
+          // Check that each element must have a label & count.
+          // Semi-deep clone testData.parts array 2X.
+          var dataMissingLabel = [];
+          var dataMissingCount = [];
+          testData[0].parts.forEach(function(element) {
+            var newElement1 = Object.assign({}, element);
+            dataMissingLabel.push(newElement1);
+            var newElement2 = Object.assign({}, element);
+            dataMissingCount.push(newElement2);
+          });
+          console.log("Test #0: " + element + " data missing series label. ERROR EXPECTED.");
+          tripalD3.drawFigure(
+            [{
+              "parts": testData,
+            }],
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+          console.log("Test #0: " + element + " data missing parts array. ERROR EXPECTED.");
+          tripalD3.drawFigure(
+            [{
+              "label": "Series1",
+            }],
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+          console.log("Test #0: " + element + " data empty parts array. ERROR EXPECTED.");
+          tripalD3.drawFigure(
+            [{
+              "label": "Series1",
+              "parts": [],
+            }],
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+          console.log("Test #0: " + element + " data missing label in parts array (3rd element). ERROR EXPECTED.");
+          delete dataMissingLabel[2].label;
+          tripalD3.drawFigure(
+            [{
+              "label" : "Series1",
+              "parts": dataMissingLabel,
+            }],
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+          console.log("Test #0: " + element + " data missing count in parts array (4th element). ERROR EXPECTED.");
+          delete dataMissingCount[3].count;
+          tripalD3.drawFigure(
+            [{
+              "label" : "Series1",
+              "parts": dataMissingCount,
+            }],
+            {
+              "chartType": element,
+              "elementId": "test0-chart",
+            }
+          );
+        }
       }); // End of for each chart type.
+
+      // @todo Check multidonut data compliance.
 
       // Test #1
       // Simple Pie Chart: 15 categories, count 1-500
+      // Check that the full key is displayed and that categories are still
+      // distinguisable when there are more then 9.
       console.log("Test #1: Simple Pie Chart: 15 categories, count 1-500.");
       var testData = tripalD3.test.randomSingleSeries(15, 1, 500);
       console.log(testData);
@@ -245,6 +351,10 @@
           "legend": "This pie chart should have 15 categories which ensures that your colour scheme will be repeated. Furthermore, the chart is only 250px tall, which means the key won't fit at the default font size. The counts range from 1-500 with no zeros and are randomly generated. The data is shown to the right and printed to the 'Developers Console'.",
         }
       );
+
+      // See what happens with 0 count categories.
+
+
     }
   };
 </script>
