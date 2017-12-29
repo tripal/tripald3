@@ -2,15 +2,97 @@
  * @file
  * Testing functionality.
  *
- * Provides functions to generate "random" data to test Tripal D3 charts. Due
- * to the application no effort was made to chose the "best" random algorithms. ;-p
+ * Provides functions to test data and charts, as well as, to generate "random"
+ * data to test Tripal D3 charts. Due to the application no effort was made to
+ * chose the "best" random algorithms. ;-p
  */
 tripalD3.test = {
 
   /**
-   * Generate a single-series label/count dataset.
+   * Test that the data for simplepie, simpledonut, & simplebar meet requirements.
    *
-   * Suitable for use with simplepie, simpledonut, simplebar
+   * @param data
+   *   The data to be tested
+   * @param dataLabel
+   *   The label to use in errors when referring to the data (Default: "data").
+   * @return
+   *   true if the data meets requirements and false otherwise.
+   */
+  'isSingleSeriesCompliant': function (data, dataLabel) {
+
+    dataLabel = dataLabel || "data";
+
+    if (!Array.isArray(data)) {
+      console.error("The " + dataLabel + " should be an ARRAY where each element has a label and a count.");
+      return false;
+    }
+    if (data.length == 0) {
+      console.error("The " + dataLabel + " must not be empty.");
+      return false;
+    }
+    return data.every(function(element) {
+      if (!("label" in element)) {
+        console.error("Every element of " + dataLabel + " must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
+        return false;
+      }
+      else if (!("count" in element)) {
+        console.error("Every element of " + dataLabel + " must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
+        return false;
+      }
+      else {
+        return true;
+      }
+    });
+  },
+
+  /**
+   * Test that the data for multidonut meet requirements.
+   *
+   * @param data
+   *   The data to be tested
+   * @param dataLabel
+   *   The label to use in errors when referring to the data (Default: "data").
+   * @return
+   *   true if the data meets requirements and false otherwise.
+   */
+  'isMultiSeriesCompliant': function (data, dataLabel) {
+
+    dataLabel = dataLabel || "data";
+
+    if (!Array.isArray(data)) {
+      console.error("The data should be an ARRAY where each element has a series label and a parts array.");
+      return false;
+    }
+    // Check that EVERY element has a label and parts array.
+    return data.every(function(element) {
+      if (!("label" in element)) {
+        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
+        return false;
+      }
+      if (!("parts" in element)) {
+        console.error("Every element must be an object with a PARTS key. This element doesn't comply: " + JSON.stringify(element));
+        return false;
+      }
+      if (!Array.isArray(element.parts)) {
+        console.error("The value of the PARTS key should be an ARRAY. This element doesn't comply: " + JSON.stringify(element));
+        return false;
+      }
+      // Check that EVERY element of the parts array has a label & count.
+      return tripalD3.test.isSingleSeriesCompliant(element.parts, "parts array");
+    });
+
+  },
+
+  /**
+   * Generate a single-series label/count dataset.
+   * Suitable for use with simplepie, simpledonut, simplebar.
+   *
+   * @param number
+   *   The number of categories to generate.
+   * @param maxCount
+   *   The maximum number the count element should be.
+   * @param minCount
+   *   The minimum number the count element should be.
    */
   'randomSingleSeries': function(number, maxCount, minCount) {
 
