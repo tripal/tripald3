@@ -33,16 +33,18 @@ tripalD3.bar = {
       console.error("The data should be an ARRAY where each element has a label and a count.");
       return false;
     }
+    var errors = false;
     data.forEach(function(element) {
       if (!("label" in element)) {
         console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
+        errors = true;
       }
       if (!("count" in element)) {
         console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
+        errors = true;
       }
     });
+    if (errors) { return false; }
 
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {

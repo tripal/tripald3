@@ -62,20 +62,8 @@ tripalD3.pie = {
   drawSimpleDonut: function(svg, data, options) {
 
     // Check the data is compliant.
-    if (!Array.isArray(data)) {
-      console.error("The data should be an ARRAY where each element has a label and a count.");
-      return false;
-    }
-    data.forEach(function(element) {
-      if (!("label" in element)) {
-        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      if (!("count" in element)) {
-        console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-    });
+    var compliant = tripalD3.test.isSingleSeriesCompliant(data);
+    if (!compliant) {return false; }
 
     // Set defaults.
     if (!options.hasOwnProperty('width')) {
@@ -182,34 +170,8 @@ tripalD3.pie = {
   drawMultiDonut: function(svg, data, options) {
 
     // Check the data is compliant.
-    if (!Array.isArray(data)) {
-      console.error("The data should be an ARRAY where each element has a series label and a parts array.");
-      return false;
-    }
-    data.forEach(function(element) {
-      if (!("label" in element)) {
-        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      if (!("parts" in element)) {
-        console.error("Every element must be an object with a PARTS key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      if (!Array.isArray(data)) {
-        console.error("The value of the PARTS key should be an ARRAY. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      element.parts.forEach(function(subElement) {
-        if (!("label" in subElement)) {
-          console.error("Every PARTS element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(subElement));
-          return false;
-        }
-        if (!("count" in subElement)) {
-          console.error("Every PARTS element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(subElement));
-          return false;
-        }
-      });
-    });
+    var compliant = tripalD3.test.isMultiSeriesCompliant(data);
+    if (!compliant) { return false; }
 
     // Set defaults.
     if (!options.hasOwnProperty('width')) {
