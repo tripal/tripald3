@@ -230,7 +230,7 @@ series of data.</p>
   <!-- Javascript will add a Simple Bar Chart, Title and Figure legend here -->
 </div>
 
-<!--------  PEDIGREE DIAGRAM ------------------------------------------------->
+<!--------  PEDIGREE DIAGRAM ------------------------------------------------
 <h3>Pedigree Diagram</h3>
 <p>This diagram was developed to mimic plant breeder pedigrees with additional
   features such as collapsible nodes and colour-coded relationships.</p>
@@ -404,5 +404,5 @@ series of data.</p>
 </script>
 
 <div id="tripald3-pedigree" class="tripald3-diagram">
-  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here -->
-</div>
+  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here -
+</div> -->
