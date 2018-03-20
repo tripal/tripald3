@@ -21,10 +21,10 @@ function tripald3_load_libraries() {
 
   // TripalD3.js
   $path = drupal_get_path('module','tripald3');
-  drupal_add_js($path . '/js/tripalD3.js');
-  drupal_add_js($path . '/js/tripalD3.test.js');
-  drupal_add_js($path . '/js/tripalD3.pie.js');
-  drupal_add_js($path . '/js/tripalD3.bar.js');
+  drupal_add_js($path . '/js/tripalD3.js', array( 'weight' => -9 ));
+  drupal_add_js($path . '/js/tripalD3.test.js', array( 'weight' => -8 ));
+  drupal_add_js($path . '/js/tripalD3.pie.js', array( 'weight' => -7 ));
+  drupal_add_js($path . '/js/tripalD3.bar.js', array( 'weight' => -7 ));
   // @todo removing pedigree until data format is simplified.
   //drupal_add_js($path . '/js/tripalD3.pedigree.js');
 
