@@ -96,6 +96,8 @@ tripalD3 = {
     }
     if (!options.hasOwnProperty('width')) {
       options.width = document.getElementById(options.elementId).offsetWidth;
+      console.log(document.getElementById(options.elementId));
+      console.log(options.width);
       if (options.width <= options.keyWidth) {
         options.width = 50 + options.keyWidth;
       }

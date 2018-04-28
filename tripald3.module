@@ -1,8 +1,8 @@
 <?php
 
-  /** @pedigree Comment out pedigree's until re-vamped.
-   * require_once('includes/stock_pedigree.inc');
-   */
+/** @pedigree Comment out pedigree's until re-vamped. */
+require_once('includes/stock_pedigree.inc');
+
 require_once('includes/tripalD3.api.inc');
 require_once('includes/color_scheme.inc');
 
@@ -35,14 +35,14 @@ function tripald3_libraries_info() {
 function tripald3_menu() {
   $items = array();
 
-  /** @pedigree Comment out pedigree's until re-vamped.
+  /** @pedigree Comment out pedigree's until re-vamped. */
   $items['ajax/tripal/d3-json/relationships/%/%'] = array(
     'title' => 'JS Graph: Tree',
     'page callback' => 'tripald3_get_relationship_json',
     'page arguments' => array(4,5),
     'access arguments' => array('view tripald3 json'),
     'type' => MENU_CALLBACK
-  );*/
+  );
 
   $items['admin/tripal/extension/tripald3'] = array(
     'title' => 'Tripal D3 Diagrams',
@@ -81,7 +81,7 @@ function tripald3_menu() {
     'weight' => 1,
   );
 
-  /** @pedigree Comment out pedigree's until re-vamped.
+  /** @pedigree Comment out pedigree's until re-vamped. */
   $items['admin/tripal/extension/tripald3/stock_pedigree'] = array(
     'title' => 'Stock Pedigree',
     'page callback' => 'drupal_get_form',
@@ -89,7 +89,7 @@ function tripald3_menu() {
     'access arguments' => array('administer tripal'),
     'file' => 'includes/settings_forms.inc',
     'type' => MENU_LOCAL_TASK
-  );*/
+  );
 
   return $items;
 }
@@ -100,13 +100,12 @@ function tripald3_menu() {
 function tripald3_theme($existing, $type, $theme, $path) {
   $items = array();
 
-  /** @pedigree Comment out pedigree's until re-vamped.
+  /** @pedigree Comment out pedigree's until re-vamped. */
   $items['tripald3_stock_pedigree'] = array(
     'template' => 'tripal_stock_pedigree',
     'path' => $path.'/templates',
     'variables' => array('node' => NULL),
   );
-  */
 
   $items['tripald3_demo_page'] = array(
     'template' => 'tripald3_demo_page',
@@ -131,11 +130,37 @@ function tripald3_permission() {
       'title' => t('View Tripal D3 JSON'),
       'description' => t('Required for anyone wanting to view a Tripal D3 diagram.'),
     ),
-  /** @pedigree Comment out pedigree's until re-vamped.
+  /** @pedigree Comment out pedigree's until re-vamped. */
     'view tripald3 pedigree' => array(
       'title' => t('View Tripal D3 Pedigree'),
       'description' => t('Required to view the pedigree pane on stock pages.'),
     ),
-  */
+
   );
+}
+
+/**
+ * Implements hook_node_view(). Acts on all content types.
+ * @pedigree
+ */
+function tripald3_node_view($node, $view_mode, $langcode) {
+
+  switch ($node->type) {
+    case 'chado_stock':
+      if ($view_mode == 'full') {
+        if(user_access('view tripald3 pedigree')) {
+
+          // Only add the pedigree if there is more than the root node.
+          if (!tripald3_is_node_leafless_tree($node->stock->stock_id)) {
+            $node->content['tripal_stock_pedigree'] = array(
+              '#theme' => 'tripald3_stock_pedigree',
+              '#node' => $node,
+              '#tripal_toc_id'    => 'pedigree',
+              '#tripal_toc_title' => 'Pedigree'
+            );
+          }
+        }
+      }
+    break;
+  }
 }

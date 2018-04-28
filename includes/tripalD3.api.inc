@@ -25,8 +25,8 @@ function tripald3_load_libraries() {
   drupal_add_js($path . '/js/tripalD3.test.js', array( 'weight' => -8 ));
   drupal_add_js($path . '/js/tripalD3.pie.js', array( 'weight' => -7 ));
   drupal_add_js($path . '/js/tripalD3.bar.js', array( 'weight' => -7 ));
-  // @todo removing pedigree until data format is simplified.
-  //drupal_add_js($path . '/js/tripalD3.pedigree.js');
+  /** @pedigree removing pedigree until data format is simplified. */
+  drupal_add_js($path . '/js/tripalD3.pedigree.js', array( 'weight' => -7 ));
 
   // CSS.
   drupal_add_css($path . '/css/tripald3.css', array('group' => CSS_DEFAULT, 'type' => 'file'));

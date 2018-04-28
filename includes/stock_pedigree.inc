@@ -67,19 +67,8 @@ function tripald3_is_node_leafless_tree($stock_id) {
  */
 function tripald3_preprocess_tripald3_stock_pedigree(&$vars) {
 
-  $path = drupal_get_path('module', 'tripald3');
-  $libpath = 'sites/all/libraries';
-
   // Add the JS and CSS needed for the template.
-  //-- D3.js Library
-  libraries_load('d3');
-
-  //-- module-specific JS/CSS
-  drupal_add_js($path . '/js/tripalD3.js');
-  drupal_add_css($path . '/css/tripald3.css', array('group' => CSS_DEFAULT, 'type' => 'file'));
-
-  //-- Add settings bioB3 might need
-  tripald3_register_colorschemes();
+  tripald3_load_libraries();
 
   $jsSettings['tripalD3']['autoResize'] = variable_get('tripald3_autoResize', FALSE);
   drupal_add_js($jsSettings, 'setting');

@@ -39,6 +39,7 @@ tripalD3.pedigree = {
       options.backgroundColor = '#FFF';
     }
     if (!options.hasOwnProperty('nodeLinks')) {
+      console.log('here');
       options.nodeLinks = function(d) { return null; }
     }
     if (!options.hasOwnProperty('drawKey')) {
