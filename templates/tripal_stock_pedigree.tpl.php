@@ -50,7 +50,7 @@
             "chartType" : "pedigree",
             "elementId": "tripald3-pedigree",
             "height": 75 * maxDepth,
-            "width": width - 250,
+            "width": width,
             "chartOptions" : {
               "nodeLinks": function(d) {
                 if (d.current.nid) {
