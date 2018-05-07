@@ -38,8 +38,11 @@
         // Calculate the width of the diagram based on the overview pane.
         // We need to do this b/c the hidden div that will contain the tree
         // has width=0 at this point ;-P.
-        width = document.getElementById('base-tripal-data-pane').offsetWidth;
-        console.log(width);
+        width = jQuery('#base-tripal-data-pane').width();
+        if (width == 0) { 
+          width = 750; 
+          console.error('Unable to detect width thus defaulting to 750px.');
+        }
 
         // The following code uses the Tripal D3 module to draw a pedigree tree
         // and attach it to an #tree element. Furthermore, it specifies a path
