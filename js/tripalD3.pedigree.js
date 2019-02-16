@@ -46,6 +46,13 @@ tripalD3.pedigree = {
       options.drawKey = true;
     }
 
+    // # Store figure key position configuration to cascade into other functions.
+    if (options.hasOwnProperty('position') && options.position == 'top') {
+      options.key.pos            = options.position;
+      options.key.wrapperWidth   = options.width;
+      options.key.collapsedDepth = options.collapsedDepth;
+    }
+
     // Used to generate unique ids for the nodes.
     var i = 0;
 
@@ -53,8 +60,33 @@ tripalD3.pedigree = {
     var tree = d3.layout.tree()
         .size([options.width, options.height]);
 
-    // Draw tree.
     root = treeData[0];
+
+
+    if (options.collapsedDepth && options.collapsedDepth > 1) {
+      // Collapse first 3 levels of the tree.
+      var n = tree.nodes(root).reverse();
+      var depth = 0;
+
+      var d = n.map(function(d) {
+        return d.depth;
+      });
+
+      var depth = d3.max(d);
+
+      // Collapse 3 layers from the leaf down.
+      if (depth > options.collapsedDepth) {
+        n.forEach(function(d) {
+          if (d.depth == (depth - options.collapsedDepth) && d.children) {
+            d.children.forEach(function() {
+              d._children = d.children;
+              d.children = null;
+            });
+          }
+        });
+      }
+    }
+
     drawTree(root, options);
 
     // Register resize of tree if config is set.
@@ -124,6 +156,7 @@ tripalD3.pedigree = {
         // Compute the new tree layout
         // and the parent-child links between nodes.
         // NOTE: This computes x,y on an arbitray coordinate system.
+
         var nodes = tree.nodes(root).reverse(),
             links = tree.links(nodes);
 
@@ -137,18 +170,43 @@ tripalD3.pedigree = {
                 maxDepth = d.depth;
             }
         });
+
         var offset = maxDepth * 75;
 
         // Flip the tree to be bottom rooted. (Default top rooted)
         // This is done by multiplying the y coord by -1 to flip
         // the tree on the cartesian plane. Then to pull it back
         // onto the canvas we apply the offset calculated above.
+
+        if (options.position && options.position == 'top') {
+          // Select all the tree nodes into an array
+          // and add a calculated id.
+          var curDepths = nodes.map(function(d){
+            return d.depth;
+          });
+
+          // True size and depth of tree.
+          var trueDepth = d3.max(curDepths);
+
+          // When all chart elements in the DOM.
+          // Update the chart area to reflect snug size.
+
+          // Account for the legend height. Plus 180 top margin.
+          var lh = d3.select('#tripald3-pedigree-legend').node().getBoundingClientRect().height;
+          var legendHeight = (lh) ? (lh + 70) : 180;
+
+          d3.select('svg').attr('height', Math.round(((trueDepth + 1) * 75) + legendHeight));
+        }
+
         nodes.forEach(function (d) {
+            // Calculate the actual tree height
+            // collapsed branch taken into account.
+            if (curDepths)
+              curDepths.push(d.depth);
+
             d.y = -d.y + offset;
         });
 
-        // Select all the tree nodes into an array
-        // and add a calculated id.
         var node = svg.selectAll("g.node")
             .data(nodes, function (d) {
             return d.id || (d.id = ++i);
@@ -171,11 +229,10 @@ tripalD3.pedigree = {
             // call the "click" function.
             .on("dblclick", collapse);
 
-
         // Draw a circle to denote the node.
         nodeEnter.append("circle")
         .attr("r", 6)
-        .style("fill", function(d) { return d._children ? options.nodeFillCollapsed : options.nodeFill; });
+        .style("fill", function(d, i) { return d._children ? options.nodeFillCollapsed : options.nodeFill; });
 
         // Add nodes to the key.
         keyData.push({
@@ -376,6 +433,7 @@ tripalD3.pedigree = {
      * Handles the clicking of nodes to collapse them.
      */
     function collapse(d) {
+
         // Essentially, since the drawTree() function looks for
         // children at node.children, this function empties that
         // array, moving it's contents into node._children. Thus when
@@ -384,6 +442,7 @@ tripalD3.pedigree = {
         if (d.children) {
             d._children = d.children;
             d.children = null;
+
         // If there is already no children then it looks to see if the
         // node._children array exists (signalling this node was
         // already collapsed) and moves it back to node.children,
@@ -392,7 +451,6 @@ tripalD3.pedigree = {
             d.children = d._children;
             d._children = null;
         }
-
         // Create new options and set drawKey to false. The key does not need
         // to be drawn because nothing has changed in that respect.
         newOptions = Object.assign({}, options);

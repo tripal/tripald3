@@ -215,7 +215,8 @@ tripalD3 = {
       return false;
     }
     // Check that the keyPosition is supported.
-    if (!(options.keyPosition == "right" || options.keyPosition == "left")) {
+    // # Added additional key position/area to render.
+    if (!(options.keyPosition == "right" || options.keyPosition == "left" || options.keyPosition == "top")) {
       console.error("The keyPosition supplied is not supported. Supported key positions are 'left' and 'right', you supplied '" + options.keyPosition + "'");
       return false;
     }
@@ -226,14 +227,36 @@ tripalD3 = {
     options.chartOptions.height = options.height - margin.top - margin.bottom;
     // Take into account the key positions when determining the chart
     // drawing area but only if we're drawing the key ;-).
+
+    // Account for the height of the leged on top.
+    var addHeight = 25;
+    var collapsedHeight = 0;
+
     if (options.chartOptions.drawKey) {
-      if (options.keyPosition == "left" || options.keyPosition == "right") {
-        options.chartOptions.width -= options.keyWidth;
+      if (options.keyPosition == "left" || options.keyPosition == "right"  || options.keyPosition == "top") {
+        // Left or Right
         if (options.keyPosition == "left") {
+          options.chartOptions.width -= options.keyWidth;
           options.margin.left += options.keyWidth;
         }
         if (options.keyPosition == "right") {
+          options.chartOptions.width -= options.keyWidth;
           options.key.margin.left += options.chartOptions.width + 10;
+        }
+
+        // Render keys on top of tree.
+
+        if (options.keyPosition == "top") {
+          addHeight = 150;
+
+          // 5 px from the title - add the legend key.
+          options.key.margin.top = 5;
+
+          // Levels/Depth to collapse.
+          options.chartOptions.collapsedDepth = options.collapsedDepth;
+
+          // Add this position to options parameter to cascade into other functions.
+          options.chartOptions.position = 'top';
         }
       }
     }
@@ -245,9 +268,9 @@ tripalD3 = {
     var svg = container.append("svg")
         .attr("class", "tripald3-chart")
         .attr("width", options.width)
-        .attr("height", options.height)
+        .attr("height", (options.height + addHeight))
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + (margin.top + addHeight) + ")");
 
     // Add the figure legend to the indicated element.
     var figLegend = container.append("div")
@@ -357,88 +380,224 @@ tripalD3 = {
         .attr("class", "tripald3-key")
         .attr("transform", "translate(" + leftMargin + "," + topMargin + ")");
 
-      // Add the title.
-      svg.append("g")
+
+      // # Figure key elements.
+
+      if (options.pos && options.pos == 'top') {
+        // Figure keys on top bar.
+        // When option to draw figure key on top of the tree, Legend should be replaced
+        // with the term Germplasm (no text styling applied.)
+
+        var SVGWidth = options.wrapperWidth + options.margin.right + options.margin.left;
+
+        // Main container.
+        var keyWrapper = chartContainer.append('g')
+          .attr('id', 'parentage-pedigree-top-figure-key')
+          .attr('transform', 'translate(0, 0)');
+
+        // Box container
+        keyWrapper.append('g')
+          .attr('id', 'parentage-pedigree-top-box-container')
+          .append('rect')
+            .attr('height', 70)
+            // Less 2, 1px on either side to account for 1px stroke width.
+            .attr('width', (SVGWidth - 2))
+            .attr('fill', '#F9F9F9')
+            .attr('stroke', '#D0D0D0')
+            .attr('y', 5);
+
+        // Since figure legend keys are present only when they are shown in the tree,
+        // compute cell required for each keys present.
+        // Padding 5px each side.
+        var cellPadding = 10;
+        var keyContainer = Math.round(SVGWidth / data.length);
+
+        var keyItemCell = keyWrapper.append('g')
+          .attr('id', 'parentage-pedigree-figure-keys-container')
+          .attr('transform', 'translate(' + (cellPadding * 2) + ', 0)')
+          .selectAll('g')
+          .data(data)
+          .enter()
+          .append('g')
+          .attr('class', 'key-item-container')
+            .attr('id', function(d, i) {
+              return 'key-item-g-' + (i + 1);
+            })
+            .attr('title', function(d) {
+              return d.label;
+            })
+            .attr('transform', function(d, i) {
+              return 'translate(' + (keyContainer * i) + ', ' + (cellPadding / 2) + ')';
+            });
+
+        // Figure key text.
+        keyItemCell.append('text')
+          .text(function(d) {
+            return d.label.trim();
+          })
+          .attr('text-anchor', 'left')
+          .attr('font-weight', 300)
+          .attr('font-size', function() {
+            return (options.wrapperWidth < 750) ? 8 : 12;
+          });
+
+        // With text added, wrap to create multi-line text.
+        keyItemCell.selectAll('text')
+          .call(wrapWords);
+
+
+        // Figure key line.
+        var lineFunction = d3.svg.line()
+          .x(function(d) { return d.y; })
+          .y(function(d) { return d.x; })
+          .interpolate("linear");
+
+        d3.selectAll('.key-item-container')
+          .append('path')
+          .attr('stroke-width', 5)
+          .attr("d", function(d) {
+            // Draw a line 60px long.
+            return lineFunction([{x:45, y:0},{x:15, y:0}]);
+          })
+          .attr('stroke', function(d) { return d.stroke; });
+
+        // Figure key circles.
+        d3.selectAll('.key-item-container')
+          .append('circle')
+          .attr('r', function(d, i) {
+            return (i < 2) ? 8 : 5;
+          })
+          .attr('fill', function(d, i) {
+            return (i == 1) ? '#B3B3B3' : '#FFFFFF';
+          })
+          .attr('stroke-rendering', 'auto')
+          .attr('stroke', '#000000')
+          .attr('stroke-width', 2)
+          .attr('cy', 49)
+          .attr('cx', function(d, i) {
+            return (i < 2) ? cellPadding : 0;
+          });
+
+        // Figure key shown and hidden are special keys in that they
+        // both do not contain a line.
+        d3.select('#key-item-g-1 tspan')
+          .attr('x', 35)
+          .attr('y', function() {
+            return (options.wrapperWidth < 750) ? 5 : 18;
+          });
+
+        d3.select('#key-item-g-2 tspan')
+          .attr('x', 35)
+          .attr('y', function() {
+            return (options.wrapperWidth < 750) ? 5 : 18;
+          });
+
+        // Germplasm Text.
+        keyWrapper.append('g')
+          .attr('class', 'key-title')
+          .append('text')
+            .style('font-size', '14px')
+            .style('font-family', 'serif')
+            .attr('dx', (cellPadding * 2))
+            .attr('y', 30)
+            .text('Germplasm');
+
+        // Add the note that first 3 layers were collapsed.
+        keyWrapper.append('g')
+          .append('text')
+          .text('Note: First ' + options.collapsedDepth + ' levels of this pedigree diagram are collapsed, please double click on hidden germplasm to expand tree.')
+          .attr('y', 95)
+          .attr('font-size', '11px')
+          .attr('font-weight', 300);
+      }
+      else {
+        // Left or Right.
+        svg.append("g")
         .attr("class", "key-title")
         .append('text')
           .attr("x", 70)
           .attr('y', 4)
-          .style({"font-size": "1.1em", "font-weight": "bold", "text-decoration": "underline"})
-          .text(options.title);
+          .style(function() {
+            return (options.pos) ? '' : {"font-size": "1.1em", "font-weight": "bold", "text-decoration": "underline"}
+          })
+          .text(function() {
+            return (options.pos) ? 'Germplasm' : options.title;
+          });
 
-      // Now for each item in the data array, create a g legend-item
-      // and move it to where we want each member of the lengend to go.
-      var keyItems = svg.selectAll('.key-item')
-        .data(data)
-        .enter()
-        .append('g')
-        .attr('class', function(d) {
-          if (d.groupClasses) {
-            return 'key-item ' + d.type + ' ' + d.groupClasses.join(' ');
-          } else {
-            return 'key-item ' + d.type;
-          }
-        })
-        .attr('transform', function(d, i) {
-          var horz = 0;
-          // Note: use i+1 to take into account title.
-          var vert = (i+1) * keySpacing;
-          return 'translate(' + horz + ',' + vert + ')';
-        });
+        // Now for each item in the data array, create a g legend-item
+        // and move it to where we want each member of the lengend to go.
+        var keyItems = svg.selectAll('.key-item')
+          .data(data)
+          .enter()
+          .append('g')
+          .attr('class', function(d) {
+            if (d.groupClasses) {
+              return 'key-item ' + d.type + ' ' + d.groupClasses.join(' ');
+            } else {
+              return 'key-item ' + d.type;
+            }
+          })
+          .attr('transform', function(d, i) {
+            var horz = 0;
+            // Note: use i+1 to take into account title.
+            var vert = (i+1) * keySpacing;
+            return 'translate(' + horz + ',' + vert + ')';
+          });
 
-      // Draw any lines:
-      //---------------------------------
-      // Define a function to draw the line.
-      var lineFunction = d3.svg.line()
-        .x(function(d) { return d.x; })
-        .y(function(d) { return d.y; })
-        .interpolate("linear");
+        // Draw any lines:
+        //---------------------------------
+        // Define a function to draw the line.
+        var lineFunction = d3.svg.line()
+          .x(function(d) { return d.x })
+          .y(function(d) { return d.y; })
+          .interpolate("linear");
 
-      // For each key-item of type path, add a path element with the
-      // classes specified in data and a length similar to the lines
-      // drawn in the diagram.
-      svg.selectAll('.key-item.path').append('path')
-        .attr('class', function( i, val ) {
-          return i.classes.join(' ');
-        })
-        .attr("d", function(d) {
-          // Draw a line 60px long.
-          return lineFunction([{x:0, y:0},{x:55, y:0}]);
-        })
-        .attr('stroke', function(d) { return d.stroke; });
+        // For each key-item of type path, add a path element with the
+        // classes specified in data and a length similar to the lines
+        // drawn in the diagram.
+        svg.selectAll('.key-item.path').append('path')
+          .attr('class', function( i, val ) {
+            return i.classes.join(' ');
+          })
+          .attr("d", function(d) {
+            // Draw a line 60px long.
+            return lineFunction([{x:0, y:0},{x:55, y:0}]);
+          })
+          .attr('stroke', function(d) { return d.stroke; });
 
-      // Draw any rectangles:
-      //---------------------------------
-      // For each key-item of type circle, add a circle element with the
-      // classes specified in data.
-      svg.selectAll('.key-item.rect').append('rect')
-        .attr("x", 45)
-        .attr("y", -7)
-        .attr("width", 14)
-        .attr("height", 14)
-        .attr('class', function( i, val ) {
-          return i.classes.join(' ');
-        })
-        .style("fill", function(d) { return d.fillColor; });
+        // Draw any rectangles:
+        //---------------------------------
+        // For each key-item of type circle, add a circle element with the
+        // classes specified in data.
+        svg.selectAll('.key-item.rect').append('rect')
+          .attr("x", 45)
+          .attr("y", -7)
+          .attr("width", 14)
+          .attr("height", 14)
+          .attr('class', function( i, val ) {
+            return i.classes.join(' ');
+          })
+          .style("fill", function(d) { return d.fillColor; });
 
-      // Draw any circles:
-      //---------------------------------
-      // For each key-item of type circle, add a circle element with the
-      // classes specified in data.
-      svg.selectAll('.key-item.circle').append('circle')
-        .attr("r", 6)
-        .attr('class', function( i, val ) {
-          return i.classes.join(' ');
-        })
-        .style("fill", function(d) { return d.fillColor; })
-        .attr('transform','translate(27,0)');
+        // Draw any circles:
+        //---------------------------------
+        // For each key-item of type circle, add a circle element with the
+        // classes specified in data.
+        svg.selectAll('.key-item.circle').append('circle')
+          .attr("r", 6)
+          .attr('class', function( i, val ) {
+            return i.classes.join(' ');
+          })
+          .style("fill", function(d) { return d.fillColor; })
+          .attr('transform','translate(27,0)');
 
-      // Add the labels for each item:
-      //---------------------------------
-      keyItems.append('text')
-        .attr('x', 70)
-        .attr('y', 4)
-        .text(function(d) { return d.label; });
+        // Add the labels for each item:
+        //---------------------------------
+        keyItems.append('text')
+          .attr('x', 70)
+          .attr('y', 4)
+          .text(function(d) { return d.label; });
+      }
     }
   },
 
@@ -717,3 +876,61 @@ tripalD3 = {
   },
 
 };
+
+
+// Wrap long text value and set the first line
+// to bold and capitalized.
+function wrapWords(text) {
+  text.each(function() {
+    // Reference text.
+    var text  = d3.select(this);
+
+    // Clean up words - No Germplasm, No Pedigree either.
+    if (text.text() == 'Germplasm (Pedigree shown)') {
+      text.text('Shown');
+    }
+    else if(text.text() == 'Germplasm (Pedigree hidden)') {
+      text.text('Hidden');
+    }
+
+    // Read the words in the text.
+    var textString = text.text();
+    var words = textString.split(' ');
+
+    if (words.length > 1) {
+      // Half only when there are words.
+      var halfed = Math.round(textString.length / 2);
+      // Last index of spaces.
+      var first = textString.lastIndexOf(' ', halfed);
+      var last  = textString.indexOf(' ', halfed + 1);
+      // With both indexes computed, calculate the new half.
+      halfed = ((halfed - first) < (last - halfed)) ? first : last;
+
+      words = [
+        textString.substr((halfed + 1)).toUpperCase(),
+        textString.substr(0, halfed).replace('is', '').trim().toUpperCase(),
+        'is a',
+      ]
+    }
+
+    /// Clear the text so no duplicate label shown.
+    text.text(null);
+
+    var word,
+      line = [],
+      lineNumber = 0,
+      lineHeight = 1; // ems
+      y = text.attr('y') - 10,
+      dy = (text.attr('font-size') == 12) ? 2 : 5;
+
+    while (word = words.pop()) {
+      text.append('tspan')
+        .attr('class', 'bp-tspan')
+        .attr('x', 10)
+        .attr('y', y)
+        .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+        .text(word.trim())
+        .attr('font-family', 'sans-serif');
+      }
+  });
+}

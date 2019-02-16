@@ -151,13 +151,22 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
   $sql = $sql . implode(' OR ', $where) . ' ORDER BY cvt.name ASC';
   $rels = chado_query($sql , array(':id' => $id));
 
-  foreach($rels as $rel) {
 
+  foreach($rels as $i => $rel) {
     // If we are dealing with a subject rooted relationship:
     if ($rel->subject_id == $id) {
 
       $child = chado_generate_var($base_table, array('stock_id' => $rel->object_id), $generate_var_options);
       $child = chado_expand_var($child, 'node','stock');
+
+      if ($i == 0) {
+        $all_stock_types = tripald3_get_pedigree_stock_types($child->stock->stock_id);
+        $stock_type = $all_stock_types[$child->stock->type_id];
+      }
+      else {
+        $stock_type = $all_stock_types[$child->stock->type_id];
+      }
+
 
       if (isset($child->nid)) {
         $stock = $child->stock;
@@ -166,6 +175,12 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       else {
         $stock = $child;
       }
+
+      $tmp_id  = tripald3_get_pedigree_entity_id($stock->stock->stock_id, strtolower($stock_type));
+      $entity_id = ($tmp_id) ? $tmp_id : #;
+
+      $url = $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;
+      $stock->url = $url;
 
       $subnode = array(
         'current' => $stock,
@@ -196,6 +211,14 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       $child = chado_generate_var($base_table, array('stock_id' => $rel->subject_id), $generate_var_options);
       $child = chado_expand_var($child, 'node','stock');
 
+      if ($i == 0) {
+        $all_stock_types = tripald3_get_pedigree_stock_types($child->stock->stock_id);
+        $stock_type = $all_stock_types[$child->stock->type_id];
+      }
+      else {
+        $stock_type = $all_stock_types[$child->stock->type_id];
+      }
+
       if (isset($child->nid)) {
         $stock = $child->stock;
         $stock->nid = $child->nid;
@@ -203,6 +226,12 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       else {
         $stock = $child;
       }
+
+      $tmp_id  = tripald3_get_pedigree_entity_id($stock->stock_id, strtolower($stock_type));
+      $entity_id = ($tmp_id) ? $tmp_id : #;
+      $stock->m = $stock->stock_id;
+      $stock->type = $stock_type;
+      $stock->url =  $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;;
 
       $subnode = array(
         'current' => $stock,
@@ -271,3 +300,64 @@ function tripald3_get_pedigree_relationship_types() {
 
   return $rels_to_restrict;
 }
+
+
+/**
+ * Function get all stock types.
+ *
+ * @param $stock_id
+ *   Integer, stock id number from chado.stock.
+ *
+ * @return array
+ *   An associative array, the key is the cvterm id and value is the name
+ *   representing the type of stock.
+ */
+function tripald3_get_pedigree_stock_types($stock_id) {
+  // To elimimnate the need to hard code the source CV name,
+  // this block will determine stock type by using the type
+  // of the parent stock.
+  $stock_types = chado_query('
+    SELECT cvterm_id, name FROM {cvterm} WHERE cv_id = (
+      SELECT cv_id FROM {cvterm} WHERE cvterm_id =  (
+        SELECT type_id FROM {stock} WHERE stock_id = :stock_id
+      )
+    ) order by name ASC', array('stock_id' => $stock_id))
+  ->fetchAllKeyed();
+
+  return ($stock_types) ? $stock_types : null;
+}
+
+
+/**
+ * Function get entity id from tripal 3 content type.
+ *
+ * @param $stock_id
+ *   Integer, stock_id from chado.stock table.
+ * @param $stock_type
+ *   String, the content type of the germplasm.
+ *
+ * @return
+ *   Entity id or # or an blank anchor when entity id cannot be extracted.
+ */
+function tripald3_get_pedigree_entity_id($stock_id, $stock_type) {
+  $m = db_query('SELECT t1.name
+    FROM {tripal_bundle} AS t1 LEFT JOIN {tripal_term} AS t2 ON t1.term_id = t2.id
+    WHERE t2.name = :stock_type', array(':stock_type' => $stock_type))
+    ->fetchField();
+
+  if ($m) {
+    $chado_bundle = 'chado_' . $m;
+
+    $sql = sprintf('SELECT t1.entity_id FROM %s AS t1 INNER JOIN {stock} AS t2 ON t1.record_id = t2.stock_id
+      WHERE stock_id = :stock_id LIMIT 1', $chado_bundle);
+
+    $entity = chado_query($sql, array(':stock_id' => $stock_id))
+      ->fetchField();
+
+    // If it can not find, set the eneity id to pound to blank anchor.
+    return ($entity) ? $entity : '#';
+  }
+
+  return '#';
+}
+
