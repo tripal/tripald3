@@ -230,7 +230,7 @@ series of data.</p>
   <!-- Javascript will add a Simple Bar Chart, Title and Figure legend here -->
 </div>
 
-<!--------  PEDIGREE DIAGRAM ------------------------------------------------
+<!--------  PEDIGREE DIAGRAM ------------------------------------------------->
 <h3>Pedigree Diagram</h3>
 <p>This diagram was developed to mimic plant breeder pedigrees with additional
   features such as collapsible nodes and colour-coded relationships.</p>
@@ -246,7 +246,7 @@ series of data.</p>
             stock_id: "1",
             name: "Heart Olive",
             uniquename: "GERM:1",
-            nid: "1"
+            url: "bio_data/1"
           },
           parent: {
             stock_id: "null",
@@ -258,7 +258,7 @@ series of data.</p>
                 stock_id: "2",
                 name: "Wild Cress",
                 uniquename: "GERM:2",
-                nid: "2"
+                url: "bio_data/2"
               },
               parent: {
                 parent_id: "1",
@@ -278,7 +278,7 @@ series of data.</p>
                     stock_id: "3",
                     name: "Spring Leek",
                     uniquename: "GERM:3",
-                    nid: "3"
+                    url: "bio_data/3"
                   },
                   parent: {
                     parent_id: "2",
@@ -301,7 +301,7 @@ series of data.</p>
               stock_id: "4",
               name: "Mountain Olive",
               uniquename: "GERM:4",
-              nid: "4"
+              url: "bio_data/4"
             },
             parent: {
               parent_id: "1",
@@ -321,7 +321,7 @@ series of data.</p>
                   stock_id: "2",
                   name: "Wild Cress",
                   uniquename: "GERM:2",
-                  nid: "2"
+                  url: "bio_data/2"
                 },
                 parent: {
                   parent_id: "4",
@@ -341,7 +341,7 @@ series of data.</p>
                       stock_id: "3",
                       name: "Spring Leek",
                       uniquename: "GERM:3",
-                      nid: "3"
+                      url: "bio_data/3"
                     },
                     parent: {
                       parent_id: "2",
@@ -364,7 +364,7 @@ series of data.</p>
                   stock_id: "5",
                   name: "Tiger Parsley",
                   uniquename: "GERM:5",
-                  nid: "5"
+                  url: "bio_data/5"
                 },
                 parent: {
                   parent_id: "4",
@@ -395,14 +395,33 @@ series of data.</p>
           "chartType" : "pedigree",
           "elementId": "tripald3-pedigree",
           "height": 320,
+          "keyPosition" : "top",
           "title": "<em>Heart Olive</em> Parental Pedigree",
           "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
         }
       );
+
+      tripalD3.drawFigure(
+        treedata,
+        {
+          "chartType" : "pedigree",
+          "elementId": "tripald3-pedigree-right",
+          "height": 320,
+          "keyPosition" : "right",
+          "title": "<em>Heart Olive</em> Parental Pedigree",
+          "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
+        }
+      ); 
     }
   };
 </script>
 
+<h4>Pedigree with keyPosition top</h4>
 <div id="tripald3-pedigree" class="tripald3-diagram">
-  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here -
-</div> -->
+  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here --> 
+</div>
+
+<h4>Pedigree with keyPosition right</h4>
+<div id="tripald3-pedigree-right" class="tripald3-diagram">
+  <!-- Javascript will add the pedigree diagram and figure legend here -->
+</div>
