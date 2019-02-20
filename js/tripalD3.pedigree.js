@@ -267,7 +267,7 @@ tripalD3.pedigree = {
         //   and which do not, since we have to treat them differently.
         nodeEnter.each(function(d,i) {
           d.current.label = {
-            'url': options.nodeLinks(d),
+            'url': d.current.url,
             'text': d.current.name
           };
 

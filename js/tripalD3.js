@@ -502,13 +502,15 @@ tripalD3 = {
             .attr('y', 30)
             .text('Germplasm');
 
-        // Add the note that first 3 layers were collapsed.
-        keyWrapper.append('g')
-          .append('text')
-          .text('Note: First ' + options.collapsedDepth + ' levels of this pedigree diagram are collapsed, please double click on hidden germplasm to expand tree.')
-          .attr('y', 95)
-          .attr('font-size', '11px')
-          .attr('font-weight', 300);
+        if (options.collapsedDepth && options.collapsedDepth > 0) {
+          // Add the note that first 3 layers were collapsed.
+          keyWrapper.append('g')
+            .append('text')
+            .text('Note: First ' + options.collapsedDepth + ' levels of this pedigree diagram are collapsed, please double click on hidden germplasm to expand tree.')
+            .attr('y', 95)
+            .attr('font-size', '11px')
+            .attr('font-weight', 300);
+        }
       }
       else {
         // Left or Right.
