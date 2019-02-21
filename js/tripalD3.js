@@ -506,7 +506,7 @@ tripalD3 = {
           // Add the note that first 3 layers were collapsed.
           keyWrapper.append('g')
             .append('text')
-            .text('Note: First ' + options.collapsedDepth + ' levels of this pedigree diagram are collapsed, please double click on hidden germplasm to expand tree.')
+            .text('Note: Only the first ' + options.collapsedDepth + ' levels of this pedigree diagram are expanded, please double click on hidden germplasm to expand tree.')
             .attr('y', 95)
             .attr('font-size', '11px')
             .attr('font-weight', 300);
