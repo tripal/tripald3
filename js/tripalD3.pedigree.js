@@ -64,7 +64,6 @@ tripalD3.pedigree = {
 
 
     if (options.collapsedDepth && options.collapsedDepth > 0) {
-      // Collapse first 3 levels of the tree.
       var n = tree.nodes(root).reverse();
       var depth = 0;
 
@@ -74,13 +73,18 @@ tripalD3.pedigree = {
 
       var depth = d3.max(d);
 
-      // Collapse layers from the leaf down.
+      // Expand only lavels from the root to collapse level configuration.
       if (depth > options.collapsedDepth) {
         n.forEach(function(d) {
-          if (d.depth == (depth - options.collapsedDepth) && d.children) {
+          if (d.depth > (options.collapsedDepth - 1) && d.children) {
+            // Expand from base/root to collapse level,
+            // everything else should be collapsed.
             d.children.forEach(function() {
-              d._children = d.children;
-              d.children = null;
+              if (d.children) {
+                // Only when with descendants - then collapse.
+                d._children = d.children;
+                d.children = null;
+              }
             });
           }
         });
