@@ -1,8 +1,8 @@
 
-Draw a Simple Pie Chart
+Draw a Simple Donut Chart
 =========================
 
-.. image:: draw_simplepie.1.png
+.. image:: draw_simpledonut.1.png
 
 1. Load the API into the page you would like your diagram using ``<php tripald3_load_libraries();?>``
 2. Retrieve you data and manipulate it into the structure required by the chart. This can be done a number of ways, the easiest of which is to query your database in your Drupal preprocess hook and then save the results as a javascript setting.
@@ -44,7 +44,7 @@ Draw a Simple Pie Chart
       // Always namespace to your module to avoid collisions.
       'demo' => array(
         // Pass in your data using a descriptive settings key.
-        'stockTypePieData' => $data,
+        'stockTypeDonutData' => $data,
       ),
     );
     drupal_add_js($settings, 'setting');
@@ -54,8 +54,8 @@ Draw a Simple Pie Chart
 
 .. code-block:: html
 
-  <div id="tripald3-simplepie" class="tripald3-diagram">
-    <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
+  <div id="tripald3-simpledonut" class="tripald3-diagram">
+    <!-- Javascript will add the Simple Donut Chart, Title and Figure legend here -->
   </div>
 
 
@@ -64,23 +64,23 @@ Draw a Simple Pie Chart
 .. code-block:: html
 
   <script type="text/javascript">
-    Drupal.behaviors.tripalD3demoSimplePie = {
+    Drupal.behaviors.tripalD3demoSimpleDonut = {
       attach: function (context, settings) {
 
         // Pull the data out of the javascript settings.
-        var data = Drupal.settings.demo.stockTypePieData;
+        var data = Drupal.settings.demo.stockTypeDonutData;
 
         // Draw your chart.
         tripalD3.drawFigure(
           data,
           {
-            "chartType" : "simplepie",
-            "elementId": "tripald3-simplepie",
+            "chartType" : "simpledonut",
+            "elementId": "tripald3-simpledonut",
             "height": 250,
             "width": 500,
-            "keyPosition": "right",
+            "keyPosition": "left",
             "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
-            "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
+            "legend": "The above donut chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
           }
         );
       }

@@ -9,6 +9,8 @@ This guide contains tutorials for using the Tripal D3.js API to add diagrams to 
    :caption: Contents:
 
    dev_guide/draw_simplepie
+   dev_guide/draw_simpledonut
+   dev_guide/draw_multidonut
    dev_guide/color_scheme
 
 Additional Information
