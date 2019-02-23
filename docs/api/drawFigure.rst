@@ -31,7 +31,7 @@ def ``drawFigure(data, options)``:
         :title: the title of the key; default "Legend".
         :margin: an object with 'top', 'right','bottom','left' keys. Values are in pixels and all four keys must be set.
 
-Draw Key
+drawKey
 ---------
 
 This function is called by ``drawFigure`` where ``drawKey: true``. Draws a graphical key on an existing diagram to explain the colours and styles used.

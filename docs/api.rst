@@ -9,6 +9,10 @@ These docs provide full details of the javascript API including all options avai
    :caption: Contents:
 
    api/drawFigure
+   api/drawSimplePie
+   api/drawSimpleDonut
+   api/drawMultiDonut
+   api/drawSimpleBar
    api/ellipsisThrobber
    api/popover
    api/getColorScheme
