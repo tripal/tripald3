@@ -276,7 +276,7 @@ tripalD3.pedigree = {
           };
 
           // If the current node is linkable then add a link around the label.
-          if (d.current.label.url) {
+          if (d.current.label.url && d.current.label.url != '#') {
 
             d3.select(this)
               .classed('linkable', true)

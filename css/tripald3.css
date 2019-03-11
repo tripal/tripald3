@@ -38,3 +38,8 @@
 svg.tripald3-tree .tree-node {
     cursor: pointer;
 }
+
+/* Justify figure legend text */
+#tripald3-pedigree-legend {
+  text-align: justify;
+}

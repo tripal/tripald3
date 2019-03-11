@@ -115,7 +115,7 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
     $root = chado_generate_var($base_table, array($base_table_pkey => $id), $generate_var_options);
     $root = chado_expand_var($root, 'node','stock');
     $data = array(
-      'current' => $root->stock,
+      'current' => (isset($root->stock)) ? $root->stock : $root,
       'parent' => array('stock_id' => "null", 'name' => "null"),
       'children' => array(),
     );
@@ -177,10 +177,11 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       }
 
       $tmp_id  = tripald3_get_pedigree_entity_id($stock->stock->stock_id, strtolower($stock_type));
-      $entity_id = ($tmp_id) ? $tmp_id : #;
+      $entity_id = ($tmp_id) ? $tmp_id : '#';
 
-      $url = $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;
-      $stock->url = $url;
+      $stock->url = ($entity_id == '#')
+        ? $entity_id
+        : $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;
 
       $subnode = array(
         'current' => $stock,
@@ -228,10 +229,14 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
       }
 
       $tmp_id  = tripald3_get_pedigree_entity_id($stock->stock_id, strtolower($stock_type));
-      $entity_id = ($tmp_id) ? $tmp_id : #;
+      $entity_id = ($tmp_id) ? $tmp_id : '#';
+
       $stock->m = $stock->stock_id;
       $stock->type = $stock_type;
-      $stock->url =  $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;;
+
+      $stock->url = ($entity_id == '#')
+        ? $entity_id
+        : $GLOBALS['base_url'] . '/' . str_replace(' ', '_', strtolower($stock_type)) . '/' . $entity_id;
 
       $subnode = array(
         'current' => $stock,
