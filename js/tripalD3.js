@@ -393,7 +393,7 @@ tripalD3 = {
         // Main container.
         var keyWrapper = chartContainer.append('g')
           .attr('id', 'parentage-pedigree-top-figure-key')
-          .attr('transform', 'translate(0, 0)');
+          .attr('transform', 'translate(1, 0)');
 
         // Box container
         keyWrapper.append('g')
@@ -504,12 +504,29 @@ tripalD3 = {
 
         if (options.collapsedDepth && options.collapsedDepth > 0) {
           // Add the note that first 3 layers were collapsed.
+          var textNote = [
+            'Note: Only the first ' + options.collapsedDepth + ' levels of this pedigree diagram are expanded,',
+            'please double click on hidden germplasm to expand tree.'
+          ];
+
+          // split text into halves when not enough room that text would end up being clipped.
           keyWrapper.append('g')
             .append('text')
-            .text('Note: Only the first ' + options.collapsedDepth + ' levels of this pedigree diagram are expanded, please double click on hidden germplasm to expand tree.')
+            .text(function() {
+              return (options.wrapperWidth < 750) ? textNote[0] : textNote[0] + ' ' + textNote[1];
+            })
             .attr('y', 95)
             .attr('font-size', '11px')
             .attr('font-weight', 300);
+
+          if (options.wrapperWidth < 750) {
+            keyWrapper.append('g')
+              .append('text')
+              .text(textNote[1])
+              .attr('y', 107)
+              .attr('font-size', '11px')
+              .attr('font-weight', 300);
+          }
         }
       }
       else {
@@ -899,22 +916,6 @@ function wrapWords(text) {
     var textString = text.text();
     var words = textString.split(' ');
 
-    if (words.length > 1) {
-      // Half only when there are words.
-      var halfed = Math.round(textString.length / 2);
-      // Last index of spaces.
-      var first = textString.lastIndexOf(' ', halfed);
-      var last  = textString.indexOf(' ', halfed + 1);
-      // With both indexes computed, calculate the new half.
-      halfed = ((halfed - first) < (last - halfed)) ? first : last;
-
-      words = [
-        textString.substr((halfed + 1)).toUpperCase(),
-        textString.substr(0, halfed).replace('is', '').trim().toUpperCase(),
-        'is a',
-      ]
-    }
-
     /// Clear the text so no duplicate label shown.
     text.text(null);
 
@@ -925,7 +926,23 @@ function wrapWords(text) {
       y = text.attr('y') - 10,
       dy = (text.attr('font-size') == 12) ? 2 : 5;
 
+    words.reverse();
+
+    var i = 0;
     while (word = words.pop()) {
+      if (i == 0) {
+        word = (word == 'is') ? 'is a' : word;
+        word.toLowerCase();
+      }
+      else {
+        if (words[ (words.length - 1) ] == 'of') {
+          word = word + ' of';
+          words.pop();
+        }
+
+        word = word.toUpperCase();
+      }
+
       text.append('tspan')
         .attr('class', 'bp-tspan')
         .attr('x', 10)
@@ -933,6 +950,8 @@ function wrapWords(text) {
         .attr('dy', ++lineNumber * lineHeight + dy + 'em')
         .text(word.trim())
         .attr('font-family', 'sans-serif');
-      }
+
+      i++;
+    }
   });
 }

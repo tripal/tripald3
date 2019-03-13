@@ -38,3 +38,14 @@
 svg.tripald3-tree .tree-node {
     cursor: pointer;
 }
+
+/* Justify figure legend text */
+#tripald3-pedigree-legend {
+  text-align: justify;
+}
+
+/* Make border of figure key legend box sharp/crisp */
+#parentage-pedigree-top-box-containe rect {
+  shape-rendering: crispEdges;
+  stroke-width: 1px;
+}
