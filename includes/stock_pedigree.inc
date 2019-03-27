@@ -127,9 +127,11 @@ function tripald3_get_relationship_tree_data($base_table, $id, $options = array(
     // Link of the root.
     $entity_id = tripald3_get_pedigree_entity_id($root->stock->stock_id, $root->stock->type_id);
     $root->url = ($entity_id == '#') ? $entity_id : sprintf($url, $GLOBALS['base_url'], $bio_data, $entity_id);
-
+    
+    // In some cases root->name returns the name of the person who entered the germplasm. 
+    // This condition will check if stock is present if so, use it instead of current.
     $data = array(
-      'current' => $root,
+      'current' => ($root->stock) ? $root->stock : $root,
       'parent' => array('stock_id' => "null", 'name' => "null"),
       'children' => array(),
     );
