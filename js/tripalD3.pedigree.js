@@ -53,6 +53,10 @@ tripalD3.pedigree = {
       options.key.collapsedDepth = options.collapsedDepth;
     }
 
+    if (options.hasOwnProperty('pass')) {
+      var pass = options.pass;
+    }
+
     // Used to generate unique ids for the nodes.
     var i = 0;
 
@@ -82,7 +86,10 @@ tripalD3.pedigree = {
             d.children.forEach(function() {
               if (d.children) {
                 // Only when with descendants - then collapse.
-                d._children = d.children;
+                if (pass) {
+                  d._children = d.children;
+                }
+
                 d.children = null;
               }
             });
