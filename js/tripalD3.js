@@ -261,6 +261,10 @@ tripalD3 = {
       }
     }
 
+    if (options.pass) {
+      options.chartOptions.pass = options.pass;
+    }
+
     // Make our container the size of the chart.
     container.style({"width": options.width + "px"});
 
