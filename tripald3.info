@@ -5,3 +5,6 @@ package = Tripal Extensions
 
 dependencies[] = tripal
 dependencies[] = libraries
+
+stylesheets[all][] = css/tripald3.css
+scripts[] = js/tripalD3.watermark.js

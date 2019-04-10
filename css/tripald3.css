@@ -49,3 +49,16 @@ svg.tripald3-tree .tree-node {
   shape-rendering: crispEdges;
   stroke-width: 1px;
 }
+
+
+/**
+ * Watermark rule.
+ */
+.tripald3-watermark {
+  background: url(watermark.png) center 40% no-repeat;
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+}
