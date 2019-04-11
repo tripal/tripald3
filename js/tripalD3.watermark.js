@@ -44,9 +44,9 @@ function tripalD3Watermark() {
   var dir = [
     'phenotypes',   // All of phenotypes/
     'lentiltraits', // All of LentilTraits/
-    'f1',
-    'cicer',
-    'demo',
+    // 'f1',
+    // 'cicer',
+    // 'demo',
     // Add directory here...
   ];
 
