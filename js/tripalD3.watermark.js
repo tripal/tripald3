@@ -10,7 +10,7 @@ var reqAJAX = false;
 jQuery(document).ready(function() {
   // Apply watermark:
   // Set to true to watermark visualizations.
-  var applyWatermark = true;
+  var applyWatermark = false;
 
   if (applyWatermark) {
     tripalD3DelayWatermark();
