@@ -898,6 +898,54 @@ tripalD3 = {
     }
   },
 
+
+  /**
+   * Add watermark to visualizations.
+   *
+   * @param options
+   *   watermark : image source, preferably the absolute path to the image.
+   *
+   * @return integer
+   *   Number of SVGs stamped.
+   */
+   placeWatermark: function(options = null) {
+     var stampedCount = 0;
+
+     if (jQuery('svg')) {
+       // Begin watermark-ing.
+
+       // Find all svg and stamp.
+       jQuery('svg').each(function(i) {
+         var overlayId    = 'tripald3-watermark-overlay' + i;
+         var overlay      = '<div id="' + overlayId + '">&nbsp;</div>';
+
+         // Rule definition in tripald3.css.
+         var overlayClass = 'tripald3-watermark';
+         jQuery(this).parent().css('position', 'relative').append(overlay);
+
+         var refOverlay = jQuery('#' + overlayId);
+         // Set general style for the overlay.
+         refOverlay.addClass(overlayClass);
+
+         // Set image source for the watermark.
+         if (options) {
+           // Has image source.
+           refOverlay.css("background-image", function() {
+             return 'url(' + options.watermark + ')';
+           });
+         }
+         else {
+           // Default watermark: This can be implemented
+           // for a global watermark.
+           refOverlay.addClass('tripald3-default-watermark');
+         }
+
+         stampedCount++;
+       });
+     }
+
+     return stampedCount;
+   }
 };
 
 
