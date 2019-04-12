@@ -1,0 +1,17 @@
+/**
+ * Watermark rule.
+ */
+.tripald3-watermark {
+  background-repeat: no-repeat;
+  background-position: center 40%;
+
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+}
+
+.tripald3-default-watermark {
+  background-image: url(watermark.png);
+}

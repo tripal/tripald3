@@ -20,6 +20,95 @@
   you first developing pages or fields that connect data to them.</p>
 
 <!--------  PIE CHARTS ------------------------------------------------------->
+<h3>Watermark Diagram</h3>
+<p>This example shows a pie chart that has watermark overlay to visually indicate proprietary content.</p>
+
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoMultiDonut22 = {
+    attach: function (context, settings) {
+
+      // @todo move data into a separate file for better readability.
+      var multiDonutData2 = [
+        {
+          "label": "MarkerX",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 11,
+            },
+            {
+              "label": "AA",
+              "count": 5,
+            },
+            {
+              "label": "AG",
+              "count": 2,
+            },
+          ],
+        },
+        {
+          "label": "MarkerY",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 140,
+            },
+            {
+              "label": "AA",
+              "count": 94,
+            },
+            {
+              "label": "AG",
+              "count": 19,
+            },
+          ],
+        },
+        {
+          "label": "Markerz",
+          "parts": [
+            {
+              "label": "GG",
+              "count": 73,
+            },
+            {
+              "label": "AA",
+              "count": 73,
+            },
+          ],
+        },
+      ];
+
+      // The following code uses the Tripal D3 module to draw a multi-series chart
+      // and attach it to an #tripald3-multidonut element.
+      // Notice that the data for the pie chart is passed in directly.
+      tripalD3.drawFigure(
+        multiDonutData2,
+        {
+          "chartType" : "multidonut",
+          "elementId": "tripald3-multidonut2",
+          "height": 250,
+          "width": 650,
+          "keyPosition": "left",
+          "title": "Comparison of allele calls across 3 FBA-1 markers",
+          "legend": "The above chart shows the allele ratios for three seperate markers assaying the FBA-1 (fictional but amazing) gene.",
+          "key": {"title": "Alleles"},
+        }
+      );
+
+      tripalD3.placeWatermark();
+    }
+  };
+</script>
+
+<div id="tripald3-multidonut2" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
+</div>
+
+<br />
+
+
+
 <h3>Simple Pie Chart</h3>
 <p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
 
@@ -412,14 +501,14 @@ series of data.</p>
           "title": "<em>Heart Olive</em> Parental Pedigree",
           "legend": "The above tree depicts the parentage of <em>Heart Olive</em>. The type of relationship is indicated both using line styles defined in the legend and also in sentence form when you hover your mouse over the relationship lines. Additional information about each germplasm can be obtained by clicking on the Germplasm name. Furthermore, parts of the pedigree diagram can be collapsed or expanded by double-clicking on a Germplasm node.",
         }
-      ); 
+      );
     }
   };
 </script>
 
 <h4>Pedigree with keyPosition top</h4>
 <div id="tripald3-pedigree" class="tripald3-diagram">
-  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here --> 
+  <!-- Javascript will add the Pedigree Diagram, Title and Figure legend here -->
 </div>
 
 <h4>Pedigree with keyPosition right</h4>
