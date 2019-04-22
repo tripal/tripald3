@@ -3,7 +3,7 @@ placeWatermark
 ============
 .. warning::
 
-  Although this function places a watermark over diagrams, It is important to note that the watermark can be omitted with advance knowledge of HTML, CSS and DOM. Please be advised to take extra steps to achieve full restriction of content.``
+  Although this function places a watermark over diagrams, it is important to note that the watermark can be omitted with advance knowledge of HTML, CSS and DOM. Please be advised to take extra steps to achieve full restriction of content.``
 
 This function places a watermark overlay to diagrams to indicate proprietary content/visualization in a page.
 
