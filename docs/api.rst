@@ -16,3 +16,4 @@ These docs provide full details of the javascript API including all options avai
    api/ellipsisThrobber
    api/popover
    api/getColorScheme
+   api/placeWatermark
