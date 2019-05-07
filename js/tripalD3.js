@@ -268,6 +268,10 @@ tripalD3 = {
     // Make our container the size of the chart.
     container.style({"width": options.width + "px"});
 
+    // Remove existing chart.
+    d3.selectAll('#'+options.elementId+' svg.tripald3-chart').remove();
+    d3.selectAll('#'+options.elementId+'-legend').remove();
+
     // Append our drawing area to the element specified.
     var svg = container.append("svg")
         .attr("class", "tripald3-chart")
@@ -918,6 +922,9 @@ tripalD3 = {
        jQuery('svg').each(function(i) {
          var overlayId    = 'tripald3-watermark-overlay' + i;
          var overlay      = '<div id="' + overlayId + '">&nbsp;</div>';
+
+         // Remove existing watermark if needed.
+         d3.selectAll('#'+overlayId).remove();
 
          // Rule definition in tripald3.css.
          var overlayClass = 'tripald3-watermark';
