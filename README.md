@@ -29,6 +29,7 @@ Furthermore, all diagrams have a consistent, configurable colour scheme and key.
 - Donut Pie Chart
 - Multi-Ring Pie Chart (Multiple series)
 - Simple Bar Chart
+- Histogram
 - Pedigree Diagram
 
 ## Screenshots from Demo
