@@ -1,16 +1,16 @@
 /**
  * @file
- * Bar Chart functionality.
+ * Histogram functionality.
  */
-tripalD3.bar = {
+tripalD3.histogram = {
 
   /**
-   * Draw a simple bar chart.
+   * Draw a simple histogram.
    *
    * @param svg
-   *   The canvas to draw the pie chart on.
+   *   The canvas to draw the histogram on.
    * @param data
-   *   An array of objects (one object per bar)
+   *   An array of objects (one set per bar)
    *   with the following keys:
    *     - label: the human-readable label for this bar.
    *     - count: the number of items in the bar.
@@ -26,7 +26,7 @@ tripalD3.bar = {
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
    */
-  drawSimpleBar: function(svg, data, options) {
+  drawHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     if (!Array.isArray(data)) {
