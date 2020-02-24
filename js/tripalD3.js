@@ -24,7 +24,7 @@ tripalD3 = {
    * @param options
    *   A javascript object with any of the following keys:
    *   - chartType: the type of chart to draw; (REQUIRED)
-   *       one of pedigree, simplepie, simpledonut, multidonut, simplebar.
+   *       one of pedigree, simplepie, simpledonut, multidonut, simplebar, histogram.
    *   - elementId : The ID of the HTML element the diagram should be attached to.
    *   - width: The width of the drawing canvas (including key and margins) in pixels.
    *   - height: The height of the drawing canvas (including key and margins) in pixels.
@@ -308,6 +308,9 @@ tripalD3 = {
     }
     else if (options.chartType === 'simplebar') {
       success = tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
+    }
+    else if (options.chartType === 'histogram') {
+      success = tripalD3.histogram.drawHistogram(svg, data, options.chartOptions);
     }
 
     // If drawing the chart failed with an error message,
