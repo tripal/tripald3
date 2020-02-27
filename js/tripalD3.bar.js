@@ -69,13 +69,13 @@ tripalD3.bar = {
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
-      .outerTickSize(3);
+      .outerTickSize(1);
     var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
       .ticks(5)
-      .outerTickSize(8);
+      .outerTickSize(1);
 
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
@@ -116,7 +116,7 @@ tripalD3.bar = {
     svg.selectAll(".x.axis .tick text")
       .style("text-anchor", "end")
       .attr("transform", "rotate(-45)" )
-      .attr("x", -8)
+      .attr("x", -1)
       .attr("y", 2);
     // Make the ticks actually visible ;-).
     svg.selectAll(".axis .tick line")
