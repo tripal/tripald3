@@ -15,7 +15,7 @@ def ``drawFigure(data, options)``:
   :data: A javascript object with the data required to draw the chart. The specifics of this object depend on the chart being drawn.
   :options: A javascript object with any of the following keys:
 
-    :chartType: the type of chart to draw; (REQUIRED) one of pedigree, simplepie, simpledonut, multidonut, simplebar.
+    :chartType: the type of chart to draw; (REQUIRED) one of pedigree, simplepie, simpledonut, multidonut, simplebar, simplehistogram.
     :elementId: The ID of the HTML element the diagram should be attached to.
     :width: The width of the drawing canvas (including key and margins) in pixels.
     :height: The height of the drawing canvas (including key and margins) in pixels.
