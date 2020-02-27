@@ -5,12 +5,12 @@
 tripalD3.histogram = {
 
   /**
-   * Draw a simple histogram.
+   * Draw a simple bar chart.
    *
    * @param svg
    *   The canvas to draw the histogram on.
    * @param data
-   *   An array of objects (one set per bar)
+   *   An array of objects (one object per bar)
    *   with the following keys:
    *     - label: the human-readable label for this bar.
    *     - count: the number of items in the bar.
@@ -26,7 +26,9 @@ tripalD3.histogram = {
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
    */
-  drawHistogram: function(svg, data, options) {
+  
+  // % % % The following is still just for a bar chart % % % 
+  drawSimpleBar: function(svg, data, options) {
 
     // Check the data is compliant.
     if (!Array.isArray(data)) {
@@ -74,7 +76,7 @@ tripalD3.histogram = {
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
-      .ticks(5)
+      .ticks(1)
       .outerTickSize(1);
 
     // Setting up ranges for the axis'.
@@ -116,7 +118,7 @@ tripalD3.histogram = {
     svg.selectAll(".x.axis .tick text")
       .style("text-anchor", "end")
       .attr("transform", "rotate(-45)" )
-      .attr("x", -8)
+      .attr("x", -1)
       .attr("y", 2);
     // Make the ticks actually visible ;-).
     svg.selectAll(".axis .tick line")
