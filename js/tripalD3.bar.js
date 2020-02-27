@@ -74,7 +74,7 @@ tripalD3.bar = {
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
-      .ticks(5)
+      .ticks(1)
       .outerTickSize(1);
 
     // Setting up ranges for the axis'.
