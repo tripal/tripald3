@@ -68,7 +68,7 @@ tripalD3.bar = {
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
       .scale(x)
-      .orient("bottom")
+      .orient("left")
       .outerTickSize(1);
     var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
     var yAxis = d3.svg.axis()
@@ -129,9 +129,9 @@ tripalD3.bar = {
         .data(data)
       .enter().append("rect")
         .style("fill", options.barColor)
-        .attr("y", function(d) { return x(d.label); })
+        .attr("x", function(d) { return x(d.label); })
         .attr("width", x.rangeBand())
-        .attr("x", function(d) { return y(d.count); })
+        .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
   },
 };
