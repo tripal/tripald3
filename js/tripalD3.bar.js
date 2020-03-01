@@ -129,9 +129,9 @@ tripalD3.bar = {
         .data(data)
       .enter().append("rect")
         .style("fill", options.barColor)
-        .attr("x", function(d) { return x(d.label); })
+        .attr("y", function(d) { return x(d.label); })
         .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.count); })
+        .attr("x", function(d) { return y(d.count); })
         .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
   },
 };
