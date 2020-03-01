@@ -65,21 +65,21 @@ tripalD3.bar = {
     }
 
     // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
-    var xAxis = d3.svg.axis()
+    var y = d3.scale.ordinal().rangeRoundBands([options.yAxisPadding, options.width], .2);
+    var yAxis = d3.svg.axis()
       .scale(x)
       .orient("left")
       .outerTickSize(1);
-    var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
-    var yAxis = d3.svg.axis()
+    var x = d3.scale.linear().range([options.height - options.xAxisPadding, 0]);
+    var xAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
       .ticks(1)
       .outerTickSize(1);
 
     // Setting up ranges for the axis'.
-    x.domain(data.map(function(d) { return d.label; }));
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
+    y.domain(data.map(function(d) { return d.label; }));
+    x.domain([0, d3.max(data, function(d) { return d.count; })]);
 
     // Actually draw the y-axis.
     svg.append("g")
