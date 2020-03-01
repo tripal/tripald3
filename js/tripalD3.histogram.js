@@ -5,7 +5,7 @@
 tripalD3.histogram = {
 
   /**
-   * Draw a simple bar chart.
+   * Draw a simple histogram.
    *
    * @param svg
    *   The canvas to draw the histogram on.
@@ -27,8 +27,8 @@ tripalD3.histogram = {
    *         for the x-axis labels.
    */
   
- // % % % The following is still just for a bar chart % % % --------------------------------------------------------------------
-  drawSimpleBar: function(svg, data, options) {
+ // % % % ------------------------------- % % % --------------------------------------------------------------------
+  drawSimpleHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     if (!Array.isArray(data)) {
