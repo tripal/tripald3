@@ -63,7 +63,16 @@ tripalD3.bar = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
+    
+    //set histogram parameters
+ var histogram = d3.histogram()
+      .value(function(d) { return d.price; })   // I need to give the vector of value
+      .domain(x.domain())  // then the domain of the graphic
+      .thresholds(x.ticks(70)); // then the numbers of bins
 
+  var bins = histogram(data);
+    
+    
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
@@ -80,7 +89,7 @@ tripalD3.bar = {
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
-
+/**
     // Actually draw the y-axis.
     svg.append("g")
         .attr("class", "y axis")
@@ -96,7 +105,7 @@ tripalD3.bar = {
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(options.yAxisTitle);
-
+*/
     // Actually draw the x-axis.
     svg.append("g")
         .attr("class", "x axis")
@@ -125,13 +134,14 @@ tripalD3.bar = {
       .style("shape-rendering", "crispEdges");
 
     // Draw the bars :-).
-    svg.selectAll("bar")
-        .data(data)
+    svg.selectAll("rect")
+        .data(bins)
       .enter().append("rect")
         .style("fill", options.barColor)
-        .attr("x", function(d) { return x(d.label); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.count); })
-        .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
+        .attr("x", 1)
+        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
+        .attr("height", function(d) { return height - y(d.length); })
+        ; });
   },
 };
