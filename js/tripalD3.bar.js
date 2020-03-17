@@ -128,7 +128,7 @@ tripalD3.bar = {
 
     // Draw the bars :-).
     svg.selectAll("rect")
-        .data(bins)
+        .data(data)
       .enter().append("rect")
         .style("fill", options.barColor)
         .attr("x", 1)
