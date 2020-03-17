@@ -127,9 +127,9 @@ tripalD3.bar = {
       .style("shape-rendering", "crispEdges");
 
     // Draw the bars :-).
-    svg.selectAll("rect")
+    svg.selectAll("bar")
         .data(data)
-      .enter().append("rect")
+      .enter().append("bar")
         .style("fill", options.barColor)
         .attr("x", 1)
         .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
