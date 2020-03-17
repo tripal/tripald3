@@ -64,13 +64,6 @@ tripalD3.bar = {
       options.barColor = colors[0];
     }
     
-    //set histogram parameters
- var histogram = d3.histogram()
-      .value(function(d) { return d.price; })   // I need to give the vector of value
-      .domain(x.domain())  // then the domain of the graphic
-      .thresholds(x.ticks(70)); // then the numbers of bins
-
-  var bins = histogram(data);
     
     
     // Scales & Axis'.
