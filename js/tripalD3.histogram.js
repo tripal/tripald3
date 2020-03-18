@@ -2,34 +2,10 @@
  * @file
  * Histogram functionality.
  */
+
 tripalD3.histogram = {
 
-  /**
-   * Draw a simple histogram.
-   *
-   * @param svg
-   *   The canvas to draw the histogram on.
-   * @param data
-   *   An array of objects (one object per bar)
-   *   with the following keys:
-   *     - label: the human-readable label for this bar.
-   *     - count: the number of items in the bar.
-   * @param options
-   *   An object containing options for this chart. Supported keys include:
-   *     - xAxisTitle: The title of the X-Axis.
-   *     - yAxisTitle: The title of the Y-Axis.
-   *     - width: The width of the drawing canvas (including key and margins) in pixels.
-   *     - height: The height of the drawing canvas (including key and margins) in pixels.
-   *     - drawKey: whether or not to draw the key; default is "false".
-   *     - xAxisPadding: the number of pixels to pad the left side to provide room
-   *         for the y-axis labels.
-   *     - yAxisPadding: the number of pixels to pad the bottom to provide room
-   *         for the x-axis labels.
-   */
   
- // % % % ------------STILL JUST A BAR CHART------------------- % % % ----------------------------------------- % % % -------------
-  
-
 //Generate random data
 var randoNums = d3.range(5000).map(d3.random.normal());
 
@@ -82,4 +58,5 @@ bar.append("rect")
     .attr("height", function(d) { return height - y(d.y); })
     .attr("fill", "darkolivegreen");
     
+
 }
