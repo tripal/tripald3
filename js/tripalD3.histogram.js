@@ -29,114 +29,57 @@ tripalD3.histogram = {
   
  // % % % ------------STILL JUST A BAR CHART------------------- % % % ----------------------------------------- % % % -------------
   
-  drawSimpleHistogram: function(svg, data, options) {
 
-    // Check the data is compliant.
-    if (!Array.isArray(data)) {
-      console.error("The data should be an ARRAY where each element has a label and a count.");
-      return false;
-    }
-    var errors = false;
-    data.forEach(function(element) {
-      if (!("label" in element)) {
-        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-      if (!("count" in element)) {
-        console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-    });
-    if (errors) { return false; }
+//Generate random data
+var randoNums = d3.range(5000).map(d3.random.normal());
 
-    // Set Defaults.
-    if (!options.hasOwnProperty('xAxisTitle')) {
-      options.xAxisTitle = "";
-    }
-    if (!options.hasOwnProperty('yAxisTitle')) {
-      options.yAxisTitle = "";
-    }
-    if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 60;
-    }
-    if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 90;
-    }
-    if (!options.hasOwnProperty('barColor')) {
-      var colors = tripalD3.getColorScheme("categorical");
-      options.barColor = colors[0];
-    }
 
-    // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
-    var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .outerTickSize(1);
-    var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
-    var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(1)
-      .outerTickSize(1);
+//Margin convention: DON'T TOUCH
+var margin = {top: 40, right: 40, bottom: 40, left: 40},
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
 
-    // Setting up ranges for the axis'.
-    x.domain(data.map(function(d) { return d.label; }));
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
+//Get max and min of data for X axis
+var max = d3.max(randoNums);
+var min = d3.min(randoNums);
 
-    // Actually draw the y-axis.
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + options.xAxisPadding + ",0)")
-        .call(yAxis)
-      // NOTE: we use negative coordinates b/c rotating -90
-      // places us in Quadrants III (-x,-y).
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - options.xAxisPadding)
-        .attr("x", 0 - ((options.height - options.yAxisPadding) / 2))
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.yAxisTitle);
+//Set X axis scale
+var x = d3.scale.linear()
+      .domain([min, max])
+      .range([0, width]);
 
-    // Actually draw the x-axis.
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("x", options.width/2)
-        .attr("y", options.yAxisPadding - 15)
-        .attr("dy", ".71em")
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.xAxisTitle);
+//Make a histogram layout with 30 bins
+var data = d3.layout.histogram()
+    .bins(x.ticks(30))
+    (randoNums);
 
-    // Better style the x-axis.
-    // Fix the labels.
-    svg.selectAll(".x.axis .tick text")
-      .style("text-anchor", "end")
-      .attr("transform", "rotate(-45)" )
-      .attr("x", -1)
-      .attr("y", 2);
-    // Make the ticks actually visible ;-).
-    svg.selectAll(".axis .tick line")
-      .style("stroke", "black")
-      .style("stroke-width", "1px")
-      .style("shape-rendering", "crispEdges");
+//Get max and min of histogram bins
+var yMax = d3.max(data, function(d){return d.length});
+var yMin = d3.min(data, function(d){return d.length});
 
-    // Draw the bars :-).
-    svg.selectAll("bar")
-        .data(data)
-      .enter().append("rect")
-        .style("fill", options.barColor)
-        .attr("x", function(d) { return x(d.label); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.count); })
-        .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
-  },
-};
-  
- 
+//Set Y axis scale
+var y = d3.scale.linear()
+    .domain([0, yMax])
+    .range([height, 0]);
+
+//Make the bars
+var bar = svg.selectAll(".bar")
+    .data(data)
+  .enter().append("g")
+    .attr("class", "bar")
+    .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+//Draw the bars
+bar.append("rect")
+    .attr("x", 0)
+    .attr("width", (x(data[0].dx) - x(0)) - 0.5)
+    .attr("height", function(d) { return height - y(d.y); })
+    .attr("fill", "darkolivegreen");
+    
+}
