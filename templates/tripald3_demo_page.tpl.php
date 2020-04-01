@@ -515,3 +515,80 @@ series of data.</p>
 <div id="tripald3-pedigree-right" class="tripald3-diagram">
   <!-- Javascript will add the pedigree diagram and figure legend here -->
 </div>
+
+/
+
+<h3>Simple Histogram</h3>
+<p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
+//-----Histogram?
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleHistogram = {
+    attach: function (context, settings) {
+
+      // @todo move data into a separate file for better readability.
+      var simpleHistogramData = [
+        {
+          "label": "Accession",
+          "count": 2390,
+        },
+        {
+          "label": "Breeders Cross",
+          "count": 567,
+        },
+        {
+          "label": "Recombinant Inbred Line",
+          "count": 115,
+        },
+        {
+          "label": "Cultivated Variety",
+          "count": 78,
+        },
+      ];
+
+      // The following code uses the Tripal D3 module to draw a pie chart
+      // and attach it to an #tripald3-simplepie element.
+      // Notice that the data for the pie chart is passed in directly.
+      tripalD3.drawFigure(
+        simpleHistogramData,
+        {
+          "chartType" : "simplehistogram",
+          "elementId": "tripald3-simplehistogram",
+          "height": 250,
+          "width": 500,
+          "keyPosition": "right",
+          "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
+          "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
+        }
+      );
+
+      // The following code uses the Tripal D3 module to draw a donut pie chart
+      // and attach it to an #tripald3-simpledonut element.
+      // Notice that the data for the donut pie chart is passed in directly.
+      tripalD3.drawFigure(
+        simpleHistogramData,
+        {
+          "chartType" : "simpledonut",
+          "elementId": "tripald3-simpledonut",
+          "height": 250,
+          "width": 500,
+          "keyPosition": "left",
+          "title": "Proportion of <em>Tripalus databasica</em> Germplasm Types",
+          "legend": "The above pie chart depicts the ratio of germplasm types available for <em>Tripalus databasica</em>.",
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-simplehistogram" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
+</div>
+
+<br />
+
+<div id="tripald3-simpledonut" class="tripald3-diagram">
+  <!-- Javascript will add the Simple Donut Chart, Title and Figure legend here -->
+</div>
+
+<br />
+
