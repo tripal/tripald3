@@ -2,7 +2,7 @@
  * @file
  * Simple Pie Chart functionality.
  */
-tripalD3.pie = {
+tripalD3.histo = {
 
   /**
    * Draw a simple pie chart.
@@ -27,7 +27,7 @@ tripalD3.pie = {
    *         the right edge of the pie chart.
    *     - drawKey: whether or not to draw the key; default is "true".
    */
-  drawSimplePie: function(svg, data, options) {
+  drawSimpleHistogram: function(svg, data, options) {
 
     // A simple pie chart is basically a donut chart with no center cut-out.
     options.donutWidth = options.maxRadius;
