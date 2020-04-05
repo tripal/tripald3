@@ -27,111 +27,28 @@ tripalD3.histo = {
    *         for the x-axis labels.
    */
   drawSimpleHistogram: function(svg, data, options) {
+    
+    radius = 20;
+var circle_data = d3.range(50).map(function() {
+    return{
+        x : Math.round(Math.random() * (width - radius * 2 ) + radius),
+        y : Math.round(Math.random() * (height - radius * 2 ) + radius)
+    }; 
+}); 
+    
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-    // Check the data is compliant.
-    if (!Array.isArray(data)) {
-      console.error("The data should be an ARRAY where each element has a label and a count.");
-      return false;
-    }
-    var errors = false;
-    data.forEach(function(element) {
-      if (!("label" in element)) {
-        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-      if (!("count" in element)) {
-        console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-    });
-    if (errors) { return false; }
-
-    // Set Defaults.
-    if (!options.hasOwnProperty('xAxisTitle')) {
-      options.xAxisTitle = "";
-    }
-    if (!options.hasOwnProperty('yAxisTitle')) {
-      options.yAxisTitle = "";
-    }
-    if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 60;
-    }
-    if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 90;
-    }
-    if (!options.hasOwnProperty('barColor')) {
-      var colors = tripalD3.getColorScheme("categorical");
-      options.barColor = colors[0];
-    }
-
-    // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
-    var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .outerTickSize(1);
-    var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
-    var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(5)
-      .outerTickSize(1);
-
-    // Setting up ranges for the axis'.
-    x.domain(data.map(function(d) { return d.label; }));
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
-
-    // Actually draw the y-axis.
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + options.xAxisPadding + ",0)")
-        .call(yAxis)
-      // NOTE: we use negative coordinates b/c rotating -90
-      // places us in Quadrants III (-x,-y).
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - options.xAxisPadding)
-        .attr("x", 0 - ((options.height - options.yAxisPadding) / 2))
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.yAxisTitle);
-
-    // Actually draw the x-axis.
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("x", options.width/2)
-        .attr("y", options.yAxisPadding - 15)
-        .attr("dy", ".71em")
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.xAxisTitle);
-
-    // Better style the x-axis.
-    // Fix the labels.
-    svg.selectAll(".x.axis .tick text")
-      .style("text-anchor", "end")
-      .attr("transform", "rotate(-45)" )
-      .attr("x", -8)
-      .attr("y", 2);
-    // Make the ticks actually visible ;-).
-    svg.selectAll(".axis .tick line")
-      .style("stroke", "black")
-      .style("stroke-width", "1px")
-      .style("shape-rendering", "crispEdges");
-
-    // Draw the bars :-).
-    svg.selectAll("bar")
-        .data(data)
-      .enter().append("rect")
-        .style("fill", options.barColor)
-        .attr("x", function(d) { return x(d.label); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.count); })
-        .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
-  },
+   var circles = d3.select("svg")
+	.append("g")
+	.attr("class", "circles")
+	.selectAll("circle")
+        .data(circle_data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {return(d.x)})
+        .attr("cy", function(d) {return(d.y)})
+        .attr("r", radius)
+        .attr("fill", "green");
 };
