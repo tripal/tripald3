@@ -113,11 +113,11 @@
 <p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
 
 <script type="text/javascript">
-  Drupal.behaviors.tripalD3demoSimplePie = {
+  Drupal.behaviors.tripalD3demoSimpleHistogram = {
     attach: function (context, settings) {
 
       // @todo move data into a separate file for better readability.
-      var simplePieData = [
+      var simpleHistogramData = [
         {
           "label": "Accession",
           "count": 2390,
@@ -140,10 +140,10 @@
       // and attach it to an #tripald3-simplepie element.
       // Notice that the data for the pie chart is passed in directly.
       tripalD3.drawFigure(
-        simplePieData,
+        simpleHistogramData,
         {
-          "chartType" : "simplepie",
-          "elementId": "tripald3-simplepie",
+          "chartType" : "simplehistogram",
+          "elementId": "tripald3-simplehistogram",
           "height": 250,
           "width": 500,
           "keyPosition": "right",
