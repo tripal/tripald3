@@ -26,7 +26,7 @@ tripalD3.histo = {
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
    */
-  drawSimpleBar: function(svg, data, options) {
+  drawSimpleHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     if (!Array.isArray(data)) {
