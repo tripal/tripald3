@@ -310,7 +310,7 @@ tripalD3 = {
       success = tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'simplehistogram') {
-      success = tripalD3.histogram.drawSimpleHistogram(svg, data, options.chartOptions);
+      success = tripalD3.bar.drawSimpleHistogram(svg, data, options.chartOptions);
     }
 
     // If drawing the chart failed with an error message,
