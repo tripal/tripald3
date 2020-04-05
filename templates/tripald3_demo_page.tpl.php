@@ -171,7 +171,7 @@
   };
 </script>
 
-<div id="tripald3-simplepie" class="tripald3-diagram">
+<div id="tripald3-simplehistogram" class="tripald3-diagram">
   <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
 </div>
 
