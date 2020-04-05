@@ -6,7 +6,7 @@
    * This page demonstrates the various figures available through this module.
    * It can be used to confirm you have correclty installed the module, as well
    * as, provide example code demonsrating how to create your own digrams.
-   */
+   
 
   // Load all the JS/CSS needed by this module.
   tripald3_load_libraries();
@@ -515,3 +515,4 @@ series of data.</p>
 <div id="tripald3-pedigree-right" class="tripald3-diagram">
   <!-- Javascript will add the pedigree diagram and figure legend here -->
 </div>
+*/
