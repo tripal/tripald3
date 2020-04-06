@@ -6,7 +6,7 @@ drawHistogram
 
   This function should not be used directly. Instead use ``drawFigure`` where ``options.chartType = histogram``
 
-Source Code: ``js/tripalD3.histogram.js``
+Source Code: ``js/tripalD3.histo.js``
 
 def ``drawHistogram(svg, data, options)``
 
