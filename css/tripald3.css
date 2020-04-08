@@ -68,3 +68,38 @@ svg.tripald3-tree .tree-node {
 .tripald3-default-watermark {
   background-image: url(watermark.png);
 }
+
+/**Histo updates*/
+
+body {
+      font: 10px sans-serif;
+    }
+
+    .bar text {
+      fill: #999999;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+    }
+
+    line {
+      vector-effect: non-scaling-stroke;
+      stroke: #000;
+      stroke-dasharray: 10;
+      stroke-width: 2px;
+    }
+
+    .active-d3-item {
+      cursor: pointer;
+      stroke: coral;
+    }
+
+    line:hover {
+      cursor: pointer;
+      stroke: coral;
+      stroke-width: 3px;
+      shape-rendering: crispEdges;
+    }
