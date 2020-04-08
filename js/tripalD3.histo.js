@@ -134,6 +134,6 @@ tripalD3.histo = {
         .attr("x", 1)
         .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
         .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-        .attr("height", function(d) { return height - y(d.length); })
+        .attr("height", function(d) { return options.height - y(d.length); })
         }
   };
