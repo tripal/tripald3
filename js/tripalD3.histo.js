@@ -48,7 +48,7 @@ tripalD3.histo = {
 */
 
 
-    // Set Defaults.
+    /** Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
       options.xAxisTitle = "";
     }
@@ -65,7 +65,7 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-
+*/
 
 
     // Scales & Axis'.
