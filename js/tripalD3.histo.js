@@ -81,9 +81,12 @@ tripalD3.histo = {
       .ticks(5)
       .outerTickSize(1);
 */
+    
+    /**
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
+    */
 /**
     // Actually draw the y-axis.
     svg.append("g")
