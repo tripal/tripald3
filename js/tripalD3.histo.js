@@ -25,7 +25,7 @@ tripalD3.histo = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
-   */
+   *
   drawSimpleHistogram: function(svg, data, options) {
 
     /** Check the data is compliant.
@@ -145,7 +145,7 @@ tripalD3.histo = {
         .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
         .attr("height", function(d) { return options.height - y(d.length); })
         }
-        */
+        
     
     //Get max and min of data for X axis
       var max = d3.max(randoNums),
@@ -183,6 +183,6 @@ tripalD3.histo = {
         .call(xAxis);
         
         
-             
+      */       
 
   };
