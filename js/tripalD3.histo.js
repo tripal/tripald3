@@ -104,6 +104,7 @@ tripalD3.histo = {
         .style("font-weight", "bold")
         .text(options.yAxisTitle);
 */
+    
     // Actually draw the x-axis.
     svg.append("g")
     .attr("class", "x axis")
@@ -130,7 +131,7 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
-
+/**
     // Draw the bars :-).
     svg.selectAll("bar")
         .data(data)
@@ -141,4 +142,5 @@ tripalD3.histo = {
         .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
         .attr("height", function(d) { return options.height - y(d.length); })
         }
+        */
   };
