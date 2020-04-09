@@ -28,7 +28,7 @@ tripalD3.histo = {
    */
   drawSimpleHistogram: function(svg, data, options) {
 
-    // Check the data is compliant.
+    /** Check the data is compliant.
     if (!Array.isArray(data)) {
       console.error("The data should be an ARRAY where each element has a label and a count.");
       return false;
@@ -45,6 +45,8 @@ tripalD3.histo = {
             }
               });
     if (errors) { return false; }
+*/
+
 
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
