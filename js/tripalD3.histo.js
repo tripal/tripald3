@@ -25,10 +25,10 @@ tripalD3.histo = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
-   *
+   */
   drawSimpleHistogram: function(svg, data, options) {
 
-    /** Check the data is compliant.
+    // Check the data is compliant.
     if (!Array.isArray(data)) {
       console.error("The data should be an ARRAY where each element has a label and a count.");
       return false;
@@ -45,10 +45,10 @@ tripalD3.histo = {
             }
               });
     if (errors) { return false; }
-*/
 
 
-    /** Set Defaults.
+
+    // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
       options.xAxisTitle = "";
     }
@@ -65,9 +65,9 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-*/
 
-/**
+
+
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
@@ -80,14 +80,14 @@ tripalD3.histo = {
       .orient("left")
       .ticks(5)
       .outerTickSize(1);
-*/
+
     
-    /**
+    
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
     */
-/**
+
     // Actually draw the y-axis.
     svg.append("g")
         .attr("class", "y axis")
@@ -103,8 +103,8 @@ tripalD3.histo = {
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(options.yAxisTitle);
-*/
-    /**
+
+    
     // Actually draw the x-axis.
     svg.append("g")
     .attr("class", "x axis")
@@ -119,8 +119,8 @@ tripalD3.histo = {
         .style("font-weight", "bold")
         .text(options.xAxisTitle);
         
-        */
-/**
+        
+
     // Better style the x-axis.
     // Fix the labels.
     svg.selectAll(".x.axis .tick text")
@@ -133,8 +133,8 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
-      */
-/**
+      
+
     // Draw the bars :-).
     svg.selectAll("bar")
         .data(data)
@@ -183,7 +183,7 @@ tripalD3.histo = {
         .call(xAxis);
         
         
-      */       
+            
 
   };
 
