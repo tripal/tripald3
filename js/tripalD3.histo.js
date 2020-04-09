@@ -104,7 +104,7 @@ tripalD3.histo = {
         .style("font-weight", "bold")
         .text(options.yAxisTitle);
 */
-    
+    /**
     // Actually draw the x-axis.
     svg.append("g")
     .attr("class", "x axis")
@@ -118,6 +118,8 @@ tripalD3.histo = {
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(options.xAxisTitle);
+        
+        */
 /**
     // Better style the x-axis.
     // Fix the labels.
@@ -144,4 +146,43 @@ tripalD3.histo = {
         .attr("height", function(d) { return options.height - y(d.length); })
         }
         */
+    
+    //Get max and min of data for X axis
+      var max = d3.max(randoNums),
+        min = d3.min(randoNums);
+
+      //Set X axis scale
+      var x = d3.scale.linear()
+        .domain([min, max])
+        .range([0, width]);
+
+      //Make a histogram layout with 30 bins
+      var data = d3.layout.histogram()
+        .bins(x.ticks(30))
+        (randoNums);
+
+      //Get max and min of histogram bins
+      var yMax = d3.max(data, function(d) {return d.length}),
+          yMin = d3.min(data, function(d) {return d.length});
+
+      //Set Y axis scale
+      var y = d3.scale.linear()
+        .domain([0, yMax])
+        .range([height, 0]);
+
+ 
+      //Make x axis
+      var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+      //Draw x axis    
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+        
+        
+             
+
   };
