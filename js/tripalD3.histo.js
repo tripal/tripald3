@@ -118,7 +118,7 @@ tripalD3.histo = {
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(options.xAxisTitle);
-
+/**
     // Better style the x-axis.
     // Fix the labels.
     svg.selectAll(".x.axis .tick text")
@@ -131,6 +131,7 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
+      */
 /**
     // Draw the bars :-).
     svg.selectAll("bar")
