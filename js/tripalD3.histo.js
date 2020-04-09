@@ -8,7 +8,7 @@ tripalD3.histo = {
    * Draw a simple bar chart.
    *
    * @param svg
-   *   The canvas to draw the bar chart on.
+   *   The canvas to draw the pie chart on.
    * @param data
    *   An array of objects (one object per bar)
    *   with the following keys:
@@ -39,14 +39,12 @@ tripalD3.histo = {
         console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
         errors = true;
       }
-            if (!("count" in element)) {
+      if (!("count" in element)) {
         console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
         errors = true;
-            }
-              });
+      }
+    });
     if (errors) { return false; }
-
-
 
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
@@ -66,8 +64,6 @@ tripalD3.histo = {
       options.barColor = colors[0];
     }
 
-
-
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
@@ -81,12 +77,9 @@ tripalD3.histo = {
       .ticks(5)
       .outerTickSize(1);
 
-    
-    
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
-    */
 
     // Actually draw the y-axis.
     svg.append("g")
@@ -104,10 +97,9 @@ tripalD3.histo = {
         .style("font-weight", "bold")
         .text(options.yAxisTitle);
 
-    
     // Actually draw the x-axis.
     svg.append("g")
-    .attr("class", "x axis")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
         .call(xAxis)
       .append("text")
@@ -118,8 +110,6 @@ tripalD3.histo = {
         .style("text-anchor", "middle")
         .style("font-weight", "bold")
         .text(options.xAxisTitle);
-        
-        
 
     // Better style the x-axis.
     // Fix the labels.
@@ -133,57 +123,15 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
-      
 
     // Draw the bars :-).
     svg.selectAll("bar")
         .data(data)
-      .enter().append("bar")
+      .enter().append("rect")
         .style("fill", options.barColor)
-        .attr("x", 1)
-        .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-        .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-        .attr("height", function(d) { return options.height - y(d.length); })
-        }
-        
-    
-    //Get max and min of data for X axis
-      var max = d3.max(randoNums),
-        min = d3.min(randoNums);
-
-      //Set X axis scale
-      var x = d3.scale.linear()
-        .domain([min, max])
-        .range([0, width]);
-
-      //Make a histogram layout with 30 bins
-      var data = d3.layout.histogram()
-        .bins(x.ticks(30))
-        (randoNums);
-
-      //Get max and min of histogram bins
-      var yMax = d3.max(data, function(d) {return d.length}),
-          yMin = d3.min(data, function(d) {return d.length});
-
-      //Set Y axis scale
-      var y = d3.scale.linear()
-        .domain([0, yMax])
-        .range([height, 0]);
-
- 
-      //Make x axis
-      var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-
-      //Draw x axis    
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-        
-        
-            
-
-  };
-
+        .attr("x", function(d) { return x(d.label); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d.count); })
+        .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
+  },
+};
