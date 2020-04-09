@@ -67,7 +67,7 @@ tripalD3.histo = {
     }
 */
 
-
+/**
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
@@ -80,7 +80,7 @@ tripalD3.histo = {
       .orient("left")
       .ticks(5)
       .outerTickSize(1);
-
+*/
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
