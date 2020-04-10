@@ -63,7 +63,7 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-
+/**
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
     var xAxis = d3.svg.axis()
@@ -76,7 +76,7 @@ tripalD3.histo = {
       .orient("left")
       .ticks(5)
       .outerTickSize(1);
-    
+    */
     //Get max and min of data for X axis
 var max = d3.max(randoNums),
  min = d3.min(randoNums);
