@@ -65,7 +65,7 @@ tripalD3.histo = {
     }
 
     // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], .2);
+    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 5);
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
