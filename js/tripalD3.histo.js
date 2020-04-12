@@ -130,7 +130,7 @@ tripalD3.histo = {
       .enter().append("rect")
         .style("fill", options.barColor)
         .attr("x", function(d) { return x(d.label); })
-        .attr("width", x.rangeBand())
+        .attr("width", "20px")
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
   },
