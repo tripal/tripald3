@@ -65,7 +65,7 @@ tripalD3.histo = {
     }
 
     // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0, 0.5);
+    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -130,7 +130,7 @@ tripalD3.histo = {
       .enter().append("rect")
         .style("fill", options.barColor)
         .attr("x", function(d) { return x(d.label); })
-        .attr("width", "80px")
+        .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
   },
