@@ -27,6 +27,20 @@ tripalD3.histo = {
    *         for the x-axis labels.
    */
   drawSimpleHistogram: function(svg, data, options) {
+    
+    var drag = d3.behavior.drag(),
+        lowColor = "#bceb65",
+        highColor = "#9ed141";
+    
+    //Set color scale before threshold      
+      var lowColorScale = d3.scale.linear()
+        .domain([yMin, yMax])
+        .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
+
+      //Set color scale after threshold
+      var highColorScale = d3.scale.linear()
+        .domain([yMin, yMax])
+        .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
 
     // Check the data is compliant.
     if (!Array.isArray(data)) {
@@ -76,6 +90,9 @@ tripalD3.histo = {
       .orient("left")
       .ticks(10)
       .outerTickSize(1);
+    
+    var yMax = d3.max(data, function(d) {return d.length}),
+          yMin = d3.min(data, function(d) {return d.length});
 
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
