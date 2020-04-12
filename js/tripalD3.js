@@ -309,7 +309,7 @@ tripalD3 = {
     else if (options.chartType === 'simplebar') {
       success = tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
     }
-     else if (options.chartType === 'simplehistogram) {
+     else if (options.chartType === 'simplehistogram') {
       success = tripalD3.histo.drawSimpleHistogram(svg, data, options.chartOptions);
    }
      
