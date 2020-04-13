@@ -149,7 +149,7 @@ tripalD3.test = {
       /**else {
         return true;
       }*/
-    });
+    };
   },
 
   /**
