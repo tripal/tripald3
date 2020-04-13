@@ -1,16 +1,16 @@
 /**
  * @file
- * Bar Chart functionality.
+ * Histogram functionality.
  */
 tripalD3.histo = {
 
   /**
-   * Draw a simple bar chart.
+   * Draw a simple histogram.
    *
    * @param svg
-   *   The canvas to draw the pie chart on.
+   *   The canvas to draw the histogram on.
    * @param data
-   *   An array of objects (one object per bar)
+   *   An array of objects (one bar represents the frequency of objects with that value)
    *   with the following keys:
    *     - label: the human-readable label for this bar.
    *     - count: the number of items in the bar.
@@ -25,6 +25,8 @@ tripalD3.histo = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
+   *     - lowColor: The base color for the color scale to be applied to the bars.
+   *     - highColor: The base color for the color scale to be applied to the bars under the threshold.
    */
   drawSimpleHistogram: function(svg, data, options) {
     
@@ -40,11 +42,11 @@ tripalD3.histo = {
       var highColorScale = d3.scale.linear()
         .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
 
-    // Check the data is compliant.
-    if (!Array.isArray(data)) {
-      console.error("The data should be an ARRAY where each element has a label and a count.");
-      return false;
+ // Check the data is compliant.
+    var compliant = tripalD3.test.isFrequencyDataCompliant(data);
+    if (!compliant) {return false; }
     }
+  
     var errors = false;
     data.forEach(function(element) {
       if (!("label" in element)) {
