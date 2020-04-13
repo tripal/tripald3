@@ -77,22 +77,24 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-
+    
+ var yMax = d3.max(data, function(d) {return d.length}),
+          yMin = d3.min(data, function(d) {return d.length});
+    
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
     var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
       .outerTickSize(1);
-    var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0, 1]);
+    var y = d3.scale.linear().range([yMin, yMax]);
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
       .ticks(10)
       .outerTickSize(1);
     
-    var yMax = d3.max(data, function(d) {return d.length}),
-          yMin = d3.min(data, function(d) {return d.length});
+   
 
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
