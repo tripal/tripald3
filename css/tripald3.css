@@ -69,7 +69,7 @@ svg.tripald3-tree .tree-node {
   background-image: url(watermark.png);
 }
 
-/**Histo updates*/
+/**--------------------Histo updates-----------------*/
 
 body {
       font: 10px sans-serif;
@@ -88,8 +88,8 @@ body {
     line {
       vector-effect: non-scaling-stroke;
       stroke: #000;
-      stroke-dasharray: 10;
-      stroke-width: 2px;
+      stroke-dasharray: 12;
+      stroke-width: 3px;
     }
 
     .active-d3-item {
@@ -100,6 +100,6 @@ body {
     line:hover {
       cursor: pointer;
       stroke: coral;
-      stroke-width: 3px;
+      stroke-width: 4px;
       shape-rendering: crispEdges;
     }
