@@ -66,7 +66,7 @@ tripalD3.histo = {
       options.yAxisTitle = "";
     }
     if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 90;
+      options.xAxisPadding = 30;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
       options.yAxisPadding = 90;
@@ -76,8 +76,8 @@ tripalD3.histo = {
       options.barColor = colors[0];
     }
     
- var yMax = d3.max(data, function(d) {return d.length}),
-          yMin = d3.min(data, function(d) {return d.length});
+ var yMax = d3.max(data),
+          yMin = d3.min(data);
     
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
