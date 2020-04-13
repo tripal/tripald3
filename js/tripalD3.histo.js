@@ -66,7 +66,7 @@ tripalD3.histo = {
       options.yAxisTitle = "";
     }
     if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 30;
+      options.xAxisPadding = 5;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
       options.yAxisPadding = 90;
