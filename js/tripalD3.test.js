@@ -120,6 +120,7 @@ tripalD3.test = {
   //------------------------------------------------------
   'isFrequencyDataCompliant': function (data) {
     return true;
+  },
 
    /** dataLabel = dataLabel || "data";
 
@@ -149,8 +150,8 @@ tripalD3.test = {
       /**else {
         return true;
       }*/
-    };
-  },
+   
+ 
 
   /**
    * Generate random words to be used as labels. All labels consist of two parts
