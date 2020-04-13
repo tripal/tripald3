@@ -145,7 +145,7 @@ tripalD3.histo = {
     svg.selectAll("bar")
         .data(data)
       .enter().append("rect")
-        .attr("fill", function(d) {
+        .style("fill", function(d) {
           return lowColorScale(d.y)
         })
         .attr("x", function(d) { return x(d.label); })
