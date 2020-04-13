@@ -28,18 +28,16 @@ tripalD3.histo = {
    */
   drawSimpleHistogram: function(svg, data, options) {
     
-    var drag = d3.behavior.drag(),
-        lowColor = "#bceb65",
-        highColor = "#9ed141";
+    var drag = d3.behavior.drag();
+       var lowColor = "#bceb65";
+      var  highColor = "#9ed141";
     
     //Set color scale before threshold      
       var lowColorScale = d3.scale.linear()
-        .domain([yMin, yMax])
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
 
       //Set color scale after threshold
       var highColorScale = d3.scale.linear()
-        .domain([yMin, yMax])
         .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
 
     // Check the data is compliant.
