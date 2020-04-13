@@ -87,7 +87,7 @@ tripalD3.histo = {
       .scale(x)
       .orient("bottom")
       .outerTickSize(1);
-    var y = d3.scale.linear().range([yMin, yMax]);
+    var y = d3.scale.linear().range([0, yMax]);
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
