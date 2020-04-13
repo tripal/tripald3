@@ -78,13 +78,38 @@ tripalD3.histo = {
       options.barColor = d3.scale.linear()
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
+
+//Set X axis scale
+      var x = d3.scale.linear()
+        .domain([min, max])
+        .range([0, width]);
     
       //Make a histogram layout with 30 bins
       var hist = d3.layout.histogram()
         .bins(x.ticks(30))
         (data);
 
-    
+      //Get max and min of histogram bins
+      var yMax = d3.max(hist, function(d) {return d.length}),
+          yMin = d3.min(hist, function(d) {return d.length});
+
+   //Set Y axis scale
+      var y = d3.scale.linear()
+        .domain([0, yMax])
+        .range([height, 0]);
+
+//Make x axis
+      var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+      //Draw x axis    
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+  
+/**
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
     var xAxis = d3.svg.axis()
@@ -97,13 +122,14 @@ tripalD3.histo = {
       .orient("left")
       .ticks(11)
       .outerTickSize(1);
-    
+    */
    
-
+/**
     // Setting up ranges for the axis'.
     x.domain(data.map(function(d) { return d.label; }));
     y.domain([0, d3.max(data, function(d) { return d.count; })]);
-
+*/
+/**
     // Actually draw the y-axis.
     svg.append("g")
         .attr("class", "y axis")
@@ -146,6 +172,7 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
+      */
 /**
     // Draw the bars :-).
     svg.selectAll("bar")
