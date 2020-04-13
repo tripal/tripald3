@@ -45,10 +45,10 @@ tripalD3.histo = {
  // Check the data is compliant.
     var compliant = tripalD3.test.isFrequencyDataCompliant(data);
     if (!compliant) {return false; }
-    }
+    
   
-   // var errors = false;
-  /**
+   var errors = false;
+  
     data.forEach(function(element) {
       if (!("label" in element)) {
         console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
@@ -58,10 +58,10 @@ tripalD3.histo = {
         console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
         errors = true;
       }
-      */
-    //});
-    //if (errors) { return false; }
-
+      
+    });
+    if (errors) { return false; }
+/**
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
       options.xAxisTitle = "";
@@ -80,7 +80,7 @@ tripalD3.histo = {
       options.barColor = d3.scale.linear()
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
-
+*/
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
