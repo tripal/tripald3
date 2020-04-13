@@ -91,7 +91,7 @@ tripalD3.histo = {
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
-      .ticks(20)
+      .ticks(11)
       .outerTickSize(1);
     
    
