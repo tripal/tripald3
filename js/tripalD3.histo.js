@@ -47,7 +47,7 @@ tripalD3.histo = {
     if (!compliant) {return false; }
     }
   
-    var errors = false;
+   // var errors = false;
   /**
     data.forEach(function(element) {
       if (!("label" in element)) {
