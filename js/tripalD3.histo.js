@@ -73,7 +73,8 @@ tripalD3.histo = {
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
-      options.barColor = colors[0];
+      options.barColor = d3.scale.linear()
+        .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
     
  var yMax = d3.max(data),
@@ -145,9 +146,7 @@ tripalD3.histo = {
     svg.selectAll("bar")
         .data(data)
       .enter().append("rect")
-        .style("fill", function(d) {
-          return lowColorScale(d.y)
-        })
+        .style("fill", options.barColor)
         .attr("x", function(d) { return x(d.label); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.count); })
