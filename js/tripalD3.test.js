@@ -118,15 +118,16 @@ tripalD3.test = {
   },
   
   //------------------------------------------------------
-  'isFrequencyDataCompliant': function (data, dataLabel) {
+  'isFrequencyDataCompliant': function (data) {
+    return true;
 
-    dataLabel = dataLabel || "data";
+   /** dataLabel = dataLabel || "data";
 
-  /**  if (!Array.isArray(data)) {
+    if (!Array.isArray(data)) {
       console.error("The " + dataLabel + " should be a set where each element has a dataLabel and a datum.");
       return false;
     }
-    */
+    
     if (data.length == 0) {
       console.error("The " + dataLabel + " must not be empty.");
       return false;
@@ -145,8 +146,8 @@ tripalD3.test = {
         return false;
       }
       */
-      else {
-        return true;
+      /**else {
+        return true;*/
       }
     });
   },
