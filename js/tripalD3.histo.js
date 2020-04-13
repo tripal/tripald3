@@ -71,7 +71,7 @@ tripalD3.histo = {
       options.xAxisPadding = 10;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 90;
+      options.yAxisPadding = 150;
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
