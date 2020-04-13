@@ -79,8 +79,11 @@ tripalD3.histo = {
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
     
- var yMax = d3.max(data),
-          yMin = d3.min(data);
+      //Make a histogram layout with 30 bins
+      var hist = d3.layout.histogram()
+        .bins(x.ticks(30))
+        (data);
+
     
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
@@ -143,7 +146,7 @@ tripalD3.histo = {
       .style("stroke", "black")
       .style("stroke-width", "1px")
       .style("shape-rendering", "crispEdges");
-
+/**
     // Draw the bars :-).
     svg.selectAll("bar")
         .data(data)
@@ -153,5 +156,26 @@ tripalD3.histo = {
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
+        */
+
+//Make the columns
+      var column = svg.selectAll(".column")
+        .data(hist)
+        .enter()
+        .append("g")
+        .attr("class", "column")
+        .attr("transform", function(d) {
+          return "translate(" + x(d.x) + "," + y(d.y) + ")";
+        });
+
+
+      //Draw the columns
+      column.append("rect")
+        .attr("x", 0)
+        .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
+        .attr("height", function(d) {
+          return height - y(d.y);
+        })
+        .attr("fill", "red")
   },
 };
