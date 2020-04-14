@@ -207,12 +207,13 @@ tripalD3.histo = {
     //Make x axis
       var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+          .outerTickSize(1);
 
       //Draw x axis    
       svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + options.height + ")")
+        .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
         .call(xAxis);
   
   },
