@@ -69,12 +69,12 @@ tripalD3.histo = {
     if (!options.hasOwnProperty('yAxisPadding')) {
       options.yAxisPadding = 30;
     }
-    if (!options.hasOwnProperty('barColor')) {
+   /** if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = d3.scale.linear()
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
-
+*/
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
@@ -199,6 +199,10 @@ tripalD3.histo = {
         .attr("height", function(d) {
           return options.height - y(d.y);
         })
-        .attr("fill", "red")
+         .attr("fill", function(d) {
+          return lowColorScale(d.y)
+        })
+        .style("stroke", function(d) {return highColorScale(d.y)})
+        .style("stroke-width", "3px")
   },
 };
