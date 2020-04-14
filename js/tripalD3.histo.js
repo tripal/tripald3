@@ -38,14 +38,7 @@ tripalD3.histo = {
     var drag = d3.behavior.drag();
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
-    
-    //Set color scale before threshold      
-      var lowColorScale = d3.scale.linear()
-        .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
-
-      //Set color scale after threshold
-      var highColorScale = d3.scale.linear()
-        .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
+   
 
  // Check the data is compliant.
     var compliant = tripalD3.test.isFrequencyDataCompliant(data);
@@ -104,6 +97,16 @@ tripalD3.histo = {
         .attr("transform", "translate(0," + options.height + ")")
         .call(xAxis);
   
+        //Set color scale before threshold      
+      var lowColorScale = d3.scale.linear()
+        .domain([yMin, yMax])
+        .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
+
+      //Set color scale after threshold
+      var highColorScale = d3.scale.linear()
+        .domain([yMin, yMax])
+        .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
+    
 /**
     // Scales & Axis'.
     var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
