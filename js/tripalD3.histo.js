@@ -53,18 +53,7 @@ tripalD3.histo = {
     
   
    var errors = false;
-  /**
-    data.forEach(function(element) {
-      if (!("label" in element)) {
-        console.error("Every element must be an object with a LABEL key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-      if (!("count" in element)) {
-        console.error("Every element must be an object with a COUNT key. This element doesn't comply: " + JSON.stringify(element));
-        errors = true;
-      }
-      */
-   // });
+ 
   if (errors) { return false; }
 
     // Set Defaults.
