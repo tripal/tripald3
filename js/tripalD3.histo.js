@@ -66,7 +66,7 @@ tripalD3.histo = {
       */
    // });
   if (errors) { return false; }
-/**
+
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
       options.xAxisTitle = "";
@@ -85,7 +85,7 @@ tripalD3.histo = {
       options.barColor = d3.scale.linear()
         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
     }
-*/
+
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
