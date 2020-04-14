@@ -49,6 +49,10 @@ tripalD3.histo = {
       var max = d3.max(data),
         min = d3.min(data);
     
+       var width = 960,
+        height = 500,
+        div = d3.select('body').append('div'),
+    
     var drag = d3.behavior.drag();
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
