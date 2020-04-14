@@ -86,7 +86,7 @@ tripalD3.histo = {
    //Set Y axis scale
       var y = d3.scale.linear()
         .domain([0, yMax])
-        .range([options.height, 0]);
+        .range([options.height - options.yAxisPadding, 0]);
 
 //Make x axis
       var xAxis = d3.svg.axis()
