@@ -53,7 +53,7 @@ tripalD3.histo = {
         height = 500,
         div = d3.select('body').append('div'),
     
-    var drag = d3.behavior.drag();
+    
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
    
