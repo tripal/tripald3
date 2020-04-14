@@ -88,17 +88,7 @@ tripalD3.histo = {
       .domain([0, yMax])
         .range([options.height - options.yAxisPadding, 0]);
 
-//Make x axis
-      var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
 
-      //Draw x axis    
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + options.height + ")")
-        .call(xAxis);
-  
         //Set color scale before threshold      
       var lowColorScale = d3.scale.linear()
         .domain([yMin, yMax])
@@ -208,5 +198,17 @@ tripalD3.histo = {
         })
         .style("stroke", function(d) {return highColorScale(d.y)})
         .style("stroke-width", "3px")
+    
+    //Make x axis
+      var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+      //Draw x axis    
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + options.height + ")")
+        .call(xAxis);
+  
   },
 };
