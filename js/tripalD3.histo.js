@@ -30,6 +30,20 @@ tripalD3.histo = {
    */
   drawSimpleHistogram: function(svg, data, options) {
     
+    //Margin convention: DON'T TOUCH
+      var margin = {
+          top: 40,
+          right: 40,
+          bottom: 40,
+          left: 40
+        },
+        width = 1000 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+      var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
      //Get max and min of data for X axis
       var max = d3.max(data),
