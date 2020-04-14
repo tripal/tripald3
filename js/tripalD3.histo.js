@@ -113,7 +113,7 @@ tripalD3.histo = {
       //Draw x axis    
       svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + options.height + ")")
         .call(xAxis);
   
 /**
@@ -208,7 +208,7 @@ tripalD3.histo = {
         .attr("x", 0)
         .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
         .attr("height", function(d) {
-          return height - y(d.y);
+          return options.height - y(d.y);
         })
         .attr("fill", "red")
   },
