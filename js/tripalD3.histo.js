@@ -64,17 +64,16 @@ tripalD3.histo = {
       options.yAxisTitle = "";
     }
     if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 30;
+      options.xAxisPadding = 90;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 30;
+      options.yAxisPadding = 90;
     }
-   /** if (!options.hasOwnProperty('barColor')) {
+    if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
-      options.barColor = d3.scale.linear()
-        .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
+      options.barColor = colors[0];
     }
-*/
+
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
