@@ -59,8 +59,8 @@ tripalD3.histo = {
         errors = true;
       }
       */
-    }
-   // if (errors) { return false; }
+   // });
+  if (errors) { return false; }
 /**
     // Set Defaults.
     if (!options.hasOwnProperty('xAxisTitle')) {
