@@ -57,10 +57,10 @@ tripalD3.histo = {
       options.yAxisTitle = "";
     }
     if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 90;
+      options.xAxisPadding = 30;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 90;
+      options.yAxisPadding = 60;
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
@@ -85,7 +85,6 @@ tripalD3.histo = {
 
    //Set Y axis scale
       var y = d3.scale.linear()
-        .domain([0, yMax])
         .range([options.height - options.yAxisPadding, 0]);
 
 //Make x axis
