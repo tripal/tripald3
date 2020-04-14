@@ -68,7 +68,11 @@ tripalD3.histo = {
     }
 
 //Set X axis scale
-      var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
+      var x = d3.scale.linear()
+        .domain([min, max])
+        .range([options.xAxisPadding, options.width]);
+          
+          
     
       //Make a histogram layout with 30 bins
       var hist = d3.layout.histogram()
