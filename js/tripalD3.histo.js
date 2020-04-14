@@ -30,6 +30,11 @@ tripalD3.histo = {
    */
   drawSimpleHistogram: function(svg, data, options) {
     
+    
+     //Get max and min of data for X axis
+      var max = d3.max(data),
+        min = d3.min(data);
+    
     var drag = d3.behavior.drag();
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
