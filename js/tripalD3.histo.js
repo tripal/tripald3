@@ -59,7 +59,7 @@ tripalD3.histo = {
         errors = true;
       }
       */
-    });
+    };
     if (errors) { return false; }
 /**
     // Set Defaults.
