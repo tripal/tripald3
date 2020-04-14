@@ -51,7 +51,7 @@ tripalD3.histo = {
     
        var width = 960,
         height = 500,
-        div = d3.select('body').append('div'),
+        div = d3.select('body').append('div');
     
     
        var lowColor = "#bceb65";
