@@ -89,7 +89,7 @@ tripalD3.histo = {
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
-        .range([0, width]);
+        .range([0, options.width]);
     
       //Make a histogram layout with 30 bins
       var hist = d3.layout.histogram()
@@ -103,7 +103,7 @@ tripalD3.histo = {
    //Set Y axis scale
       var y = d3.scale.linear()
         .domain([0, yMax])
-        .range([height, 0]);
+        .range([options.height, 0]);
 
 //Make x axis
       var xAxis = d3.svg.axis()
