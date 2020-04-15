@@ -178,7 +178,7 @@ tripalD3.histo = {
         var y = d3.event.dy;
         var line = d3.select(this);
         var xWidth = max - min;
-        var ration = 500 / xWidth;
+        var ration = 200 / xWidth;
         var offset = xWidth / 2;
         var linePosition = ((lines.attr("x2") / ration) - offset);
         var formatNumber = d3.format(",.0f");
@@ -186,9 +186,9 @@ tripalD3.histo = {
         //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
         var scaledPosition = formatNumber(linePosition);          
  
-    if(x <= min) {
-      dragended() }
-        else {
+   // if(x <= min) {
+   //   dragended() }
+   //   else {
 
         d3.selectAll("rect")
           .attr("fill", function(d) {
@@ -215,7 +215,7 @@ tripalD3.histo = {
         };
 
         line.attr(attributes);
-      }
+     // }
 
       //End drag function
       function dragended() {
