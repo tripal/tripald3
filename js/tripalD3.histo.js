@@ -186,7 +186,7 @@ tripalD3.histo = {
         //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
         var scaledPosition = formatNumber(linePosition);          
  
-    if(x1 <= min) {
+    if('x1' <= min) {
       dragended() }
         else {
 
