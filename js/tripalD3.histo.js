@@ -204,7 +204,8 @@ tripalD3.histo = {
             else {return highColorScale(d.y)}
           })
           .style("stroke-width", "3px")
-        }
+       // }
+        
         // Update threshold line properties after drag event
         var attributes = {
           x1: parseInt(line.attr('x1')) + x,
@@ -215,7 +216,7 @@ tripalD3.histo = {
         };
 
         line.attr(attributes);
-     // }
+      }
 
       //End drag function
       function dragended() {
