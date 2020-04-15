@@ -187,7 +187,7 @@ tripalD3.histo = {
         .append("g")
         .attr("class", "column")
         .attr("transform", function(d) {
-          return "translate(" + x(d.x) + "," + y(d.y) + ")";
+          return "translate(" + x(d.x0) + "," + y(d.y) + ")";
         });
 
 
@@ -196,7 +196,7 @@ tripalD3.histo = {
         .attr("x", 1)
         .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
         .attr("height", function(d) {
-          return options.height - y(d.length);
+          return options.height - y(d.y);
         })
          .attr("fill", function(d) {
           return lowColorScale(d.y)
