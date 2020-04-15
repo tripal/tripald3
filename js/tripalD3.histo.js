@@ -179,14 +179,14 @@ tripalD3.histo = {
         var line = d3.select(this);
         var xWidth = max - min;
         var ration = 200 / xWidth;
-        var offset = xWidth / 6;
+        var offset = xWidth / 2;
         var linePosition = ((lines.attr("x2") / ration) - offset);
         var formatNumber = d3.format(",.0f");
         var formatter = function(d) {return formatNumber(d)};
         //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
         var scaledPosition = formatNumber(linePosition);          
  
-   // if(x <= min) {
+   // if(lines.attr('x2') <= min) {
    //   dragended() }
    //   else {
 
