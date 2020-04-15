@@ -192,7 +192,7 @@ tripalD3.histo = {
 
         d3.selectAll("rect")
           .attr("fill", function(d) {
-            if (d.x <= (linePosition)) {
+            if (d.x <= (this.linePosition)) {
               return highColorScale(d.y);
             } else {
               return lowColorScale(d.y);
