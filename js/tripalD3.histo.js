@@ -187,7 +187,7 @@ tripalD3.histo = {
         .append("g")
         .attr("class", "column")
         .attr("transform", function(d) {
-          return "translate(" + x(d.x0) + "," + y(d.y) + ")";
+          return "translate(0," + x(d.x) + "," + y(d.y) + ")";
         });
 
 
