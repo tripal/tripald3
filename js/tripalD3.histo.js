@@ -36,11 +36,6 @@ tripalD3.histo = {
       var max = d3.max(data),
         min = d3.min(data);
     
-       var width = 960,
-        height = 500,
-        div = d3.select('body').append('div');
-    
-    
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
    
@@ -103,82 +98,6 @@ tripalD3.histo = {
       var highColorScale = d3.scale.linear()
         .domain([yMin, yMax])
         .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
-    
-/**
-    // Scales & Axis'.
-    var x = d3.scale.ordinal().rangeRoundBands([options.xAxisPadding, options.width], 0.01, 0.2);
-    var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .outerTickSize(1);
-    var y = d3.scale.linear().range([options.height - options.yAxisPadding, 0]);
-    var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(11)
-      .outerTickSize(1);
-    */
-   
-/**
-    // Setting up ranges for the axis'.
-    x.domain(data.map(function(d) { return d.label; }));
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
-*/
-/**
-    // Actually draw the y-axis.
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + options.xAxisPadding + ",0)")
-        .call(yAxis)
-      // NOTE: we use negative coordinates b/c rotating -90
-      // places us in Quadrants III (-x,-y).
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - options.xAxisPadding)
-        .attr("x", 0 - ((options.height - options.yAxisPadding) / 2))
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.yAxisTitle);
-
-    // Actually draw the x-axis.
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("class", "axis-title")
-        .attr("x", options.width/2)
-        .attr("y", options.yAxisPadding - 15)
-        .attr("dy", ".71em")
-        .style("text-anchor", "middle")
-        .style("font-weight", "bold")
-        .text(options.xAxisTitle);
-
-    // Better style the x-axis.
-    // Fix the labels.
-    svg.selectAll(".x.axis .tick text")
-      .style("text-anchor", "end")
-      .attr("transform", "rotate(-45)" )
-      .attr("x", -8)
-      .attr("y", 2);
-    // Make the ticks actually visible ;-).
-    svg.selectAll(".axis .tick line")
-      .style("stroke", "black")
-      .style("stroke-width", "1px")
-      .style("shape-rendering", "crispEdges");
-      */
-/**
-    // Draw the bars :-).
-    svg.selectAll("bar")
-        .data(data)
-      .enter().append("rect")
-        .style("fill", options.barColor)
-        .attr("x", function(d) { return x(d.label); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.count); })
-        .attr("height", function(d) { return options.height - options.yAxisPadding - y(d.count); });
-        */
 
 //Make the columns
       var column = svg.selectAll(".column")
@@ -189,7 +108,6 @@ tripalD3.histo = {
         .attr("transform", function(d) {
           return "translate(" + x(d.x) + "," + y(d.y) + ")";
         });
-
 
       //Draw the columns
       column.append("rect")
