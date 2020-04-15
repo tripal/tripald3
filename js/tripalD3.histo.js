@@ -32,10 +32,9 @@ tripalD3.histo = {
     
    
     
-     //Get max and min of data for X axis
-      var max = d3.max(data),
-        min = d3.min(data);
-    
+  
+    var drag = d3.behavior.drag();
+        var activeClassName = 'active-d3-item';
        var lowColor = "#bceb65";
       var  highColor = "#9ed141";
    
@@ -66,7 +65,11 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-
+    
+   //Get max and min of data for X axis
+      var max = d3.max(data),
+        min = d3.min(data);
+    
 //Set X axis scale
       var x = d3.scale.linear()
         .domain([min, max])
@@ -121,6 +124,102 @@ tripalD3.histo = {
         })
         .style("stroke", function(d) {return highColorScale(d.y)})
         .style("stroke-width", "3px")
+    
+     //Data for the threshold line
+      var thresholdOrigin = [{
+        'x1': 5,
+        'y1': -50,
+        'x2': 5,
+        'y2': 425
+      }];
+
+      // Generate the svg lines attributes
+      var lineAttributes = {
+        'x1': function(d) {
+          return d.x1;
+        },
+        'y1': function(d) {
+          return d.y1;
+        },
+        'x2': function(d) {
+          return d.x2;
+        },
+        'y2': function(d) {
+          return d.y2;
+        }
+      };
+
+      //Drag behavior for threshold line
+      var drag = d3.behavior.drag()
+        .origin(function(d) {
+          return d;
+        })
+        .on('dragstart', dragstarted)
+        .on('drag', dragged)
+        .on('dragend', dragended);
+
+      // Pointer to the d3 lines
+      var lines = svg
+        .selectAll('line')
+        .data(thresholdOrigin)
+        .enter()
+        .append('line')
+        .attr(lineAttributes)
+        .call(drag);
+
+      //Start drag function
+      function dragstarted() {
+        d3.select(this).classed(activeClassName, true);
+      }
+
+      //Drag function
+      function dragged() {
+        var x = d3.event.dx;
+        var y = d3.event.dy;
+        var line = d3.select(this);
+        var xWidth = max - min;
+        var ration = 960 / xWidth;
+        var offset = xWidth / 2;
+        var linePosition = ((lines.attr("x2") / ration) - offset);
+        var formatNumber = d3.format(",.0f");
+        var formatter = function(d) {return formatNumber(d)};
+        //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
+        var scaledPosition = formatNumber(linePosition);          
+ 
+
+
+        d3.selectAll("rect")
+          .attr("fill", function(d) {
+            if (d.x <= (linePosition)) {
+              return highColorScale(d.y);
+            } else {
+              return lowColorScale(d.y);
+            }
+            
+          })
+          .style("stroke", function(d) {
+          	if (d.x <= linePosition) {return lowColorScale(d.y);}
+            else {return highColorScale(d.y)}
+          })
+          .style("stroke-width", "3px")
+
+        // Update threshold line properties after drag event
+        var attributes = {
+          x1: parseInt(line.attr('x1')) + x,
+          y1: parseInt(line.attr('y1')),
+
+          x2: parseInt(line.attr('x2')) + x,
+          y2: parseInt(line.attr('y2')),
+        };
+
+        line.attr(attributes);
+      }
+
+      //End drag function
+      function dragended() {
+        d3.select(this)
+          .classed(activeClassName, false)
+      };
     
     //Make x axis
       var xAxis = d3.svg.axis()
