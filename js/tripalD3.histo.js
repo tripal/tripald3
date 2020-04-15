@@ -186,7 +186,9 @@ tripalD3.histo = {
         //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
         var scaledPosition = formatNumber(linePosition);          
  
-
+    if(d.x <= 0) {
+      dragended() }
+        else {
 
         d3.selectAll("rect")
           .attr("fill", function(d) {
@@ -202,7 +204,7 @@ tripalD3.histo = {
             else {return highColorScale(d.y)}
           })
           .style("stroke-width", "3px")
-
+        }
         // Update threshold line properties after drag event
         var attributes = {
           x1: parseInt(line.attr('x1')) + x,
