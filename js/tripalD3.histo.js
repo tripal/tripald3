@@ -186,13 +186,13 @@ tripalD3.histo = {
         //var scaleForXAxis = d3.scale.linear().domain([0, width]).range([min, max]);
         var scaledPosition = formatNumber(linePosition);          
  
-    if(linePosition <= 0) {
+    if(x1 <= min) {
       dragended() }
         else {
 
         d3.selectAll("rect")
           .attr("fill", function(d) {
-            if (d.x <= (this.linePosition)) {
+            if (d.x <= (linePosition)) {
               return highColorScale(d.y);
             } else {
               return lowColorScale(d.y);
