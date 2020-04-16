@@ -100,7 +100,7 @@ body {
 
     line:hover {
       cursor: pointer;
-      stroke-width: 5px;
+      stroke-width: 3px;
       shape-rendering: crispEdges;
     }
 
