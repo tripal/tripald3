@@ -59,8 +59,8 @@ tripalD3.histo = {
       var activeClassName = 'active-d3-item';
     
     //Colors for color scale
-      var lowColor = "#2571b0";
-      var highColor = "#1066ad";
+      var lowColor = "#4682B4";
+      var highColor = "#266091";
     
     //Get max and min of data for X axis
       var max = d3.max(data),
@@ -155,12 +155,10 @@ tripalD3.histo = {
           var x = d3.event.dx;
           var y = d3.event.dy;
           var line = d3.select(this);
-          var xWidth = max - min;
-          var ration = (xWidth + 10) / 2;
-          var linePosition = ((lines.attr("x2")) / ration);
-          var formatNumber = d3.format(",.0f");
-          var formatter = function(d) {return formatNumber(d)};
-          var scaledPosition = formatNumber(linePosition);         
+          var lineScale = d3.scale.linear().domain([0, width]).range([min, max]);
+          var linePosition = lineScale(lines.attr("x2"));
+          var formatter = d3.format(".1f");
+          var scaledPosition = formatter(linePosition);         
 
           d3.selectAll("rect")
             .attr("fill", function(d) {
@@ -190,7 +188,18 @@ tripalD3.histo = {
               y2: parseInt(line.attr('y2')),
           };
           line.attr(attributes);
-          }
+          
+        //updateLegend()
+                 
+   
+        /**Update legend
+        function updateLegend() {
+              d3.selectAll('.legendText').text("x: " + scaledPosition);
+              legend.text('scaledPosition')
+    			        .attr("class", "legendText, absolute"); 
+          };   */
+        
+    }
 
     //End drag function
         function dragended() {
