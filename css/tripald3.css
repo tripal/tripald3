@@ -88,13 +88,13 @@ body {
     line {
       vector-effect: non-scaling-stroke;
       stroke: #000;
-      stroke-dasharray: 16;
-      stroke-width: 4px;
+      stroke-dasharray: 18;
+      stroke-width: 2px;
     }
 
     .active-d3-item {
       cursor: pointer;
-      stroke-width: 5px;
+      stroke-width: 4px;
       shape-rendering: crispEdges;
     }
 
