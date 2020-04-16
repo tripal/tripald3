@@ -1,5 +1,5 @@
 
-drawHistogram
+drawSimpleHistogram
 ================
 
 .. warning::
@@ -8,15 +8,12 @@ drawHistogram
 
 Source Code: ``js/tripalD3.histo.js``
 
-def ``drawHistogram(svg, data, options)``
+def ``drawSimpleHistogram(svg, data, options)``
 
   Draw a simple histogram.
 
   :svg: The canvas to draw the histogram on.
-  :data: An array of objects (one object per category or bar) with the following keys:
-
-    :label: the human-readable label for this category (bar).
-    :count: the number of items in the category. This is used to determine the length of the bar and MUST BE AN INTEGER.
+  :data: An array of objects (one bar represents the frequency of objects with that value).
 
   :options: An object containing options for this chart. Supported keys include:
   
@@ -24,7 +21,9 @@ def ``drawHistogram(svg, data, options)``
     :yAxisTitle: The title of the Y-Axis.
     :width: The width of the drawing canvas (including key and margins) in pixels.
     :height: The height of the drawing canvas (including key and margins) in pixels.
-    :drawKey: whether or not to draw the key; default is "false".
-    :xAxisPadding: the number of pixels to pad the left side to provide room for the y-axis labels.
-    :yAxisPadding: the number of pixels to pad the bottom to provide room for the x-axis labels.
+    :drawKey: Whether or not to draw the key; default is "false".
+    :xAxisPadding: The number of pixels to pad the left side to provide room for the y-axis labels.
+    :yAxisPadding: The number of pixels to pad the bottom to provide room for the x-axis labels.
+    :lowColor: The base color for the color scale to be applied to the bars.
+    :highColor: The base color for the color scale to be applied to the bars under the threshold.
 
