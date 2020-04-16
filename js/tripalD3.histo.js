@@ -60,7 +60,7 @@ tripalD3.histo = {
     
     //Colors for color scale
       var lowColor = "#2571b0";
-      var  highColor = "#1066ad";
+      var highColor = "#1066ad";
     
     //Get max and min of data for X axis
       var max = d3.max(data),
@@ -158,7 +158,7 @@ tripalD3.histo = {
           var xWidth = max - min;
           var ration = 1000 / xWidth;
           var offset = xWidth / 50;
-          var linePosition = ((lines.attr("x2") / ration) - offset);
+          var linePosition = ((lines.attr("x2") / ration) - 100);
           var formatNumber = d3.format(",.0f");
           var formatter = function(d) {return formatNumber(d)};
           var scaledPosition = formatNumber(linePosition);         
