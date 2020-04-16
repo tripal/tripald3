@@ -35,7 +35,7 @@ tripalD3.histo = {
   
     var drag = d3.behavior.drag();
         var activeClassName = 'active-d3-item';
-       var lowColor = steelblue;
+       var lowColor = "#2571b0";
       var  highColor = "#1066ad";
    
 
@@ -115,7 +115,7 @@ tripalD3.histo = {
       //Draw the columns
       column.append("rect")
         .attr("x", 1)
-        .attr("y", -50)
+        .attr("y", 0)
         .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
         .attr("height", function(d) {
           return options.height - y(d.y);
