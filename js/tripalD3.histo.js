@@ -118,7 +118,7 @@ tripalD3.histo = {
         'x1': 5,
         'y1': -50,
         'x2': 5,
-        'y2': 425
+        'y2': 440
       }];
 
     //Generate the svg lines attributes
