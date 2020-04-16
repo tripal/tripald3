@@ -88,18 +88,18 @@ body {
     line {
       vector-effect: non-scaling-stroke;
       stroke: #000;
-      stroke-dasharray: 12;
-      stroke-width: 3px;
+      stroke-dasharray: 16;
+      stroke-width: 4px;
     }
 
     .active-d3-item {
       cursor: pointer;
-      stroke: coral;
+      stroke: #aceb7f;
     }
 
     line:hover {
       cursor: pointer;
-      stroke: coral;
-      stroke-width: 4px;
+      stroke: #aceb7f;
+      stroke-width: 5px;
       shape-rendering: crispEdges;
     }
