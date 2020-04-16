@@ -107,7 +107,7 @@ tripalD3.histo = {
       column.append("rect")
           .attr("x", 1)
           .attr("y", -62)
-          .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
+          .attr("width", (x(hist[0].dx) - x(0)) - 1)
           .attr("height", function(d) {return options.height - y(d.y);})
           .attr("fill", function(d) {return lowColorScale(d.y)})
           .style("stroke", function(d) {return highColorScale(d.y)})
@@ -157,7 +157,7 @@ tripalD3.histo = {
           var line = d3.select(this);
           var xWidth = max - min;
           var ration = xWidth / 2;
-          var linePosition = ((lines.attr("x2"));
+          var linePosition = (lines.attr("x2"));
           var formatNumber = d3.format(",.0f");
           var formatter = function(d) {return formatNumber(d)};
           var scaledPosition = formatNumber(linePosition);         
