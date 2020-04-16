@@ -105,7 +105,7 @@ tripalD3.histo = {
 
     //Draw the columns
       column.append("rect")
-          .attr("x", 1)
+          .attr("x", 0)
           .attr("y", -62)
           .attr("width", (x(hist[0].dx) - x(0)) - 1)
           .attr("height", function(d) {return options.height - y(d.y);})
@@ -156,8 +156,8 @@ tripalD3.histo = {
           var y = d3.event.dy;
           var line = d3.select(this);
           var xWidth = max - min;
-          var ration = xWidth / 2;
-          var linePosition = ((lines.attr("x2")) * ration);
+          var ration = (xWidth + 10) / 2;
+          var linePosition = ((lines.attr("x2")) / ration);
           var formatNumber = d3.format(",.0f");
           var formatter = function(d) {return formatNumber(d)};
           var scaledPosition = formatNumber(linePosition);         
