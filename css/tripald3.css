@@ -94,12 +94,28 @@ body {
 
     .active-d3-item {
       cursor: pointer;
-      stroke: #aceb7f;
+      stroke-width: 5px;
+      shape-rendering: crispEdges;
     }
 
     line:hover {
       cursor: pointer;
-      stroke: #aceb7f;
       stroke-width: 5px;
       shape-rendering: crispEdges;
+    }
+
+    .legendText {
+      font: 12px sans-serif;
+      font-weight: bolder;
+      float: left;
+      width: 20px;
+      height: 20px;
+      margin: 5px;
+    }
+
+    div.absolute {
+      position: absolute;
+      top:480px;
+      left: 880px;
+      width: 80px;
     }
