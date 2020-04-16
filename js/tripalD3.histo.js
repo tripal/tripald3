@@ -115,7 +115,7 @@ tripalD3.histo = {
       //Draw the columns
       column.append("rect")
         .attr("x", 1)
-        .attr("y", 0)
+        .attr("y", 20)
         .attr("width", (x(hist[0].dx) - x(0)) - 0.5)
         .attr("height", function(d) {
           return options.height - y(d.y);
