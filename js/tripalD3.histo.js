@@ -116,9 +116,9 @@ tripalD3.histo = {
     //Data for the threshold line
       var thresholdOrigin = [{
         'x1': 5,
-        'y1': -50,
+        'y1': -60,
         'x2': 5,
-        'y2': 440
+        'y2': 425
       }];
 
     //Generate the svg lines attributes
