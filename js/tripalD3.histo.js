@@ -189,15 +189,15 @@ tripalD3.histo = {
           };
           line.attr(attributes);
           
-        //updateLegend()
+        updateLegend()
                  
    
-        /**Update legend
+        //Update legend
         function updateLegend() {
               d3.selectAll('.legendText').text("x: " + scaledPosition);
               legend.text('scaledPosition')
     			        .attr("class", "legendText, absolute"); 
-          };   */
+          };   
         
     }
 
