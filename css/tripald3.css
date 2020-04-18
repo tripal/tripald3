@@ -92,12 +92,6 @@ body {
       stroke-width: 2px;
     }
 
-    .active-d3-item {
-      cursor: pointer;
-      stroke-width: 4px;
-      shape-rendering: crispEdges;
-    }
-
     line:hover {
       cursor: pointer;
       stroke-width: 3px;
