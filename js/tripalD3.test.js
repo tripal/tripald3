@@ -125,7 +125,7 @@ tripalD3.test = {
       return false;
     }
   
-    if (!yourArray.some(isNaN)) {
+    if (data.some(isNaN)) {
       return false;
     }
   else {
