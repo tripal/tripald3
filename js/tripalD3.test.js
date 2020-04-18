@@ -125,10 +125,9 @@ tripalD3.test = {
       return false;
     }
   
-    return data.every(function(element) {
-      if (typeOf element !== 'number') {
-        return false;
-      }
+    if (!yourArray.some(isNaN)) {
+      return false;
+    }
   else {
         return true;
       }
