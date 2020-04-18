@@ -188,7 +188,8 @@ tripalD3.histo = {
               y2: parseInt(line.attr('y2')),
           };
         
-          //For threshold 'container'
+        
+                  //For threshold 'container'
         
         
           var newX1 = attributes.x1;
@@ -223,7 +224,7 @@ tripalD3.histo = {
               d3.selectAll('.legendText').text("x: " + scaledPosition);
               legend.text('scaledPosition')
     			        .attr("class", "legendText, absolute"); 
-          };   
+        };   
         
     }
 
