@@ -225,7 +225,7 @@ tripalD3.histo = {
    
         //Update legend
         function updateLegend() {
-              d3.selectAll('.legendText').text("x: " + scaledPosition);
+              d3.selectAll('.legendText').text("x: " + newX1);
               legend.text('scaledPosition')
     			        .attr("class", "legendText, absolute"); 
         };   
