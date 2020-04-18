@@ -196,13 +196,13 @@ tripalD3.histo = {
     
           //Revert line to the edge of the chart if dragged outside the chart 
           attributes.x1 = function(d) {
-              if (newX1 < 0) {return 0} 
-              else  if (newX1 > 920) {return 920} 
-              else {return newX1}
+              if (newX1 < 0) {return 0;} 
+              else  if (newX1 > 920) {return 920;} 
+              else {return newX1;}
           };
         
-        attributes.x1 = attributes.x2;
-       /**
+        //attributes.x1 = attributes.x2;
+       
           attributes.x2 = function(d) {
               if (newX2 < 0) {
                   return 0
@@ -211,7 +211,7 @@ tripalD3.histo = {
               } else {
                 return newX2
               }
-          };*/
+          };
         
           line.attr(attributes);
           
