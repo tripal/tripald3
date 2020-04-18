@@ -56,8 +56,7 @@ tripalD3.histo = {
     
     //For drag behavior    
       var drag = d3.behavior.drag();
-      
-    
+          
     //Colors for color scale
       var lowColor = "#4682B4";
       var highColor = "#266091";
@@ -177,23 +176,19 @@ tripalD3.histo = {
     
           //Revert line to the edge of the chart if dragged outside the chart 
           attributes.x1 = function(d) {
-              if (newX1 < 31) {return 31;} 
-              else  if (newX1 > 711) {return 711;} 
-              else {return newX1;}
-          };
-        
-        //attributes.x1 = attributes.x2;
-       
-          attributes.x2 = function(d) {
-              if (newX2 < 31) {
-                  return 31
-              } else  if (newX2 > 711) {
-                  return 711
-              } else {
-                return newX2
+              if (newX1 < 31) {
+                return 31;
+              } 
+              else  if (newX1 > 711) {
+                return 711;
+              } 
+              else {
+                return newX1;
               }
           };
         
+          attributes.x1 = attributes.x2;
+             
           line.attr(attributes);
         
           d3.selectAll("rect")
@@ -213,12 +208,7 @@ tripalD3.histo = {
                     return highColorScale(d.y)
                 }
            })
-            .style("stroke-width", "3px")
-        
-     
-        
-        
-          
+            .style("stroke-width", "3px")        
           
         updateLegend()
                  
