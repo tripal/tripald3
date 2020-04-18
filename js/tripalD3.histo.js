@@ -185,7 +185,7 @@ tripalD3.histo = {
               }
           };
         
-          attributes.x1 = attributes.x2;
+          attributes.x2 = attributes.x1;
              
           line.attr(attributes);
         
