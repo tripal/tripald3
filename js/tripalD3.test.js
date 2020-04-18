@@ -119,37 +119,21 @@ tripalD3.test = {
   
   //------------------------------------------------------
   'isFrequencyDataCompliant': function (data) {
-    return true;
-  },
-
-   /** dataLabel = dataLabel || "data";
-
-    if (!Array.isArray(data)) {
-      console.error("The " + dataLabel + " should be a set where each element has a dataLabel and a datum.");
-      return false;
-    }
-    
+     
     if (data.length == 0) {
       console.error("The " + dataLabel + " must not be empty.");
       return false;
     }
+  
     return data.every(function(element) {
       if (!(typeOf element == 'number')) {
         return false;
       }
-  /** return data.every(function(element) {
-      if (!("dataLabel" in element)) {
-        console.error("Every element of " + dataLabel + " must be an object with a DATALABEL key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      else if (!("datum" in element)) {
-        console.error("Every element of " + dataLabel + " must be an object with a DATUM key. This element doesn't comply: " + JSON.stringify(element));
-        return false;
-      }
-      */
-      /**else {
+  else {
         return true;
-      }*/
+      }
+      
+    },
    
  
 
