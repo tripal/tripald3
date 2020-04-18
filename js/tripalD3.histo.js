@@ -158,28 +158,9 @@ tripalD3.histo = {
           var lineScale = d3.scale.linear().domain([0, options.width]).range([min, max]);
           var linePosition = lineScale(lines.attr("x2"));
           var formatter = d3.format(".1f");
-          var scaledPosition = formatter(linePosition);         
-
-          d3.selectAll("rect")
-            .attr("fill", function(d) {
-                if (d.x <= (linePosition)) {
-                    return highColorScale(d.y);
-                } 
-                else {
-                    return lowColorScale(d.y);
-                }
-            })
-            .style("stroke", function(d) {
-          	    if (d.x <= linePosition) {
-                    return lowColorScale(d.y);
-                }
-                else {
-                    return highColorScale(d.y)
-                }
-           })
-            .style("stroke-width", "3px")
+          var scaledPosition = formatter(linePosition); 
         
-        //Update threshold line properties after drag event
+          //Update threshold line properties after drag event
           var attributes = {
               x1: parseInt(line.attr('x1')) + x,
               y1: parseInt(line.attr('y1')),
@@ -188,8 +169,7 @@ tripalD3.histo = {
               y2: parseInt(line.attr('y2')),
           };
         
-        
-                  //For threshold 'container'
+                //For threshold 'container'
         
         
           var newX1 = attributes.x1;
@@ -215,6 +195,30 @@ tripalD3.histo = {
           };
         
           line.attr(attributes);
+        
+          d3.selectAll("rect")
+            .attr("fill", function(d) {
+                if (d.x <= (linePosition)) {
+                    return highColorScale(d.y);
+                } 
+                else {
+                    return lowColorScale(d.y);
+                }
+            })
+            .style("stroke", function(d) {
+          	    if (d.x <= linePosition) {
+                    return lowColorScale(d.y);
+                }
+                else {
+                    return highColorScale(d.y)
+                }
+           })
+            .style("stroke-width", "3px")
+        
+     
+        
+        
+          
           
         updateLegend()
                  
