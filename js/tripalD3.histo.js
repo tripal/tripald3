@@ -168,9 +168,7 @@ tripalD3.histo = {
               y2: parseInt(line.attr('y2')),
           };
         
-                //For threshold 'container'
-        
-        
+          //For threshold 'container'    
           var newX1 = attributes.x1;
           var newX2 = attributes.x2;
     
