@@ -187,6 +187,32 @@ tripalD3.histo = {
               x2: parseInt(line.attr('x2')) + x,
               y2: parseInt(line.attr('y2')),
           };
+        
+          //For threshold 'container'
+        
+        
+          var newX1 = attributes.x1;
+          var newX2 = attributes.x2;
+    
+          //Revert line to the edge of the chart if dragged outside the chart 
+          attributes.x1 = function(d) {
+              if (newX1 < 0) {return 0} 
+              else  if (newX1 > 920) {return 920} 
+              else {return newX1}
+          };
+        
+        attributes.x1 = attributes.x2;
+       /**
+          attributes.x2 = function(d) {
+              if (newX2 < 0) {
+                  return 0
+              } else  if (newX2 > 920) {
+                  return 920
+              } else {
+                return newX2
+              }
+          };*/
+        
           line.attr(attributes);
           
         updateLegend()
