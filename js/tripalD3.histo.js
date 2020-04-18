@@ -56,7 +56,7 @@ tripalD3.histo = {
     
     //For drag behavior    
       var drag = d3.behavior.drag();
-      var activeClassName = 'active-d3-item';
+      
     
     //Colors for color scale
       var lowColor = "#4682B4";
@@ -115,9 +115,9 @@ tripalD3.histo = {
     
     //Data for the threshold line
       var thresholdOrigin = [{
-        'x1': 5,
-        'y1': -60,
-        'x2': 5,
+        'x1': 31,
+        'y1': -62,
+        'x2': 31,
         'y2': 425
       }];
 
@@ -147,7 +147,7 @@ tripalD3.histo = {
 
     //Start drag function
       function dragstarted() {
-          d3.select(this).classed(activeClassName, true);
+          d3.select(this);
       }
 
     //Drag function
@@ -177,18 +177,18 @@ tripalD3.histo = {
     
           //Revert line to the edge of the chart if dragged outside the chart 
           attributes.x1 = function(d) {
-              if (newX1 < 0) {return 0;} 
-              else  if (newX1 > 920) {return 920;} 
+              if (newX1 < 31) {return 31;} 
+              else  if (newX1 > 711) {return 711;} 
               else {return newX1;}
           };
         
         //attributes.x1 = attributes.x2;
        
           attributes.x2 = function(d) {
-              if (newX2 < 0) {
-                  return 0
-              } else  if (newX2 > 920) {
-                  return 920
+              if (newX2 < 31) {
+                  return 31
+              } else  if (newX2 > 711) {
+                  return 711
               } else {
                 return newX2
               }
@@ -225,7 +225,7 @@ tripalD3.histo = {
    
         //Update legend
         function updateLegend() {
-              d3.selectAll('.legendText').text("x: " + newX1);
+              d3.selectAll('.legendText').text("x: " + scaledPosition);
               legend.text('scaledPosition')
     			        .attr("class", "legendText, absolute"); 
         };   
@@ -234,7 +234,7 @@ tripalD3.histo = {
 
     //End drag function
         function dragended() {
-            d3.select(this).classed(activeClassName, false)
+            d3.select(this)
         };
     
     //Make x axis
