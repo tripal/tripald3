@@ -126,7 +126,7 @@ tripalD3.test = {
     }
   
     return data.every(function(element) {
-      if (!(typeOf element == 'number')) {
+      if (typeOf element !== 'number') {
         return false;
       }
   else {
