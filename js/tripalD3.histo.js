@@ -183,15 +183,7 @@ tripalD3.histo = {
                 return newX1;
               }
           };
-        
-          function stopIt() { 
-              d3.select("line")
-                .classed(inactiveClass, function(d) {
-                    if (attributes.x1 == 31 || attributes.x1 == 711) {
-                      return true;
-                    }})
-          };
-        
+               =     
           attributes.x2 = attributes.x1;
              
           line.attr(attributes);
@@ -213,16 +205,11 @@ tripalD3.histo = {
                     return highColorScale(d.y)
                 }
            })
-            .style("stroke-width", "3px")        
-          
-        updateLegend()
-                 
+            .style("stroke-width", "3px")                       
    
         //Update legend
         function updateLegend() {
               d3.selectAll('.legendText').text("x: " + scaledPosition);
-              legend.text('scaledPosition')
-    			        .attr("class", "legendText, absolute"); 
         };   
         
     }
