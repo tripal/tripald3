@@ -183,9 +183,9 @@ tripalD3.histo = {
               }
           };
         
-        function stopIt() {
-          if (attributs.x1 == 31 || attributes.x1 == 711) {return dragended();}
-        }
+        function stopIt() { d3.select("line").classed(inactiveClass,
+          if (attributes.x1 == 31 || attributes.x1 == 711) {return true;}
+        };
         
           attributes.x2 = attributes.x1;
              
