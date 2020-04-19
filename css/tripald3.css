@@ -73,47 +73,38 @@ svg.tripald3-tree .tree-node {
 
 body {
       font: 10px sans-serif;
-    }
+}
 
-    .bar text {
-      fill: #999999;
-    }
-
-    .axis path,
-    .axis line {
+.axis path,
+.axis line {
       fill: none;
-      stroke: #000;
-    }
+      stroke: #000
+}
 
-    line {
+line {
       vector-effect: non-scaling-stroke;
       stroke: #000;
       stroke-dasharray: 18;
       stroke-width: 2px;
-    }
+}
 
-    line:hover {
-      cursor: pointer;
+line:hover {
       stroke-width: 3px;
       shape-rendering: crispEdges;
-    }
+}
 
-    .legendText {
+.legendText {
       font: 12px sans-serif;
       font-weight: bolder;
       float: left;
       width: 20px;
       height: 20px;
       margin: 5px;
-    }
+}
 
-    div.absolute {
+div.absolute {
       position: absolute;
       top:570px;
       left: 580px;
       width: 80px;
-    }
-
-.inactiveClass {
-  cursor: none;
 }
