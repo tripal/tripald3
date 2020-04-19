@@ -184,9 +184,13 @@ tripalD3.histo = {
               }
           };
         
-        function stopIt() { d3.select("line").classed(inactiveClass,
-          if (attributes.x1 == 31 || attributes.x1 == 711) {return true;}
-        };
+          function stopIt() { 
+              d3.select("line")
+                .classed(inactiveClass, function(d) {
+                    if (attributes.x1 == 31 || attributes.x1 == 711) {
+                      return true;
+                    }})
+          };
         
           attributes.x2 = attributes.x1;
              
