@@ -130,9 +130,7 @@ tripalD3.histo = {
     //Drag behavior for the threshold line
       var drag = d3.behavior.drag()
           .origin(function(d) {return d;})
-          .on('dragstart', dragstarted)
-          .on('drag', dragged)
-          .on('dragend', dragended);
+          .on('drag', dragged);
 
     //Pointer to the d3 lines
       var lines = svg
@@ -142,12 +140,7 @@ tripalD3.histo = {
           .append('line')
           .attr(lineAttributes)
           .call(drag);
-
-    //Start drag function
-      function dragstarted() {
-          d3.select(this);
-      }
-
+    
     //Drag function
       function dragged() {
           var x = d3.event.dx;
@@ -214,11 +207,6 @@ tripalD3.histo = {
         };   
         
     }
-
-    //End drag function
-        function dragended() {
-            d3.select(this)
-        };
     
     //Make x axis
         var xAxis = d3.svg.axis()
