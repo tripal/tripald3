@@ -94,16 +94,15 @@ tripalD3.histo = {
          .domain([yMin, yMax])
          .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
 
-    //Make the columns
-      var column = svg.selectAll(".column")
+    //Make the bars
+      var bars = svg.selectAll()
           .data(hist)
           .enter()
           .append("g")
-          .attr("class", "column")
           .attr("transform", function(d) {return "translate(" + x(d.x) + "," + y(d.y) + ")";});
 
-    //Draw the columns
-      column.append("rect")
+    //Draw the bars
+      bars.append("rect")
           .attr("x", 0)
           .attr("y", -62)
           .attr("width", (x(hist[0].dx) - x(0)) - 1)
