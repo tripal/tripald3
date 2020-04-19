@@ -113,3 +113,7 @@ body {
       left: 580px;
       width: 80px;
     }
+
+.inactiveClass {
+  cursor: none;
+}
