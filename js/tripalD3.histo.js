@@ -157,6 +157,7 @@ tripalD3.histo = {
           var linePosition = lineScale(lines.attr("x2"));
           var formatter = d3.format(".1f");
           var scaledPosition = formatter(linePosition); 
+        var inactiveClass = 'inactiveClass';
         
           //Update threshold line properties after drag event
           var attributes = {
