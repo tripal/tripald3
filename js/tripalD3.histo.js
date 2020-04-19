@@ -206,6 +206,8 @@ tripalD3.histo = {
            })
             .style("stroke-width", "3px")                       
    
+        updateLegend()
+        
         //Update legend
         function updateLegend() {
               d3.selectAll('.legendText').text("x: " + scaledPosition);
