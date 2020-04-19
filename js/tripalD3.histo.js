@@ -184,7 +184,7 @@ tripalD3.histo = {
           };
         
         function stopIt() {
-          if (newX1 == 31 || newX1 == 711) {return dragended()}
+          if (attributs.x1 == 31 || attributes.x1 == 711) {return dragended()}
         }
         
           attributes.x2 = attributes.x1;
