@@ -169,7 +169,6 @@ tripalD3.histo = {
         
           //For threshold 'container'    
           var newX1 = attributes.x1;
-          var newX2 = attributes.x2;
     
           //Revert line to the edge of the chart if dragged outside the chart 
           attributes.x1 = function(d) {
@@ -183,6 +182,10 @@ tripalD3.histo = {
                 return newX1;
               }
           };
+        
+        function stopIt() {
+          if (newX1 == 31 || newX1 == 711) {return dragended()}
+        }
         
           attributes.x2 = attributes.x1;
              
