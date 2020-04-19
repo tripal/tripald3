@@ -182,7 +182,7 @@ tripalD3.histo = {
                 return newX1;
               }
           };
-               =     
+                    
           attributes.x2 = attributes.x1;
              
           line.attr(attributes);
