@@ -156,8 +156,8 @@ tripalD3.histo = {
           var y = d3.event.dy;
           var line = d3.select(this);
           var xAxisScale = d3.scale.linear().domain([0, options.width]).range([min, max]);
-          var upperLinePosition = xAxisScale(line1.attr("x2"));
-          var lowerLinePosition = xAxisScale(line2.attr("x2"));
+          var upperLinePosition = Math.floor(xAxisScale(line1.attr("x2")));
+          var lowerLinePosition = Math.floor(xAxisScale(line2.attr("x2")));
           var formatter = d3.format(".2r");
           var upperScaledPosition = formatter(upperLinePosition); 
           var lowerScaledPosition = formatter(lowerLinePosition);
@@ -194,7 +194,7 @@ tripalD3.histo = {
           //Change bar style with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
-              if (Math.floor(d.x) <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
+              if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
               else if (d.x < lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
               else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
               else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
