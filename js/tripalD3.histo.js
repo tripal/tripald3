@@ -23,6 +23,7 @@ tripalD3.histo = {
    *         for the x-axis labels.
    *     - lowColor: The base color for the color scale to be applied to the bars.
    *     - highColor: The base color for the color scale to be applied to the bars under the threshold.
+   *     - drawKey: whether or not to draw the key; default is "true".
    */
   
   
@@ -52,6 +53,9 @@ tripalD3.histo = {
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
+    }
+     if (!options.hasOwnProperty('drawKey')) {
+      options.drawKey = true;
     }
     
     //For drag behavior    
