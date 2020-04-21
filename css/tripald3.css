@@ -105,6 +105,13 @@ line:hover {
 div.absolute {
       position: absolute;
       top:570px;
-      left: 580px;
-      width: 80px;
+      left: 475px;
+      width: 300px;
+}
+
+div.absolute2 {
+      position: absolute;
+      top: 150px;
+      left: 470px;
+      width: 180px;
 }
