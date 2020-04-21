@@ -54,9 +54,6 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("categorical");
       options.barColor = colors[0];
     }
-     if (!options.hasOwnProperty('drawKey')) {
-      options.drawKey = true;
-    }
     
     //For drag behavior    
       var drag = d3.behavior.drag();
@@ -235,6 +232,8 @@ tripalD3.histo = {
             .call(xAxis);
     
     //Add boxes for color key
+        var colorKey = svg.append("rect")
+            .attr({width: 15, height: 15, x: 530, y: 456, includedColor});
   
   },
 };
