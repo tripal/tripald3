@@ -174,10 +174,10 @@ tripalD3.histo = {
           //For threshold 'container'    
           var newX1 = attributes.x1;
     
-          //Revert line to the edge of the chart if dragged outside the chart 
+          //Revert line to the edge of the chart if dragged too far 
           attributes.x1 = function(d) {
-              if (newX1 < 31) {
-                return 31;
+              if (newX1 < 29) {
+                return 29;
               } 
               else  if (newX1 > 711) {
                 return 711;
@@ -191,7 +191,7 @@ tripalD3.histo = {
              
           line.attr(attributes);
           
-          //Change bar color with threshold movement
+          //Change bar style with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
               if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
@@ -229,6 +229,8 @@ tripalD3.histo = {
             .attr("class", "x axis")
             .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
             .call(xAxis);
+    
+    //Add boxes for color key
   
   },
 };
