@@ -233,7 +233,7 @@ tripalD3.histo = {
     
     //Add boxes for color key
         var colorKey = svg.append("rect")
-            .attr({width: 15, height: 15, x: 530, y: 456, includedColor});
+            .attr({width: 15, height: 15, x: 460, y: 190, fill: includedColor});
   
   },
 };
