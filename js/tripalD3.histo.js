@@ -127,9 +127,9 @@ tripalD3.histo = {
     
     //Data for the lower threshold line
       var lowerThresholdOrigin = [{
-        'x1': 29,
+        'x1': 26,
         'y1': -62,
-        'x2': 29,
+        'x2': 26,
         'y2': 425
       }];  
 
@@ -176,8 +176,8 @@ tripalD3.histo = {
     
           //Revert line to the edge of the chart if dragged too far 
           attributes.x1 = function(d) {
-              if (newX1 < 29) {
-                return 29;
+              if (newX1 < 26) {
+                return 26;
               } 
               else  if (newX1 > 711) {
                 return 711;
