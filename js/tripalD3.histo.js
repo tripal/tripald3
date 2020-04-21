@@ -127,9 +127,9 @@ tripalD3.histo = {
     
     //Data for the lower threshold line
       var lowerThresholdOrigin = [{
-        'x1': 22,
+        'x1': 30,
         'y1': -62,
-        'x2': 22,
+        'x2': 30,
         'y2': 425
       }];  
 
@@ -176,8 +176,8 @@ tripalD3.histo = {
     
           //Revert line to the edge of the chart if dragged too far 
           attributes.x1 = function(d) {
-              if (newX1 < 22) {
-                return 22;
+              if (newX1 < 30) {
+                return 30;
               } 
               else  if (newX1 > 711) {
                 return 711;
@@ -194,7 +194,7 @@ tripalD3.histo = {
           //Change bar style with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
-              if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
+              if (Math.floor(d.x) <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
               else if (d.x < lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
               else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
               else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
