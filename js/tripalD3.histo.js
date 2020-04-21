@@ -127,9 +127,9 @@ tripalD3.histo = {
     
     //Data for the lower threshold line
       var lowerThresholdOrigin = [{
-        'x1': 31,
+        'x1': 29,
         'y1': -62,
-        'x2': 31,
+        'x2': 29,
         'y2': 425
       }];  
 
@@ -213,7 +213,7 @@ tripalD3.histo = {
         
         //Update legend
         function updateLegend() {
-              d3.selectAll('.legendText').text("x: " + scaledPosition);
+              d3.selectAll('#legend').html("Max Threshold x: " + upperScaledPosition + "<br/>" + "Min Threshold x: " +  lowerScaledPosition);
         };   
         
     }
