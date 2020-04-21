@@ -111,7 +111,7 @@ tripalD3.histo = {
       bars.append("rect")
           .attr("x", 0)
           .attr("y", -62)
-          .attr("width", (x(hist[0].dx) - x(0)) - 3)
+          .attr("width", (x(hist[0].dx) - x(0)) - 4)
           .attr("height", function(d) {return options.height - y(d.y);})
           .attr("fill", function(d) {return excludedColorScale(d.y)})
           .style("stroke", function(d) {return includedColorScale(d.y)})
@@ -119,9 +119,9 @@ tripalD3.histo = {
     
     //Data for the upper threshold line
       var upperThresholdOrigin = [{
-        'x1': 33,
+        'x1': 35,
         'y1': -62,
-        'x2': 33,
+        'x2': 35,
         'y2': 425
       }];
     
@@ -194,18 +194,18 @@ tripalD3.histo = {
           //Change bar color with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
-              if (d.x <= upperLinePosition && d.x > lowerLinePosition) {return includedColorScale(d.y);} 
+              if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
               else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
-              else if (d.x >= upperLinePosition && d.x > lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
+              else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
               else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
               else {return excludedColorScale(d.y)}
             })
             .style("stroke", function(d) {
-          	  if (d.x <= upperLinePosition && d.x > lowerLinePosition) {return excludedColorScale(d.y);} 
-              else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return highlightColorScale(d.y);}
-              else if (d.x >= upperLinePosition && d.x > lowerLinePosition && upperLinePosition < lowerLinePosition) {return excludedColorScale(d.y);}
-              else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return excludedColorScale(d.y)}
-              else {return highlightColorScale(d.y)}
+          	  if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return highlightColorScale(d.y);} 
+              else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return includedColorScale(d.y);}
+              else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return highlightColorScale(d.y);}
+              else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return highlightColorScale(d.y)}
+              else {return includedColorScale(d.y)}
             })        
             .style("stroke-width", "3px")                       
    
