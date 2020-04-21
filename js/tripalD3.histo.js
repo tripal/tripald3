@@ -202,7 +202,7 @@ tripalD3.histo = {
             })
             .style("stroke", function(d) {
           	  if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return highlightColorScale(d.y);} 
-              else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return includedColorScale(d.y);}
+              else if (d.x < lowerLinePosition && lowerLinePosition < upperLinePosition) {return includedColorScale(d.y);}
               else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return highlightColorScale(d.y);}
               else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return highlightColorScale(d.y)}
               else {return includedColorScale(d.y)}
