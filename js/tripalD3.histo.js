@@ -58,8 +58,9 @@ tripalD3.histo = {
       var drag = d3.behavior.drag();
           
     //Colors for color scale
-      var lowColor = "#4682B4";
-      var highColor = "#266091";
+      var highlightColor = "#4682B4";
+      var includedColor = "#266091";
+      var excludedColor = "#ffffff";
     
     //Get max and min of data for X axis
       var max = d3.max(data),
@@ -84,15 +85,20 @@ tripalD3.histo = {
           .domain([0, yMax])
           .range([options.height - options.yAxisPadding, 0]);
 
-    //Set color scale before threshold      
-      var lowColorScale = d3.scale.linear()
+    //Set excluded color scale     
+      var excludedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(lowColor).brighter(), d3.rgb(lowColor).darker()]);
+         .range([d3.rgb(excludedColor).brighter(), d3.rgb(excludedColor).darker()]);
 
-    //Set color scale after threshold
-      var highColorScale = d3.scale.linear()
+    //Set included color scale
+      var includedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(highColor).brighter(), d3.rgb(highColor).darker()]);
+         .range([d3.rgb(includedColor).brighter(), d3.rgb(includedColor).darker()]);
+    
+    //Set highlight color scale
+      var highlightColorScale = d3.scale.linear()
+          .domain([yMin, yMax])
+          .range([d3.rgb(highlightColor).brighter(), d3.rgb(highlightColor).darker()]);
 
     //Make the bars
       var bars = svg.selectAll()
@@ -105,21 +111,29 @@ tripalD3.histo = {
       bars.append("rect")
           .attr("x", 0)
           .attr("y", -62)
-          .attr("width", (x(hist[0].dx) - x(0)) - 1)
+          .attr("width", (x(hist[0].dx) - x(0)) - 3)
           .attr("height", function(d) {return options.height - y(d.y);})
-          .attr("fill", function(d) {return lowColorScale(d.y)})
-          .style("stroke", function(d) {return highColorScale(d.y)})
+          .attr("fill", function(d) {return excludedColorScale(d.y)})
+          .style("stroke", function(d) {return includedColorScale(d.y)})
           .style("stroke-width", "3px")
     
-    //Data for the threshold line
-      var thresholdOrigin = [{
+    //Data for the upper threshold line
+      var upperThresholdOrigin = [{
+        'x1': 33,
+        'y1': -62,
+        'x2': 33,
+        'y2': 425
+      }];
+    
+    //Data for the lower threshold line
+      var lowerThresholdOrigin = [{
         'x1': 31,
         'y1': -62,
         'x2': 31,
         'y2': 425
-      }];
+      }];  
 
-    //Generate the svg lines attributes
+    //Generate the threshold lines' attributes
       var lineAttributes = {
         'x1': function(d) {return d.x1;},
         'y1': function(d) {return d.y1;},
@@ -132,24 +146,21 @@ tripalD3.histo = {
           .origin(function(d) {return d;})
           .on('drag', dragged);
 
-    //Pointer to the d3 lines
-      var lines = svg
-          .selectAll('line')
-          .data(thresholdOrigin)
-          .enter()
-          .append('line')
-          .attr(lineAttributes)
-          .call(drag);
+    //Pointer to the threshold lines
+      var line1 = svg.append('line').data(upperThresholdOrigin).attr(lineAttributes).call(drag);
+      var line2 = svg.append('line').data(lowerThresholdOrigin).attr(lineAttributes).call(drag);
     
     //Drag function
       function dragged() {
           var x = d3.event.dx;
           var y = d3.event.dy;
           var line = d3.select(this);
-          var lineScale = d3.scale.linear().domain([0, options.width]).range([min, max]);
-          var linePosition = lineScale(lines.attr("x2"));
-          var formatter = d3.format(".1f");
-          var scaledPosition = formatter(linePosition); 
+          var xAxisScale = d3.scale.linear().domain([0, options.width]).range([min, max]);
+          var upperLinePosition = xAxisScale(line1.attr("x2"));
+          var lowerLinePosition = xAxisScale(line2.attr("x2"));
+          var formatter = d3.format(".2r");
+          var upperScaledPosition = formatter(upperLinePosition); 
+          var lowerScaledPosition = formatter(lowerLinePosition);
         
           //Update threshold line properties after drag event
           var attributes = {
@@ -179,24 +190,23 @@ tripalD3.histo = {
           attributes.x2 = attributes.x1;
              
           line.attr(attributes);
-        
+          
+          //Change bar color with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
-                if (d.x <= (linePosition)) {
-                    return highColorScale(d.y);
-                } 
-                else {
-                    return lowColorScale(d.y);
-                }
+              if (d.x <= upperLinePosition && d.x > lowerLinePosition) {return includedColorScale(d.y);} 
+              else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
+              else if (d.x >= upperLinePosition && d.x > lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
+              else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
+              else {return excludedColorScale(d.y)}
             })
             .style("stroke", function(d) {
-          	    if (d.x <= linePosition) {
-                    return lowColorScale(d.y);
-                }
-                else {
-                    return highColorScale(d.y)
-                }
-           })
+          	  if (d.x <= upperLinePosition && d.x > lowerLinePosition) {return excludedColorScale(d.y);} 
+              else if (d.x <= lowerLinePosition && lowerLinePosition < upperLinePosition) {return highlightColorScale(d.y);}
+              else if (d.x >= upperLinePosition && d.x > lowerLinePosition && upperLinePosition < lowerLinePosition) {return excludedColorScale(d.y);}
+              else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return excludedColorScale(d.y)}
+              else {return highlightColorScale(d.y)}
+            })        
             .style("stroke-width", "3px")                       
    
         updateLegend()
