@@ -194,10 +194,10 @@ tripalD3.histo = {
           //Change bar style with threshold movement
           d3.selectAll("rect")
             .attr("fill", function(d) {
-              if (d.x <= upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
+              if (d.x < upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
               else if (d.x < lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
               else if (d.x >= upperLinePosition && d.x >= lowerLinePosition && upperLinePosition < lowerLinePosition) {return includedColorScale(d.y);}
-              else if (d.x <= upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
+              else if (d.x < upperLinePosition && lowerLinePosition > upperLinePosition) {return includedColorScale(d.y)}
               else {return excludedColorScale(d.y)}
             })
             .style("stroke", function(d) {
