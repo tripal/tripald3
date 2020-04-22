@@ -237,7 +237,7 @@ tripalD3.histo = {
             .attr({width: 15, height: 15, x: 420, y: 34, fill: includedColor, stroke: highlightColor});
     
         var colorKeyExcluded = svg.append("rect")
-            .attr({width: 15, height: 15, x: 420, y: 59, fill: excludedColor, stroke: includedColor});    
+            .attr({width: 15, height: 15, x: 420, y: 60, fill: excludedColor, stroke: includedColor});    
     
     
   
