@@ -110,6 +110,7 @@ tripalD3.histo = {
 
     //Draw the bars
       bars.append("rect")
+          .attr("class", "bars")
           .attr("x", 0)
           .attr("y", -62)
           .attr("width", (x(hist[0].dx) - x(0)) - 4)
@@ -193,7 +194,7 @@ tripalD3.histo = {
           line.attr(attributes);
           
           //Change bar style with threshold movement
-          d3.selectAll("rect")
+          d3.selectAll(".bars")
             .attr("fill", function(d) {
               if (d.x < upperLinePosition && d.x >= lowerLinePosition) {return includedColorScale(d.y);} 
               else if (d.x < lowerLinePosition && lowerLinePosition < upperLinePosition) {return excludedColorScale(d.y);}
