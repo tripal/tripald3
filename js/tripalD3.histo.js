@@ -21,9 +21,10 @@ tripalD3.histo = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
-   *     - lowColor: The base color for the color scale to be applied to the bars.
-   *     - highColor: The base color for the color scale to be applied to the bars under the threshold.
-   *     - drawKey: whether or not to draw the key; default is "true".
+   *     - includedColor: The base color for the color scale to be applied to the included bars 
+   *         AND the base color for the color scale to be applied to the excluded bars.
+   *     - excludedColor: The base color for the color scale to be applied to the excluded bars.
+   *     - highlightColor: The base color for the highlighting to be applied to the included bars.
    */
   
   
@@ -143,7 +144,7 @@ tripalD3.histo = {
         'y2': function(d) {return d.y2;}
       };
 
-    //Drag behavior for the threshold line
+    //Drag behavior for the threshold lines
       var drag = d3.behavior.drag()
           .origin(function(d) {return d;})
           .on('drag', dragged);
@@ -157,9 +158,15 @@ tripalD3.histo = {
           var x = d3.event.dx;
           var y = d3.event.dy;
           var line = d3.select(this);
+        
+          //Convert svg coordinates to x-axis coordinates
           var xAxisScale = d3.scale.linear().domain([0, options.width]).range([min, max]);
+        
+          //Make bar style transitions with threshold movement smoother
           var upperLinePosition = Math.floor(xAxisScale(line1.attr("x2")));
           var lowerLinePosition = Math.floor(xAxisScale(line2.attr("x2")));
+        
+          //Format for legend
           var formatter = d3.format(".2r");
           var upperScaledPosition = formatter(upperLinePosition); 
           var lowerScaledPosition = formatter(lowerLinePosition);
@@ -176,7 +183,7 @@ tripalD3.histo = {
           //For threshold 'container'    
           var newX1 = attributes.x1;
     
-          //Revert line to the edge of the chart if dragged too far 
+          //Revert line to the edge of the chart if dragged too far (out of 'container')
           attributes.x1 = function(d) {
               if (newX1 < 30) {
                 return 30;
@@ -188,7 +195,8 @@ tripalD3.histo = {
                 return newX1;
               }
           };
-                    
+          
+          //Make sure lines are straight
           attributes.x2 = attributes.x1;
              
           line.attr(attributes);
@@ -232,7 +240,7 @@ tripalD3.histo = {
             .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
             .call(xAxis);
     
-    //Add boxes for color key
+    //Add boxes for (very makeshift) color key
         var colorKeyIncluded = svg.append("rect")
             .attr({width: 15, height: 15, x: 420, y: 34, fill: includedColor, stroke: highlightColor});
     
