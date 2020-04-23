@@ -1,5 +1,5 @@
 
-drawSimpleHistogram
+drawHistogram
 ================
 
 .. warning::
