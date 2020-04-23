@@ -1,16 +1,16 @@
 
-drawHistogram
+drawSimpleHistogram
 ================
 
 .. warning::
 
-  This function should not be used directly. Instead use ``drawFigure`` where ``options.chartType = histogram``
+  This function should not be used directly. Instead use ``drawFigure`` where ``options.chartType = simpleHistogram``
 
-Source Code: ``js/tripalD3.histo.js``
+Source Code: ``js/tripalD3.simpleHisto.js``
 
-def ``drawHistogram(svg, data, options)``
+def ``drawSimpleHistogram(svg, data, options)``
 
-  Draw a histogram with interactive thresholds.
+  Draw a simple histogram.
 
   :svg: The canvas to draw the histogram on.
   :data: An array of objects (one bar represents the frequency of objects with that value).
