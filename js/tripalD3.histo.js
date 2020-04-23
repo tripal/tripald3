@@ -55,16 +55,16 @@ tripalD3.histo = {
       var colors = tripalD3.getColorScheme("quantitative");
       options.barColor = colors[0];
       options.excludedColor = colors[8];
-      options.highlightColor = colors[4];
+      options.highlightColor = colors[5];
     }
     
     //For drag behavior    
-      var drag = d3.behavior.drag();
+      //var drag = d3.behavior.drag();
           
     //Colors for color scale
-      var highlightColor = "#4682B4";
-      var includedColor = "#266091";
-      var excludedColor = "#ffffff";
+     // var highlightColor = "#4682B4";
+     // var includedColor = "#266091";
+     // var excludedColor = "#ffffff";
     
     //Get max and min of data for X axis
       var max = d3.max(data),
