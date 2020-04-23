@@ -14,3 +14,4 @@ NOTE: This module is an API and does not provide user facing diagrams. Rather, y
    config
    dev_guide
    api
+   contribute

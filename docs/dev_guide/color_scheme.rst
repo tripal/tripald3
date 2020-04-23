@@ -9,7 +9,7 @@ Making your own colour scheme available to this module is as simple as implement
   /**
    * Implements hook_tripald3_color_schemes().
    */
-  function tripald3_tripald3_color_schemes() {
+  function mymodule_tripald3_color_schemes() {
     $color_schemes = array();
 
     // This key should be unique across colour schemes.
