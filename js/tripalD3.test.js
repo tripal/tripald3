@@ -128,11 +128,10 @@ tripalD3.test = {
     if (data.some(isNaN)) {
       return false;
     }
-  else {
-        return true;
-      }
-      
-    },
+    else {
+      return true;
+    }
+  },
    
  
 

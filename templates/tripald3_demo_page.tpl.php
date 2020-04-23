@@ -6,7 +6,7 @@
    * This page demonstrates the various figures available through this module.
    * It can be used to confirm you have correclty installed the module, as well
    * as, provide example code demonsrating how to create your own digrams.
-   
+   */
 
   // Load all the JS/CSS needed by this module.
   tripald3_load_libraries();
@@ -113,11 +113,11 @@
 <p>This following two figures are simple pie charts ideal for showing proportions or ratios. The first is a traditional pie chart and the second is a donut chart.</p>
 
 <script type="text/javascript">
-  Drupal.behaviors.tripalD3demoSimpleHistogram = {
+  Drupal.behaviors.tripalD3demoSimplePie = {
     attach: function (context, settings) {
 
       // @todo move data into a separate file for better readability.
-      var simpleHistogramData = [
+      var simplePieData = [
         {
           "label": "Accession",
           "count": 2390,
@@ -140,10 +140,10 @@
       // and attach it to an #tripald3-simplepie element.
       // Notice that the data for the pie chart is passed in directly.
       tripalD3.drawFigure(
-        simpleHistogramData,
+        simplePieData,
         {
-          "chartType" : "simplehistogram",
-          "elementId": "tripald3-simplehistogram",
+          "chartType" : "simplepie",
+          "elementId": "tripald3-simplepie",
           "height": 250,
           "width": 500,
           "keyPosition": "right",
@@ -171,7 +171,7 @@
   };
 </script>
 
-<div id="tripald3-simplehistogram" class="tripald3-diagram">
+<div id="tripald3-simplepie" class="tripald3-diagram">
   <!-- Javascript will add the Simple Pie Chart, Title and Figure legend here -->
 </div>
 
@@ -515,4 +515,3 @@ series of data.</p>
 <div id="tripald3-pedigree-right" class="tripald3-diagram">
   <!-- Javascript will add the pedigree diagram and figure legend here -->
 </div>
-*/

@@ -225,7 +225,7 @@
           }
         );
 
-        // Check simplepie, simpledonut, histogram and simplebar data compliance.
+        // Check simplepie, simpledonut, simplebar, and histogram data compliance.
         if (element == 'simplepie' || element == 'simpledonut' || element == 'simplebar' || element == 'simplehistogram') {
           // Already checked that data is a non-empty array.
           // Check that each element must have a label & count.
@@ -257,7 +257,7 @@
             }
           );
         }
-        // Check simplepie, simpledonut, histogram and simplebar data compliance.
+        // Check simplepie, simpledonut, simplebar and histogram data compliance.
         if (element == 'multidonut') {
           // Already checked that data is a non-empty array.
           // Check that each element must have a label & count.
