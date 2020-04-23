@@ -53,9 +53,9 @@ tripalD3.histo = {
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
-      options.barColor = colors[0];
+      options.barColor = colors[3];
       options.excludedColor = colors[8];
-      options.highlightColor = colors[5];
+      options.highlightColor = colors[2];
     }
     
     //For drag behavior    
