@@ -92,7 +92,7 @@ tripalD3.histo = {
     //Set excluded color scale     
       var excludedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(excludedColor).brighter(), d3.rgb(excludedColor).darker()]);
+         .range([d3.rgb(options.excludedColor).brighter(), d3.rgb(options.excludedColor).darker()]);
 
     //Set included color scale
       var includedColorScale = d3.scale.linear()
@@ -102,7 +102,7 @@ tripalD3.histo = {
     //Set highlight color scale
       var highlightColorScale = d3.scale.linear()
           .domain([yMin, yMax])
-          .range([d3.rgb(highlightColor).brighter(), d3.rgb(highlightColor).darker()]);
+          .range([d3.rgb(options.highlightColor).brighter(), d3.rgb(options.highlightColor).darker()]);
 
     //Make the bars
       var bars = svg.selectAll()
@@ -244,10 +244,10 @@ tripalD3.histo = {
     
     //Add boxes for (very makeshift) color key
         var colorKeyIncluded = svg.append("rect")
-            .attr({width: 15, height: 15, x: 420, y: 34, fill: includedColor, stroke: highlightColor});
+            .attr({width: 15, height: 15, x: 420, y: 34, fill: options.includedColor, stroke: options.highlightColor});
     
         var colorKeyExcluded = svg.append("rect")
-            .attr({width: 15, height: 15, x: 420, y: 60, fill: excludedColor, stroke: includedColor});    
+            .attr({width: 15, height: 15, x: 420, y: 60, fill: options.excludedColor, stroke: options.includedColor});    
     
     
   
