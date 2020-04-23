@@ -28,7 +28,7 @@ tripalD3.histo = {
    */
   
   
-  drawSimpleHistogram: function(svg, data, options) {
+  drawHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     var compliant = tripalD3.test.isFrequencyDataCompliant(data);
