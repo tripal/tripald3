@@ -46,15 +46,15 @@ tripalD3.histo = {
       options.yAxisTitle = "";
     }
     if (!options.hasOwnProperty('xAxisPadding')) {
-      options.xAxisPadding = 30;
+      options.xAxisPadding = 60;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
       options.yAxisPadding = 60;
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
-      options.barColor = colors[3];
-      options.excludedColor = colors[8];
+      options.barColor = colors[1];
+      options.excludedColor = colors[7];
       options.highlightColor = colors[2];
     }
     
