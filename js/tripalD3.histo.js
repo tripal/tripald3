@@ -5,7 +5,7 @@
 tripalD3.histo = {
 
   /**
-   * Draw a simple histogram.
+   * Draw a histogram with interactive thresholds.
    *
    * @param svg
    *   The canvas to draw the histogram on.
@@ -54,6 +54,8 @@ tripalD3.histo = {
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
       options.barColor = colors[0];
+      options.excludedColor = colors[8];
+      options.highlightColor = colors[4];
     }
     
     //For drag behavior    
@@ -95,7 +97,7 @@ tripalD3.histo = {
     //Set included color scale
       var includedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(includedColor).brighter(), d3.rgb(includedColor).darker()]);
+         .range([d3.rgb(options.barColor).brighter(), d3.rgb(options.barColor).darker()]);
     
     //Set highlight color scale
       var highlightColorScale = d3.scale.linear()
