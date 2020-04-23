@@ -2,7 +2,7 @@
  * @file
  * Histogram functionality.
  */
-tripalD3.histo = {
+tripalD3.simpleHisto = {
 
   /**
    * Draw a simple histogram.
@@ -28,7 +28,7 @@ tripalD3.histo = {
    */
   
   
-  drawHistogram: function(svg, data, options) {
+  drawSimpleHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     var compliant = tripalD3.test.isFrequencyDataCompliant(data);
