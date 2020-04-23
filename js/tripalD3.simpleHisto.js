@@ -2,7 +2,7 @@
  * @file
  * Histogram functionality.
  */
-tripalD3.histo = {
+tripalD3.simpleHisto = {
 
   /**
    * Draw a simple histogram.
