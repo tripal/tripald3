@@ -311,8 +311,10 @@ tripalD3 = {
       success = tripalD3.bar.drawSimpleBar(svg, data, options.chartOptions);
     }
     else if (options.chartType === 'simplehistogram') {
-      success = tripalD3.histo.drawSimpleHistogram(svg, data, options.chartOptions);
+      success = tripalD3.simpleHisto.drawSimpleHistogram(svg, data, options.chartOptions);
     }
+    else if (options.chartType === 'histogram') {
+      success = tripalD3.histo.drawHistogram(svg, data, options.chartOptions);
      
     // If drawing the chart failed with an error message,
     // remove the elements to clean up the canvas. The admin already
