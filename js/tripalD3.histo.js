@@ -52,7 +52,7 @@ tripalD3.histo = {
       options.yAxisPadding = 60;
     }
     if (!options.hasOwnProperty('barColor')) {
-      var colors = tripalD3.getColorScheme("categorical");
+      var colors = tripalD3.getColorScheme("quantitative");
       options.barColor = colors[0];
     }
     
