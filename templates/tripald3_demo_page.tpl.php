@@ -319,6 +319,85 @@ series of data.</p>
   <!-- Javascript will add a Simple Bar Chart, Title and Figure legend here -->
 </div>
 
+
+<!--------  HISTOGRAM  -------------------------------------------------------->
+<h3>Histogram With Interactive Thresholds</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoHistogram = {
+    attach: function (context, settings) {
+
+      // Pull the data out of the javascript settings.
+      var histoData = [
+        d3.range(5000).map(d3.random.normal(0, 50));
+      ];
+
+      // Draw your chart.
+      tripalD3.drawFigure(
+        histoData,
+        {
+          "chartType" : "histogram",
+          "elementId": "tripald3-histogram",
+          "height": 500,
+          "width": 1000,
+          "keyPosition": "right",
+          "title": "SNPs available for the selection of <em>Tripalus databasica</em>",
+          "legend": "The above histogram depicts the number of SNPs available per selected tree for <em>Tripalus databasica</em>.",
+          "chartOptions": {
+            "xAxisTitle": "",
+            "yAxisTitle": "",
+          }
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-histogram" class="tripald3-diagram">
+  <!-- Javascript will add a Histogram, Title and Figure legend here -->
+</div>
+
+
+<!--------  SIMPLE HISTOGRAM  -------------------------------------------------------->
+<h3>Simple Histogram</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleHistogram = {
+    attach: function (context, settings) {
+
+      // Pull the data out of the javascript settings.
+      var simpleHistoData = [
+        d3.range(5000).map(d3.random.normal(0, 50));
+      ];
+
+      // Draw your chart.
+      tripalD3.drawFigure(
+        simpleHistoData,
+        {
+          "chartType" : "simpleHistogram",
+          "elementId": "tripald3-simpleHistogram",
+          "height": 500,
+          "width": 1000,
+          "keyPosition": "right",
+          "title": "SNPs available for the selection of <em>Tripalus databasica</em>",
+          "legend": "The above histogram depicts the number of SNPs available per selected tree for <em>Tripalus databasica</em>.",
+          "chartOptions": {
+            "xAxisTitle": "",
+            "yAxisTitle": "",
+          }
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-histogram" class="tripald3-diagram">
+  <!-- Javascript will add a Simple Histogram, Title and Figure legend here -->
+</div>
+
+
 <!--------  PEDIGREE DIAGRAM ------------------------------------------------->
 <h3>Pedigree Diagram</h3>
 <p>This diagram was developed to mimic plant breeder pedigrees with additional
