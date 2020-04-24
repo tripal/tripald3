@@ -50,7 +50,7 @@ tripalD3.histo = {
       options.xAxisPadding = 30;
     }
     if (!options.hasOwnProperty('yAxisPadding')) {
-      options.yAxisPadding = 30;
+      options.yAxisPadding = 60;
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
@@ -67,8 +67,7 @@ tripalD3.histo = {
       options.key.pos            = options.position;
       options.key.wrapperWidth   = options.width;
       options.key.collapsedDepth = options.collapsedDepth;
-    }
-    
+    }    
  
     //Get max and min of data for X axis
       var max = d3.max(data),
@@ -91,7 +90,7 @@ tripalD3.histo = {
     //Set Y axis scale
       var y = d3.scale.linear()
           .domain([0, yMax])
-          .range([options.height - options.yAxisPadding, 0]);
+          .range([options.height - options.xAxisPadding, 0]);
 
     //Set excluded color scale     
       var excludedColorScale = d3.scale.linear()
@@ -242,7 +241,7 @@ tripalD3.histo = {
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
-          'border': options.highlightColor,
+          'color': options.highlightColor,
         });
       
       tripalD3.drawKey(keyData, options.key);
