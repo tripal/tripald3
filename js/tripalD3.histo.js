@@ -240,11 +240,10 @@ tripalD3.histo = {
           'classes': ['histo', 'category', 'label'],
           'type': 'rect',
           'label': "Included Data",
-          'color': options.includedColor,
+          'fillColor': options.includedColor,
           'strokeColor': options.highlightColor,
           'strokeWidth': '5',
-          'color': options.highlightColor,
-          
+          'color': options.highlightColor,//why will nothing work!!          
         });
          keyData.push({
           'classes': ['histo', 'category', 'label'],
@@ -253,6 +252,7 @@ tripalD3.histo = {
           'fillColor': options.excludedColor,
           'strokeColor': options.includedColor,
           'strokeWidth': 5,
+          'fontnames': 'futura',
         });
       
       tripalD3.drawKey(keyData, options.key);
@@ -270,14 +270,6 @@ tripalD3.histo = {
             .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
             .call(xAxis);
     
-   /** 
-    //Add boxes for (very makeshift) color key
-        var colorKeyIncluded = svg.append("rect")
-            .attr({width: 15, height: 15, x: 420, y: 34, fill: options.includedColor, stroke: options.highlightColor});
-    
-        var colorKeyExcluded = svg.append("rect")
-            .attr({width: 15, height: 15, x: 420, y: 60, fill: options.excludedColor, stroke: options.includedColor});    
-    */
     
   
   },
