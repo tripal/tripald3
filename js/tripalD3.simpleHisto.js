@@ -2,10 +2,10 @@
  * @file
  * Histogram functionality.
  */
-tripalD3.simpleHisto = {
+tripalD3.histo = {
 
   /**
-   * Draw a simple histogram.
+   * Draw a histogram with interactive thresholds.
    *
    * @param svg
    *   The canvas to draw the histogram on.
@@ -21,12 +21,15 @@ tripalD3.simpleHisto = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
-   *     - includedColor: The base color for the color scale to be applied to the bars.
-   *     - highlightColor: The base color for the highlighting to be applied to the bars.
+   *     - includedColor: The base color for the color scale to be applied to the included bars 
+   *         AND the base color for the color scale to be applied to the excluded bars.
+   *     - excludedColor: The base color for the color scale to be applied to the excluded bars.
+   *     - highlightColor: The base color for the highlighting to be applied to the included bars.
+   *     - drawKey: whether or not to draw the key; the default is true.
    */
   
   
-  drawSimpleHistogram: function(svg, data, options) {
+  drawHistogram: function(svg, data, options) {
 
     // Check the data is compliant.
     var compliant = tripalD3.test.isFrequencyDataCompliant(data);
@@ -51,12 +54,9 @@ tripalD3.simpleHisto = {
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
-      options.barColor = colors[0];
+      options.includedColor = colors[3];
+      options.highlightColor = colors[4];
     }
-              
-    //Colors for color scale
-      var highlightColor = "#4682B4";
-      var barColor = "#266091";
     
     //Get max and min of data for X axis
       var max = d3.max(data),
@@ -79,17 +79,17 @@ tripalD3.simpleHisto = {
     //Set Y axis scale
       var y = d3.scale.linear()
           .domain([0, yMax])
-          .range([options.height - options.yAxisPadding, 0]);
+          .range([options.height - options.yAxisPadding, 20]);
 
     //Set included color scale
-      var barColorScale = d3.scale.linear()
+      var includedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(barColor).brighter(), d3.rgb(barColor).darker()]);
+         .range([d3.rgb(options.includedColor).brighter(), d3.rgb(options.includedColor).darker()]);
     
     //Set highlight color scale
       var highlightColorScale = d3.scale.linear()
           .domain([yMin, yMax])
-          .range([d3.rgb(highlightColor).brighter(), d3.rgb(highlightColor).darker()]);
+          .range([d3.rgb(options.highlightColor).brighter(), d3.rgb(options.highlightColor).darker()]);
 
     //Make the bars
       var bars = svg.selectAll()
@@ -105,10 +105,10 @@ tripalD3.simpleHisto = {
           .attr("y", -62)
           .attr("width", (x(hist[0].dx) - x(0)) - 4)
           .attr("height", function(d) {return options.height - y(d.y);})
-          .attr("fill", function(d) {return barColorScale(d.y)})
-          .style("stroke", function(d) {return highlightColorScale(d.y)})
+          .attr("fill", function(d) {return excludedColorScale(d.y)})
+          .style("stroke", function(d) {return includedColorScale(d.y)})
           .style("stroke-width", "3px")
-    
+       
     //Make x axis
         var xAxis = d3.svg.axis()
             .scale(x)
