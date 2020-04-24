@@ -90,7 +90,7 @@ tripalD3.histo = {
     //Set Y axis scale
       var y = d3.scale.linear()
           .domain([0, yMax])
-          .range([options.height - options.yAxisPadding, -20]);
+          .range([options.height - options.yAxisPadding, 20]);
 
     //Set excluded color scale     
       var excludedColorScale = d3.scale.linear()
@@ -240,9 +240,11 @@ tripalD3.histo = {
           'classes': ['histo', 'category', 'label'],
           'type': 'rect',
           'label': "Included Data",
-          'fillColor': options.includedColor,
+          'color': options.includedColor,
           'strokeColor': options.highlightColor,
           'strokeWidth': '5',
+          'color': options.highlightColor,
+          
         });
          keyData.push({
           'classes': ['histo', 'category', 'label'],
