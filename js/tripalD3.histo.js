@@ -242,6 +242,7 @@ tripalD3.histo = {
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
+          'stroke': options.highlightColor,
         });
       
       tripalD3.drawKey(keyData, options.key);
