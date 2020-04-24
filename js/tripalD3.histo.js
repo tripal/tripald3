@@ -238,11 +238,11 @@ tripalD3.histo = {
     if (options.drawKey === true) {
       var keyData = [];
           keyData.push({
-          'classes': ['histo', 'category', 'label'],
+          //'classes': ['histo', 'category', 'label'],
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
-          'stroke': options.highlightColor,
+          'border': options.highlightColor,
         });
       
       tripalD3.drawKey(keyData, options.key);
