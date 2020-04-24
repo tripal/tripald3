@@ -25,6 +25,7 @@ tripalD3.histo = {
    *         AND the base color for the color scale to be applied to the excluded bars.
    *     - excludedColor: The base color for the color scale to be applied to the excluded bars.
    *     - highlightColor: The base color for the highlighting to be applied to the included bars.
+   *     - drawKey: whether or not to draw the key; the default is true.
    */
   
   
@@ -53,19 +54,22 @@ tripalD3.histo = {
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
-      options.barColor = colors[0];
+      options.includedColor = colors[0];
       options.excludedColor = colors[8];
       options.highlightColor = colors[3];
     }
+    if (!options.hasOwnProperty('drawKey')) {
+      options.drawKey = true;
+    }
     
-    //For drag behavior    
-      //var drag = d3.behavior.drag();
-          
-    //Colors for color scale
-     // var highlightColor = "#4682B4";
-     // var includedColor = "#266091";
-     // var excludedColor = "#ffffff";
+    // # Store figure key position configuration to cascade into other functions.
+    if (options.hasOwnProperty('position') && options.position == 'top') {
+      options.key.pos            = options.position;
+      options.key.wrapperWidth   = options.width;
+      options.key.collapsedDepth = options.collapsedDepth;
+    }
     
+ 
     //Get max and min of data for X axis
       var max = d3.max(data),
           min = d3.min(data);
@@ -97,7 +101,7 @@ tripalD3.histo = {
     //Set included color scale
       var includedColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(options.barColor).brighter(), d3.rgb(options.barColor).darker()]);
+         .range([d3.rgb(options.includedColor).brighter(), d3.rgb(options.includedColor).darker()]);
     
     //Set highlight color scale
       var highlightColorScale = d3.scale.linear()
@@ -230,6 +234,19 @@ tripalD3.histo = {
         
     }
     
+// Draw the Key.
+    if (options.drawKey === true) {
+      var keyData = [];
+          keyData.push({
+          'classes': ['histo', 'category', 'label'],
+          'type': 'rect',
+          'label': "Included Data",
+          'fillColor': options.includedColor,
+        });
+      );
+      tripalD3.drawKey(keyData, options.key);
+    }
+    
     //Make x axis
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -242,13 +259,14 @@ tripalD3.histo = {
             .attr("transform", "translate(0," + (options.height - options.yAxisPadding) + ")")
             .call(xAxis);
     
+   /** 
     //Add boxes for (very makeshift) color key
         var colorKeyIncluded = svg.append("rect")
             .attr({width: 15, height: 15, x: 420, y: 34, fill: options.includedColor, stroke: options.highlightColor});
     
         var colorKeyExcluded = svg.append("rect")
             .attr({width: 15, height: 15, x: 420, y: 60, fill: options.excludedColor, stroke: options.includedColor});    
-    
+    */
     
   
   },
