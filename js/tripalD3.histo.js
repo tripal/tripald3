@@ -243,7 +243,7 @@ tripalD3.histo = {
           'label': "Included Data",
           'fillColor': options.includedColor,
         });
-      );
+      
       tripalD3.drawKey(keyData, options.key);
     }
     
