@@ -21,11 +21,8 @@ tripalD3.simpleHisto = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
-   *     - includedColor: The base color for the color scale to be applied to the included bars 
-   *         AND the base color for the color scale to be applied to the excluded bars.
-   *     - excludedColor: The base color for the color scale to be applied to the excluded bars.
-   *     - highlightColor: The base color for the highlighting to be applied to the included bars.
-   *     - drawKey: whether or not to draw the key; the default is true.
+   *     - barColor: The base color for the color scale to be applied to the bars.
+   *     - highlightColor: The base color for the highlighting to be applied to the bars.
    */
   
   
@@ -54,7 +51,7 @@ tripalD3.simpleHisto = {
     }
     if (!options.hasOwnProperty('barColor')) {
       var colors = tripalD3.getColorScheme("quantitative");
-      options.includedColor = colors[3];
+      options.barColor = colors[3];
       options.highlightColor = colors[4];
     }
     
@@ -82,9 +79,9 @@ tripalD3.simpleHisto = {
           .range([options.height - options.yAxisPadding, 20]);
 
     //Set included color scale
-      var includedColorScale = d3.scale.linear()
+      var barColorScale = d3.scale.linear()
          .domain([yMin, yMax])
-         .range([d3.rgb(options.includedColor).brighter(), d3.rgb(options.includedColor).darker()]);
+         .range([d3.rgb(options.barColor).brighter(), d3.rgb(options.barColor).darker()]);
     
     //Set highlight color scale
       var highlightColorScale = d3.scale.linear()
@@ -105,8 +102,8 @@ tripalD3.simpleHisto = {
           .attr("y", -62)
           .attr("width", (x(hist[0].dx) - x(0)) - 4)
           .attr("height", function(d) {return options.height - y(d.y);})
-          .attr("fill", function(d) {return excludedColorScale(d.y)})
-          .style("stroke", function(d) {return includedColorScale(d.y)})
+          .attr("fill", function(d) {return barColorScale(d.y)})
+          .style("stroke", function(d) {return highlightColorScale(d.y)})
           .style("stroke-width", "3px")
        
     //Make x axis
