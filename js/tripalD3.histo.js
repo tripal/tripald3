@@ -82,12 +82,6 @@ tripalD3.histo = {
       var hist = d3.layout.histogram()
           .bins(x.ticks(30))
           (data);
-
-    var svg = container.append("g")
-      .attr("width", options.width/8)
-      .attr("height", options.height/8)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + (margin.top + addHeight) + ")");
     
     //Get max and min of histogram bins
       var yMax = d3.max(hist, function(d) {return d.length}),
