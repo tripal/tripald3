@@ -1001,7 +1001,7 @@ series of data.</p>
   };
 </script>
 
-<div id="tripald3-histogram" class="tripald3-diagram">
+<div id="tripald3-simpleHistogram" class="tripald3-diagram">
   <!-- Javascript will add a Simple Histogram, Title and Figure legend here -->
 </div>
 
