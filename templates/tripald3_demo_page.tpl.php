@@ -984,7 +984,7 @@ series of data.</p>
       tripalD3.drawFigure(
         simpleHistoData,
         {
-          "chartType" : "simpleHistogram",
+          "chartType" : "simplehistogram",
           "elementId": "tripald3-simpleHistogram",
           "height": 500,
           "width": 1000,
