@@ -241,14 +241,16 @@ tripalD3.histo = {
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
-          'lineColor': options.highlightColor//why will nothing work!!          
+          'lineColor': options.highlightColor,//why will nothing work!!  
+           
         });
          keyData.push({
           'classes': ['histo', 'category', 'label'],
           'type': 'rect',
           'label': "Excluded Data",
           'fillColor': options.excludedColor,
-          'lineColor': options.includedColor,
+          'lineColor': options.includedColor, 
+           'stroke': 'true',
           'stroke-width': '5px'
            //'stroke-opacity': 1
         });
