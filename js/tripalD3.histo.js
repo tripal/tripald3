@@ -250,7 +250,8 @@ tripalD3.histo = {
           'label': "Excluded Data",
           'fillColor': options.excludedColor,
           'stroke': options.includedColor,
-          'stroke-width': 5
+          'stroke-width': 5,
+           'stroke-opacity': 1
         });
       
       tripalD3.drawKey(keyData, options.key);
