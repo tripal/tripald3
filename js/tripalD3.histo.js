@@ -241,7 +241,7 @@ tripalD3.histo = {
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
-          'stroke-width': '5',
+          'stroke-width': 5px,
           'stroke': options.highlightColor//why will nothing work!!          
         });
          keyData.push({
@@ -250,7 +250,7 @@ tripalD3.histo = {
           'label': "Excluded Data",
           'fillColor': options.excludedColor,
           'stroke': options.includedColor,
-          'stroke-width': 5,
+          'stroke-width': '5px',
            'stroke-opacity': 1
         });
       
