@@ -241,7 +241,7 @@ tripalD3.histo = {
           'type': 'rect',
           'label': "Included Data",
           'fillColor': options.includedColor,
-          'strokeColor': #B3B3B3
+          'strokeColor': '#B3B3B3'
         });
          keyData.push({
           'classes': ['histo', 'category', 'label'],
