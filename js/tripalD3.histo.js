@@ -58,11 +58,11 @@ tripalD3.histo = {
       options.excludedColor = colors[8];
       options.highlightColor = colors[3];
     }
-    /**--------------------------!!!!!!
+  
     if (!options.hasOwnProperty('drawKey')) {
       options.drawKey = true;
     }
-    */
+    
     
     // # Store figure key position configuration to cascade into other functions.
     if (options.hasOwnProperty('position') && options.position == 'top') {
@@ -234,28 +234,22 @@ tripalD3.histo = {
         };   
         
     }
-    /**--------------------------!!!!!!
+
 // Draw the Key.
     if (options.drawKey === true) {
       var keyData = [];
           keyData.push({
           'classes': ['histo', 'category', 'label'],
-          'type': 'rect',
-          'label': "Included Data",
-          'fillColor': options.includedColor,
-          'strokeColor': '#B3B3B3'
+          'label': "Included Data"
         });
          keyData.push({
           'classes': ['histo', 'category', 'label'],
-          'type': 'rect',
-          'label': "Excluded Data",
-          'fillColor': options.excludedColor,
-          'strokeColor': '#B3B3B3'
+          'label': "Excluded Data"
         });
       
       tripalD3.drawKey(keyData, options.key);
     }
-    */
+    
     
     //Add boxes for color key
       var colorKeyIncluded = svg.append("rect")
