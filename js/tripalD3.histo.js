@@ -58,9 +58,11 @@ tripalD3.histo = {
       options.excludedColor = colors[8];
       options.highlightColor = colors[3];
     }
+    /**--------------------------!!!!!!
     if (!options.hasOwnProperty('drawKey')) {
       options.drawKey = true;
     }
+    */
     
     // # Store figure key position configuration to cascade into other functions.
     if (options.hasOwnProperty('position') && options.position == 'top') {
@@ -232,7 +234,7 @@ tripalD3.histo = {
         };   
         
     }
-    
+    /**--------------------------!!!!!!
 // Draw the Key.
     if (options.drawKey === true) {
       var keyData = [];
@@ -253,6 +255,14 @@ tripalD3.histo = {
       
       tripalD3.drawKey(keyData, options.key);
     }
+    */
+    
+    /Add boxes for color key
+      var colorKeyIncluded = svg.append("rect")
+          .attr({width: 15, height: 15, x: 420, y: 34, fill: includedColor, stroke: highlightColor});
+    
+      var colorKeyExcluded = svg.append("rect")
+          .attr({width: 15, height: 15, x: 420, y: 59, fill: excludedColor, stroke: includedColor});
     
     //Make x axis
         var xAxis = d3.svg.axis()
