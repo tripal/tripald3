@@ -253,10 +253,10 @@ tripalD3.histo = {
     
     //Add boxes for color key
       var colorKeyIncluded = svg.append("rect")
-          .attr({width: 15, height: 15, x: 420, y: 34, fill: options.includedColor, stroke: options.highlightColor});
+          .attr({width: 15, height: 15, x: 1000, y: 34, fill: options.includedColor, stroke: options.highlightColor});
     
       var colorKeyExcluded = svg.append("rect")
-          .attr({width: 15, height: 15, x: 420, y: 59, fill: options.excludedColor, stroke: options.includedColor});
+          .attr({width: 15, height: 15, x: 900, y: 59, fill: options.excludedColor, stroke: options.includedColor});
     
     //Make x axis
         var xAxis = d3.svg.axis()
