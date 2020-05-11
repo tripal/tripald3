@@ -7,12 +7,11 @@
  * Legend
  */
 .tripald3-legend {
-   font: 12px sans-serif;
+  font-style: italic;
   font-size: 0.9em;
 }
 .tripald3-title {
   font-weight: bold;
-   font: sans-serif;
 }
 
 /**
