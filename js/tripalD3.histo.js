@@ -21,6 +21,8 @@ tripalD3.histo = {
    *         for the y-axis labels.
    *     - yAxisPadding: the number of pixels to pad the bottom to provide room
    *         for the x-axis labels.
+   *     - upperThresholdOrigin: The x-axis location of the upper threshold on startup.
+   *     - upperThresholdOrigin: The x-axis location of the lower threshold on startup.
    *     - includedColor: The base color for the color scale to be applied to the included bars 
    *         AND the base color for the color scale to be applied to the excluded bars.
    *     - excludedColor: The base color for the color scale to be applied to the excluded bars.
@@ -58,7 +60,12 @@ tripalD3.histo = {
       options.excludedColor = colors[8];
       options.highlightColor = colors[3];
     }
-  
+    if (!options.hasOwnProperty('upperThresholdOrigin')) {
+      options.upperThresholdOrigin = [{'x1': 35, 'y1': -62, 'x2': 35, 'y2': 425}]; 
+    }
+    if (!options.hasOwnProperty('lowerThresholdOrigin')) {
+      options.lowerThresholdOrigin = [{'x1': 30, 'y1': -62, 'x2': 30, 'y2': 425}];
+    }
     if (!options.hasOwnProperty('drawKey')) {
       options.drawKey = true;
     }
@@ -128,20 +135,10 @@ tripalD3.histo = {
           .style("stroke-width", "3px")
     
     //Data for the upper threshold line
-      var upperThresholdOrigin = [{
-        'x1': 35,
-        'y1': -62,
-        'x2': 35,
-        'y2': 425
-      }];
+      //var upperThresholdOrigin = [{'x1': 35, 'y1': -62, 'x2': 35, 'y2': 425}];
     
     //Data for the lower threshold line
-      var lowerThresholdOrigin = [{
-        'x1': 30,
-        'y1': -62,
-        'x2': 30,
-        'y2': 425
-      }];  
+      //var lowerThresholdOrigin = [{'x1': 30, 'y1': -62, 'x2': 30, 'y2': 425}];  
 
     //Generate the threshold lines' attributes
       var lineAttributes = {
