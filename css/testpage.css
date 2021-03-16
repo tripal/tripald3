@@ -1,0 +1,33 @@
+div.test, pre.data, div.chart {
+  border: 1px solid #e0e0d8;
+}
+
+div.test {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 400px;
+}
+
+div.test div.chart {
+  padding: 15px;
+}
+
+div.test pre {
+  margin: 0;
+  overflow: scroll;
+  font-size: 10px;
+  flex-grow: 1;
+}
+
+div.test svg {
+  border: 1px solid #e0e0d8;
+}
+
+div#test0 {
+  height: 100px;
+}
+
+div#test0 .data {
+  color: red;
+}

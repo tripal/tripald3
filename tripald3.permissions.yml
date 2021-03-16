@@ -1,0 +1,9 @@
+view tripald3 json:
+  title: 'View Tripal D3 JSON'
+  description: 'Required for anyone wanting to view a Tripal D3 diagram'
+  restricted access: FALSE
+
+view tripald3 pedigree:
+  title: 'View Tripal D3 Pedigree'
+  description: 'Required to view the pedigree pane on stock pages'
+  restricted access: FALSE

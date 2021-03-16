@@ -1,0 +1,19 @@
+tripald3.tab1:
+  route_name: tripald3.config
+  title: 'General'
+  base_route: tripald3.config
+ 
+tripald3.tab2:
+  route_name: tripald3.pedigree
+  title: 'Stock Pedigree'
+  base_route: tripald3.config
+
+tripald3.tab3:
+  route_name: tripald3.demo
+  title: 'Demo'
+  base_route: tripald3.config
+
+tripald3.tab4:
+  route_name: tripald3.test
+  title: 'Test'
+  base_route: tripald3.config

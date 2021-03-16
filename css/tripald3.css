@@ -66,5 +66,5 @@ svg.tripald3-tree .tree-node {
 }
 
 .tripald3-default-watermark {
-  background-image: url(watermark.png);
+  background-image: url('../templates/image/watermark.png');
 }

@@ -1,0 +1,55 @@
+# This route will return a JSON object.
+tripald3.tree:
+  path: '/ajax/tripal/d3-json/relationships/{base_table}/{id}'
+  defaults:
+    _title: 'JS Graph: Tree'
+    _controller: '\Drupal\tripald3\Controller\TripalD3RelationshipJsonController::response'
+  requirements:
+    _permission: 'view tripald3 json'
+    _admin_route: 'FALSE'
+    # Validate that chado table is one of the options enumerated
+    # and that id number is 20 digit long.
+    base_table: '(stock|organism)'
+    id: '[0-9]+'
+  methods: [GET]
+
+# This route (admin interface) wiil allow user to 
+# configure D3.js integration.
+tripald3.config:
+  path: '/admin/tripal/extension/tripald3'
+  defaults:
+    _title: 'Configuration for D3.js Integration'
+    _form: '\Drupal\tripald3\Form\TripalD3IntegrationConfigurationForm'
+  requirements:
+    _permission: 'administer tripal'
+
+# This route (admin interface) wiil allow user to 
+# configure D3.js Stock Pedigree integration.
+tripald3.pedigree:
+  path: '/admin/tripal/extension/tripald3/stock_pedigree'
+  defaults:
+    _title: 'Configuration for D3.js Stock Pedigree Integration'
+    _form: '\Drupal\tripald3\Form\TripalD3PedigreeConfigurationForm'
+  requirements:
+    _permission: 'administer tripal'
+
+# This route (admin interface) wiil allow user to 
+# configure D3.js Demo page.
+tripald3.demo:
+  path: '/admin/tripal/extension/tripald3/demo'
+  defaults:
+    _title: 'Configuration for D3.js Demo Page'
+    _controller: '\Drupal\tripald3\Controller\TripalD3IntegrationDemo::content'
+  requirements:
+    _permission: 'administer tripal'
+
+# This route (admin interface) wiil allow user to 
+# configure D3.js Test page.
+tripald3.test:
+  path: '/admin/tripal/extension/tripald3/test'
+  defaults:
+    _title: 'Configuration for D3.js Test Page'
+    _controller: '\Drupal\tripald3\Controller\TripalD3IntegrationTest::content'
+  requirements:
+    _permission: 'administer tripal'
+

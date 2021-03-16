@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drupal Module Upgrader analysis report</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,700,600' rel='stylesheet' type='text/css' />
+    <style type="text/css">
+    <!--
+
+body {
+  width: 80%;
+  color: #343434;
+  margin: 1em auto;
+  font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+details {
+  font-size: 18px;
+  line-height: 25px;
+  margin-bottom: 2em;
+  display: list-item;
+  list-style: none;
+}
+
+details summary {
+  padding: 1em;
+  margin-bottom: 1em;
+  display: list-item;
+  cursor: pointer;
+}
+
+details.error summary {
+  background-color: #ffd5d5;
+}
+
+details.warning summary {
+  background-color: #fff3bb;
+}
+
+a {
+  color: #095cb1;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+aside {
+  font-style: italic;
+  line-height: 20px;
+  font-size: 15px;
+}
+
+.group {
+  border: 1px solid #ececec;
+  padding: 1em;
+  display: block;
+}
+
+.group > summary {
+  padding: 0;
+  color: #c8c8c8;
+  margin-bottom: 0;;
+  font-weight: bold;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: list-item;
+}
+
+.group[open] > summary {
+  margin-bottom: 1em;
+}
+
+.group > details:last-child {
+  margin-bottom: 0;
+}
+
+    -->
+    </style>
+  </head>
+  <body>
+    <h1>Drupal Module Upgrader analysis report</h1>
+      <details open="true" class="group">
+      <summary></summary>
+          <details class="error">
+      <summary><code>hook_menu()</code> has been removed from Drupal 8.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1800686">All functionality of <code>hook_menu()</code> replaced</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2177901">Dynamic routes are now defined in <code>MODULE.routing.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2119699">Page callbacks have been converted to controller classes</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2089605">Route naming convention</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2165243">Contextual links are now plugins defined in <code>MODULE.links.contextual.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2007444">Local actions are now plugins defined in <code>MODULE.links.action.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2044515">Local tasks and now plugins defined in <code>MODULE.links.task.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2228089">Menu links are now defined in <code>MODULE.links.menu.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.module, line 32</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:menu</aside>    </details>
+    <details class="warning">
+      <summary>Many common functions, shared variables, and constants have been renamed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2324935">The global theme variables have been replaced by an ActiveTheme object</a></li>
+              </ul>
+      
+                      </details>
+    <details class="warning">
+      <summary>Static permissions are now defined in <code>MODULE.permissions.yml</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2311427">Defining permissions in <code>MODULE.permissions.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.module, line 123</li>
+            </ul>
+            <p class="fixable">This issue can be fixed automatically.</p>      <aside>Flagged by hook_permission</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_add_css()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_css()</code>, <code>drupal_add_js()</code> and <code>drupal_add_library()</code> removed in favor of <code>#attached</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2408597"><code>AssetResolverInterface</code> and <code>AttachedAssetsInterface</code> replace internal Asset API functions</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 32</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_add_css</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_add_js()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_css()</code>, <code>drupal_add_js()</code> and <code>drupal_add_library()</code> removed in favor of <code>#attached</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2408597"><code>AssetResolverInterface</code> and <code>AttachedAssetsInterface</code> replace internal Asset API functions</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/templates/tripald3_test_page.tpl.php, line 12</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/stock_pedigree.inc, line 74</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 24</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 25</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 26</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 27</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 29</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 37</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/color_scheme.inc, line 127</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_add_js</aside>    </details>
+    <details class="error">
+      <summary><code>form_set_error()</code> is now a method of <code>FormStateInterface</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2121003">Form functions moved into <code>FormStateInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 246</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 247</li>
+            </ul>
+                  <aside>Flagged by _function_call:form_set_error</aside>    </details>
+    <details class="error">
+      <summary><code>module_invoke_all()</code> is now a method of the <code>module_handler</code> service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1894902"><code>module_invoke_all()</code> replaced by <code>module_handler</code> service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/color_scheme.inc, line 78</li>
+            </ul>
+                  <aside>Flagged by _function_call:module_invoke_all</aside>    </details>
+    <details class="error">
+      <summary><code>get_t()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2021435"><code>get_t()</code> replaced by <code>t()</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.install, line 15</li>
+            </ul>
+                  <aside>Flagged by _function_call:get_t</aside>    </details>
+    <details class="error">
+      <summary><code>url()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2346779"><code>url()</code> replaced by URL generation API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/templates/tripal_stock_pedigree.tpl.php, line 17</li>
+            </ul>
+                  <aside>Flagged by _function_call:url</aside>    </details>
+    <details class="error">
+      <summary><code>user_access()</code> is now <code>AccountInterface::hasPermission()</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2049309"><code>user_access()</code> got converted to a method on the user/account interface</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.module, line 151</li>
+            </ul>
+                  <aside>Flagged by _function_call:user_access</aside>    </details>
+    <details class="error">
+      <summary><code>variable_get()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 37</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 54</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 116</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/stock_pedigree.inc, line 73</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/stock_pedigree.inc, line 245</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 36</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/color_scheme.inc, line 126</li>
+            </ul>
+                  <aside>Flagged by _function_call:variable_get</aside>    </details>
+    <details class="error">
+      <summary><code>variable_set()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 77</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 78</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 264</li>
+            </ul>
+                  <aside>Flagged by _function_call:variable_set</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_set_message()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2774931"><code>drupal_set_message()</code> moved into stream wrapper manager service.</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 18</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/settings_forms.inc, line 20</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 16</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/tripalD3.api.inc, line 18</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/color_scheme.inc, line 100</li>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/color_scheme.inc, line 105</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_set_message</aside>    </details>
+    <details class="error">
+      <summary><code>db_query()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2993033"><code>db_query()</code> is deprecated.</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/includes/stock_pedigree.inc, line 287</li>
+            </ul>
+                  <aside>Flagged by _function_call:db_query</aside>    </details>
+    <details class="error">
+      <summary>Module info files' <code>core</code> key must have a value of <code>8.x</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Info files must contain a <code>type</code> key.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#type"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Many common dependencies have moved into core.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/web/modules/contrib/tripald3/tripald3/tripald3.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+
+    </details>
+    </body>
+</html>

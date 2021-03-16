@@ -1,0 +1,10 @@
+name: Tripal D3.js (Data-Driven Documents)
+description: An API for D3.js integration and diagrams for Tripal.
+package: Tripal Extension
+
+type: module
+core: 8.x
+
+dependencies:
+  - tripal:tripal
+  - libraries:libraries

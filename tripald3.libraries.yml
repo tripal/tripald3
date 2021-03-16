@@ -1,0 +1,113 @@
+# Main library used in general configration.
+tripalD3:
+  version: v3.5.14
+  js:
+    js/tripalD3.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+
+colorscheme_display:
+  version: v1.x
+  js: 
+    js/colorscheme_display.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/drupalSettings
+
+# The D3 library.    
+libd3:
+  version: v3.5.14
+  js:
+    /sites/all/assets/vendor/d3/d3.min.js: {}
+
+# Main library with styling definition used in 
+# pedigree/relationship configuration.    
+pedigree:
+  version: v1.x
+  header: false
+  js:
+    js/relsetting_diagrams.js: {}
+
+# Style used by Tripal D3 Demo page.
+libdemostyle:
+  version: v1.x
+  css:
+    theme:
+      css/tripald3.css: {}
+
+libtest:
+  version: v1.x
+  js:
+    js/tripalD3.test.js: {}    
+
+
+# CHARTS CORE LIBRARY
+
+
+lib-pie:
+  version: v1.x
+  js:
+    js/tripalD3.pie.js: {}
+
+lib-bar:
+  version: v1.x
+  js:
+    js/tripalD3.bar.js: {}    
+
+lib-pedigree:
+  version: v1.x
+  js:
+    js/tripalD3.pedigree.js: {} 
+
+    
+# CHARTS    
+
+
+# Library used by Tripal Demo page to
+# generate Multidonut chart.     
+create-multidonut:
+  version: v1.x
+  js:
+    js/demo/create.multidonut.js: {}
+
+# Library used by Tripal Demo page to
+# generate Pie chart.     
+create-pie:
+  version: v1.x
+  js:
+    js/demo/create.pie.js: {}
+
+# Library used by Tripal Demo page to
+# generate Multi series donut chart.     
+create-multiseriesdonut:
+  version: v1.x
+  js:
+    js/demo/create.multiseriesdonut.js: {}
+
+# Library used by Tripal Demo page to
+# generate Bar chart.     
+create-bar:
+  version: v1.x
+  js:
+    js/demo/create.bar.js: {}
+
+# Library used by Tripal Demo page to
+# generate Pedigree diagram.     
+create-pedigree:
+  version: v1.x
+  js:
+    js/demo/create.pedigree.js: {}
+
+
+# TEST PAGE    
+# Library used by Tripal Demo page to
+# generate Test page.
+create-test:
+  version: v1.x
+  css:
+    theme:
+      css/testpage.css: {}
+  js:
+    js/test/create.test.js: {}

@@ -2,6 +2,7 @@
  * A collection of biological diagrams created using d3.js and encapsulated
  * for easy use.
  */
+//settings.tripalD3.colorSchemes
 tripalD3 = {
   'version': '1.0-dev',
 
@@ -887,11 +888,11 @@ tripalD3 = {
 
     //Retrieve default color scheme; if not set.
     if (!schemeName) {
-      schemeName = Drupal.settings.tripalD3.colorSchemes.selected;
+      schemeName = drupalSettings.scheme.tripalD3.colorSchemes.selected;
     }
 
     // Grab the colour schemes added to Drupal settings by tripald3_load_libraries().
-    var schemes = Drupal.settings.tripalD3.colorSchemes;
+    var schemes = drupalSettings.scheme.tripalD3.colorSchemes;
 
     if (type == 'quantitative') {
       return schemes[schemeName].quantitative;

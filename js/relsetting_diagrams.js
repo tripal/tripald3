@@ -1,10 +1,16 @@
 /**
  * Draws diagrams to help explain pedigree relationship settings.
  */
+
+// Variable to flag that this behavior has been attached and
+// should execute this block once.
+var initialized = false;
+var width = 375;
+
 Drupal.behaviors.TripalD3_pedigree_configForm = {
   attach: function (context, settings) {
 
-    var width = 375;
+    
 
     var examples = {
       'subject' : [
@@ -41,7 +47,25 @@ Drupal.behaviors.TripalD3_pedigree_configForm = {
       ],
     };
 
-    /////////////////////////
+   
+
+    if (!initialized) {
+      initialized = true;
+      drawSentenceDiagram('subject', examples.subject);
+      drawSentenceDiagram('object', examples.object);
+
+      drawTreeDiagram('subject', examples.subject);
+      drawTreeDiagram('object', examples.object);
+    }
+
+    
+  }
+};
+
+
+
+
+ /////////////////////////
     // #1 Sentence Diagram
     var drawSentenceDiagram = function(parent, data) {
 
@@ -169,9 +193,6 @@ Drupal.behaviors.TripalD3_pedigree_configForm = {
         fullLen = subjectLen + 20 + typeLen + 20 + objectLen;
         svg.attr('transform', function(d) { return 'translate(' + (width-fullLen-25)/2 + ',0)';});
     };
-
-    drawSentenceDiagram('subject', examples.subject);
-    drawSentenceDiagram('object', examples.object);
 
     /////////////////////////
     // #2 Tree Diagram
@@ -318,7 +339,3 @@ Drupal.behaviors.TripalD3_pedigree_configForm = {
 
     };
 
-    drawTreeDiagram('subject', examples.subject);
-    drawTreeDiagram('object', examples.object);
-  }
-};
