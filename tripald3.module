@@ -1,17 +1,22 @@
 <?php
 /**
  * Implements hook_theme().
- * Used by Tripal D3 Integration Demo page.
+ * Used by Tripal D3 Integration Demo and Test pages.
+ *
+ * @see templates in /templates
  */
 function tripald3_theme($existing, $type, $theme, $path) {
   $variables = [
-    'tripald3demo' => [
+    // Tripal D3 Demo page theme.
+    'theme_tripald3demo' => [
       'variables' => [],
-      'template' => 'tripald3-demo',
+      'template' => 'template-tripald3-demo',
     ],
-    'tripald3test' => [
+    
+    // Tripal D3 Test page theme.
+    'theme_tripald3test' => [
       'variables' => [],
-      'template' => 'tripald3-test',
+      'template' => 'template-tripald3-test',
     ]
   ];
 

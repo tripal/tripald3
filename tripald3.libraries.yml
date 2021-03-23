@@ -1,13 +1,47 @@
-# Main library used in general configration.
-tripalD3:
+# The D3 library.    
+# Library files in sites/all/assets/vendor/d3
+D3:
   version: v3.5.14
+  js:
+    /sites/all/assets/vendor/d3/d3.min.js: {}
+
+
+# Core Libraries:
+
+
+# Tripald3 Core library: collection of diagrams.
+tripalD3:
+  version: v1.0-dev
   js:
     js/tripalD3.js: {}
   dependencies:
     - core/jquery
     - core/drupalSettings
 
-colorscheme_display:
+# Tripald3 Core library: Pie chart.
+lib-pie:
+  version: v1.x
+  js:
+    js/tripalD3.pie.js: {}
+
+# Tripald3 Core library: Bar chart.
+lib-bar:
+  version: v1.x
+  js:
+    js/tripalD3.bar.js: {}    
+
+# Tripald3 Core library: Pedigree diagrams.
+lib-pedigree:
+  version: v1.x
+  js:
+    js/tripalD3.pedigree.js: {} 
+
+
+# APIs
+
+# Tripald3 API: create colour scheme pallets.
+# @see configuration page.
+create-colour-pallets:
   version: v1.x
   js: 
     js/colorscheme_display.js: {}
@@ -16,98 +50,82 @@ colorscheme_display:
     - core/jquery
     - core/drupalSettings
 
-# The D3 library.    
-libd3:
-  version: v3.5.14
-  js:
-    /sites/all/assets/vendor/d3/d3.min.js: {}
-
-# Main library with styling definition used in 
-# pedigree/relationship configuration.    
-pedigree:
+# Tripald3 API: create a pedigree tree to help
+# explain pedigree relationship settings.
+# @see configuration page/stock pedigree page.
+illustrate-pedigree:
   version: v1.x
   header: false
   js:
     js/relsetting_diagrams.js: {}
 
-# Style used by Tripal D3 Demo page.
-libdemostyle:
-  version: v1.x
-  css:
-    theme:
-      css/tripald3.css: {}
-
-libtest:
-  version: v1.x
-  js:
-    js/tripalD3.test.js: {}    
-
-
-# CHARTS CORE LIBRARY
-
-
-lib-pie:
-  version: v1.x
-  js:
-    js/tripalD3.pie.js: {}
-
-lib-bar:
-  version: v1.x
-  js:
-    js/tripalD3.bar.js: {}    
-
-lib-pedigree:
-  version: v1.x
-  js:
-    js/tripalD3.pedigree.js: {} 
-
     
-# CHARTS    
+# Implement Charts:
 
 
-# Library used by Tripal Demo page to
-# generate Multidonut chart.     
+# Implements Multidonut Chart.
+# @see configuration/demo page.
 create-multidonut:
   version: v1.x
   js:
     js/demo/create.multidonut.js: {}
 
-# Library used by Tripal Demo page to
-# generate Pie chart.     
+# Implements Pie Chart.
+# @see configuration/demo page.
 create-pie:
   version: v1.x
   js:
     js/demo/create.pie.js: {}
 
-# Library used by Tripal Demo page to
-# generate Multi series donut chart.     
+# Implements Multi-series Donut Chart.
+# @see configuration/demo page.
 create-multiseriesdonut:
   version: v1.x
   js:
     js/demo/create.multiseriesdonut.js: {}
 
-# Library used by Tripal Demo page to
-# generate Bar chart.     
+# Implements Bar Chart.
+# @see configuration/demo page.
 create-bar:
   version: v1.x
   js:
     js/demo/create.bar.js: {}
 
-# Library used by Tripal Demo page to
-# generate Pedigree diagram.     
+# Implements Pedigree Chart.
+# @see configuration/demo page.
 create-pedigree:
   version: v1.x
   js:
     js/demo/create.pedigree.js: {}
 
-
-# TEST PAGE    
-# Library used by Tripal Demo page to
-# generate Test page.
+# Implements TripalD3 Test Data and Charts.
+# @see configuration/test page.
 create-test:
+  version: v1.x
+  js:
+    js/tripalD3.test.js: {}    
+
+
+# Page.    
+
+
+# Construct Test Page.
+# @see configuration/test page.
+page-test:
   version: v1.x
   css:
     theme:
       css/testpage.css: {}
   js:
     js/test/create.test.js: {}
+
+
+# Styles:
+
+
+# Style Demo Page.
+style-tripald3:
+  version: v1.x
+  css:
+    theme:
+      css/tripald3.css: {}

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file Construct configuration form to allow configuration
+ * of charts and diagram elements.
+ */
+
 namespace Drupal\tripald3\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -36,7 +41,7 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Check if d3 library exists.
-    $lib = \Drupal::service('library.discovery')->getLibraryByName('tripald3', 'libd3');
+    $lib = \Drupal::service('library.discovery')->getLibraryByName('tripald3', 'D3');
     if (!$lib) {
       drupal_set_message('Unable to load D3.js. Please make sure you have downloaded D3.js and placed it in your sites/all/assets/vendor/d3 directory.', 'error');      
     }
@@ -75,13 +80,14 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
     
     // Attach main library: D3.
     // NOTE: d3 library is an external library.
-    $form['#attached']['library'][] = 'tripald3/libd3';
+    $form['#attached']['library'][] = 'tripald3/D3';
     $default_scheme = $config->get('tripald3_colorScheme');
+    // Create colour pallets.
     $to_Drupalsettings = tripald3_register_colorschemes($default_scheme);
     $form['#attached']['drupalSettings']['tripald3']['colorscheme_display']['variable'] = $to_Drupalsettings;
     
     // Javascript libraries to demo the colour schemes.
-    $form['#attached']['library'][] = 'tripald3/colorscheme_display';
+    $form['#attached']['library'][] = 'tripald3/create-colour-pallets';
     
     $schemes = tripald3_get_color_schemes();
     $options = [];

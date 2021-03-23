@@ -2,7 +2,7 @@
  * A collection of biological diagrams created using d3.js and encapsulated
  * for easy use.
  */
-//settings.tripalD3.colorSchemes
+
 tripalD3 = {
   'version': '1.0-dev',
 

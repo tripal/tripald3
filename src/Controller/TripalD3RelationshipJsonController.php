@@ -1,4 +1,18 @@
 <?php
+/**
+ * @file Generate datapoints required to generate pedigree tree. 
+ * Response is a JSON object.
+ */
+
+// Note From 7.x.1.x 
+// On code revamping, Tripal D3 loosely integrate the pedigree methods below
+// without fully expanding the codebase. More work is needed to address
+// performance issue and concerns relating to data retrival and ideally
+// the data structure to be more generic to handle more than just
+// stock-based trees. Related JS library underwent revamp.
+//
+// @see: api/pedigree.inc
+
 namespace Drupal\tripald3\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +48,9 @@ class TripalD3RelationshipJsonController {
     return $json_response;
   }
   
+  // NOTE: methods below is the equivalent of the library 
+  //       in includes/stock_pedigree.inc in v7.
+
   /**
    * Prepare relationships datapoints.
    * Recursive Function to navigate relationship data stored in chado and return

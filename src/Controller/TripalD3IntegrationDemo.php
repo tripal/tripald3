@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file Construct Demo Page.
+ */
+
 namespace Drupal\tripald3\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -34,9 +38,9 @@ class TripalD3IntegrationDemo extends ControllerBase {
     $libraries = [
       // CORE
       // D3, Tripal D3 and Test Script
-      'tripald3/libd3',
+      'tripald3/D3',
       'tripald3/tripalD3',
-      'tripald3/libtest',
+      'tripald3/create-test',
       
       // CHARTS
       // Pie
@@ -52,11 +56,11 @@ class TripalD3IntegrationDemo extends ControllerBase {
       'tripald3/create-pedigree',
       
       // STYLE
-      'tripald3/libdemostyle'
+      'tripald3/style-tripald3'
     ];
 
     return [
-      '#theme' => 'tripald3demo',
+      '#theme' => 'theme_tripald3demo',
       '#attached' => [
         'library' => $libraries,
         'drupalSettings' => $to_Drupalsettings

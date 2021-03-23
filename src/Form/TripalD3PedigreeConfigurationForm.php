@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file Construct configuration form illustrating pedigree tree
+ * and selection of relationship terms to be used.
+ */
+
 namespace Drupal\tripald3\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -39,8 +44,8 @@ class TripalD3PedigreeConfigurationForm extends ConfigFormBase {
     $config = $this->config(static::SETTINGS);
 
     // Attach libraries.
-    $form['#attached']['library'][] = 'tripald3/libd3';
-    $form['#attached']['library'][] = 'tripald3/pedigree';
+    $form['#attached']['library'][] = 'tripald3/D3';
+    $form['#attached']['library'][] = 'tripald3/illustrate-pedigree';
 
     $form['#attached']['library'][] = 'style_pedigree/style-pedigree';
 

@@ -1,8 +1,8 @@
 <?php
-
 /**
  * @file
  * Tripal D3 chado databse API
+ * @see important note in Controller/TripalD3RelationshipJsonController.
  */
 
  /**

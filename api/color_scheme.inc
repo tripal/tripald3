@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * TripalD3 provides a number of color schemes with configuration for site admin
@@ -74,10 +73,10 @@ function tripald3_tripald3_color_schemes() {
  * Retrieve a list of available color schemes.
  */
 function tripald3_get_color_schemes() {
-
-  $schemes = tripald3_tripald3_color_schemes();
+  // Listen for all available modules (enabled) implementing tripald3_color_schemes
+  // to register a custom colour scheme.
+  $schemes = \Drupal::moduleHandler()->invokeAll('tripald3_color_schemes');
   return $schemes;
-
 }
 
 /**

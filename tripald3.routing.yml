@@ -1,55 +1,65 @@
-# This route will return a JSON object.
+# This route is used to fetch dataset relating to stock relationships
+# required when generating stock pedigreee diagram. The returned result
+# is a JSON object.
 tripald3.tree:
   path: '/ajax/tripal/d3-json/relationships/{base_table}/{id}'
   defaults:
-    _title: 'JS Graph: Tree'
+    _title: 'Tripal D3 JSON API: Stock Relationship Object'
     _controller: '\Drupal\tripald3\Controller\TripalD3RelationshipJsonController::response'
   requirements:
     _permission: 'view tripald3 json'
     _admin_route: 'FALSE'
     # Validate that chado table is one of the options enumerated
-    # and that id number is 20 digit long.
-    base_table: '(stock|organism)'
+    # and that id number is an integer value.
+    base_table: '(stock)'
     id: '[0-9]+'
   methods: [GET]
 
-# This route (admin interface) wiil allow user to 
-# configure D3.js integration.
+
+# Route items below are rendered as linked task (tabs).
+# Order is as they appear in configuration page.
+# @see tripald3.links.task.yml
+
+
+# This route is an admin interface and will allow admin user to 
+# configure Tripal D3 options such as the colour scheme used by
+# chart elements and whether svg canvass width is fixed or 
+# autoresize (fluid).
 tripald3.config:
   path: '/admin/tripal/extension/tripald3'
   defaults:
-    _title: 'Configuration for D3.js Integration'
+    _title: 'Configure Tripal D3'
     _form: '\Drupal\tripald3\Form\TripalD3IntegrationConfigurationForm'
   requirements:
     _permission: 'administer tripal'
 
-# This route (admin interface) wiil allow user to 
-# configure D3.js Stock Pedigree integration.
+# This route is an admin interface and will allow admin user to 
+# configure Tripal D3 Stock Pedigree integration options.
 tripald3.pedigree:
   path: '/admin/tripal/extension/tripald3/stock_pedigree'
   defaults:
-    _title: 'Configuration for D3.js Stock Pedigree Integration'
+    _title: 'Configure Tripal D3 Stock Pedigree Integration'
     _form: '\Drupal\tripald3\Form\TripalD3PedigreeConfigurationForm'
   requirements:
     _permission: 'administer tripal'
 
-# This route (admin interface) wiil allow user to 
-# configure D3.js Demo page.
+# This route is an admin interface and will route to a demo page
+# showing Tripal D3 various chart/diagram options.
+# Route controller renders as theme: @see tripald3.module.
 tripald3.demo:
   path: '/admin/tripal/extension/tripald3/demo'
   defaults:
-    _title: 'Configuration for D3.js Demo Page'
+    _title: 'Tripal D3 Demo Page'
     _controller: '\Drupal\tripald3\Controller\TripalD3IntegrationDemo::content'
   requirements:
     _permission: 'administer tripal'
 
-# This route (admin interface) wiil allow user to 
-# configure D3.js Test page.
+# This route is an admin interface and will route to a Tripal D3 test page.
+# Route controller renders as theme: @see tripald3.module.
 tripald3.test:
   path: '/admin/tripal/extension/tripald3/test'
   defaults:
-    _title: 'Configuration for D3.js Test Page'
+    _title: 'Tripal D3 Test Page'
     _controller: '\Drupal\tripald3\Controller\TripalD3IntegrationTest::content'
   requirements:
     _permission: 'administer tripal'
-

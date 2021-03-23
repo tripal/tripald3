@@ -14,6 +14,10 @@ Drupal.behaviors.tripalD3testing = {
   }
 };
 
+
+// Functions.
+
+
 function tripald3CreateTestPage() {
   var numTests = 1;
 

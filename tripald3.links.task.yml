@@ -1,19 +1,39 @@
+# Tabs/task items below point to routes defined in
+# @see tripald3.routing.yml.
+# Order is as they appear in the configuration page (weight).
+
+# General Tab.
+# Routes to tripald3.config. 
+# /extension/tripald3.
 tripald3.tab1:
-  route_name: tripald3.config
   title: 'General'
+  route_name: tripald3.config
   base_route: tripald3.config
- 
+  weight: 0
+
+# Stock Pedigree Tab.
+# Routes to tripald3.pedigree.
+# /extension/tripald3/stock_pedigree.
 tripald3.tab2:
-  route_name: tripald3.pedigree
   title: 'Stock Pedigree'
+  route_name: tripald3.pedigree
   base_route: tripald3.config
+  weight: 1
 
+# Demo Tab.
+# Routes to tripald3.demo.
+# /extension/tripald3/demo.
 tripald3.tab3:
-  route_name: tripald3.demo
   title: 'Demo'
+  route_name: tripald3.demo
   base_route: tripald3.config
+  weight: 2
 
+# Test Tab.
+# Routes to tripald3.test.
+# /extension/tripald3/test.
 tripald3.tab4:
-  route_name: tripald3.test
   title: 'Test'
+  route_name: tripald3.test
   base_route: tripald3.config
+  weight: 3
