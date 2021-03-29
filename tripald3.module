@@ -1,11 +1,13 @@
 <?php
+// Include pedigree api of this module.
+
 /**
  * Implements hook_theme().
  * Used by Tripal D3 Integration Demo and Test pages.
  *
  * @see templates in /templates
  */
-function tripald3_theme($existing, $type, $theme, $path) {
+function tripald3_theme($existing, $type, $theme, $path) {  
   $variables = [
     // Tripal D3 Demo page theme.
     'theme_tripald3demo' => [

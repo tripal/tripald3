@@ -17,6 +17,10 @@ namespace Drupal\tripald3\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
+// Include pedigree api of this module.
+// @see /api
+module_load_include('inc', 'tripald3', 'api/pedigree');
+
 /**
  * Defines TripalD3RelationshipController class.
  */
@@ -28,7 +32,8 @@ class TripalD3RelationshipJsonController {
     $json_response->headers->set('Content-Type', 'application/json');
     $json_response->headers->set('Access-Control-Allow-Origin', '*');
     
-    $subset = $this->getPedigreeRelationshipTypes();
+    // From pedigree API.
+    $subset = tripald3_get_pedigree_relationship_types();
     $tree_data = $this->getRelationshipTree($base_table, $id, $subset);
     
     if ($tree_data) {
@@ -136,7 +141,7 @@ class TripalD3RelationshipJsonController {
     else {
       $where[] = 'r.object_id=:id AND r.subject_id=:id';
     }
-
+    
     $sql = $sql . implode(' OR ', $where) . ' ORDER BY cvt.name ASC';
     $rels = chado_query($sql , [':id' => $id]);
 
@@ -223,13 +228,15 @@ class TripalD3RelationshipJsonController {
       ->fetchField();  
  
     if ($has_tbl === 1) {  
-      $m = db_query('SELECT t2.name
+      $database = \Drupal::database();
+      $query = $database->query('SELECT t2.name
         FROM {tripal_term} AS t1 INNER JOIN {tripal_bundle} AS t2 ON t1.id = t2.term_id
         WHERE t1.accession = (
           SELECT t3.accession
           FROM chado.dbxref AS t3 INNER JOIN chado.cvterm AS t4 USING(dbxref_id)
-          WHERE t4.cvterm_id = :stock_type)', array(':stock_type' => $type_id))
-      ->fetchField();
+          WHERE t4.cvterm_id = :stock_type)', array(':stock_type' => $type_id));
+      
+      $m = $query->fetchField();
 
       if ($m) {
         $chado_bundle = 'chado_' . $m;
@@ -246,37 +253,5 @@ class TripalD3RelationshipJsonController {
     }
 
     return $entity_id;
-  }
-
-  /**
-   * Restrict datapoints to this subset only.
-   */
-  public function getPedigreeRelationshipTypes() {
-    $rels_to_restrict = \Drupal::state()->get('tripald3_stock_pedigree_rels', NULL); 
-
-    if (!$rels_to_restrict) {
-      // Get relationships used in stock table.
-      $rels = array();
-      $sql = "SELECT sr.type_id, cvt.name as type_name
-              FROM {stock_relationship} sr
-              LEFT JOIN {cvterm} cvt ON cvt.cvterm_id=sr.type_id
-              GROUP BY sr.type_id, cvt.name
-              ORDER BY count(sr.*) desc";
-
-      $rel_query = chado_query($sql);
-      foreach ($rel_query as $r) {
-        $rels[$r->type_id] = $r->type_name;
-      }
-
-      $rels_to_restrict = array(
-        'object' => array(),
-        'subject' => $rels
-      );
-    }
-    else {
-      $rels_to_restrict = unserialize($rels_to_restrict);
-    }
-
-    return $rels_to_restrict;
   }
 }
