@@ -9,11 +9,12 @@ D3:
 # Core Libraries:
 
 
-# Tripald3 Core library: collection of diagrams.
+# Tripald3 Core library.
 tripalD3:
   version: v1.0-dev
   js:
     js/tripalD3.js: {}
+    js/tripalD3.test.js: {}   
   dependencies:
     - core/jquery
     - core/drupalSettings

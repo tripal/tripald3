@@ -10,10 +10,6 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 
-// Include chado database api relating to pedigree.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/pedigree');
-
 /**
  * Defines TripalD3PedigreeConfigurationForm class.
  */

@@ -884,15 +884,14 @@ tripalD3 = {
    * @return
    *   An array of HEX codes in the order they should be applied to elements.
    */
-  getColorScheme: function(type, schemeName) {
-
+  getColorScheme: function(type, schemeName) { 
     //Retrieve default color scheme; if not set.
     if (!schemeName) {
-      schemeName = drupalSettings.scheme.tripalD3.colorSchemes.selected;
+      schemeName = drupalSettings.tripalD3.vars.scheme.colorSchemes.selected;
     }
 
-    // Grab the colour schemes added to Drupal settings by tripald3_load_libraries().
-    var schemes = drupalSettings.scheme.tripalD3.colorSchemes;
+    // Grab the colour schemes added to Drupal settings.
+    var schemes = drupalSettings.tripalD3.vars.scheme.colorSchemes;
 
     if (type == 'quantitative') {
       return schemes[schemeName].quantitative;

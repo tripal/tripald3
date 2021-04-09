@@ -1,5 +1,13 @@
 <?php
+
+// Include colour scheme api of this module.
+// @see /api
+module_load_include('inc', 'tripald3', 'api/color_scheme');
+
 // Include pedigree api of this module.
+// @see /api
+module_load_include('inc', 'tripald3', 'api/pedigree');
+
 
 /**
  * Implements hook_theme().

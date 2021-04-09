@@ -101,7 +101,7 @@ tripalD3.pedigree = {
     drawTree(root, options);
 
     // Register resize of tree if config is set.
-    if (drupalSettings.autoresize.tripalD3.autoResize) {
+    if (drupalSettings.tripalD3.vars.autoResize) {
       resizeTree();
     }
 

@@ -9,10 +9,6 @@ namespace Drupal\tripald3\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-// Include colour scheme api of this module.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/color_scheme');
-
 /**
  * Defines TripalD3IntegrationConfigurationForm class.
  */
@@ -84,7 +80,7 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
     $default_scheme = $config->get('tripald3_colorScheme');
     // Create colour pallets.
     $to_Drupalsettings = tripald3_register_colorschemes($default_scheme);
-    $form['#attached']['drupalSettings']['tripald3']['colorscheme_display']['variable'] = $to_Drupalsettings;
+    $form['#attached']['drupalSettings']['tripalD3']['vars']['colorscheme_display'] = $to_Drupalsettings;
     
     // Javascript libraries to demo the colour schemes.
     $form['#attached']['library'][] = 'tripald3/create-colour-pallets';

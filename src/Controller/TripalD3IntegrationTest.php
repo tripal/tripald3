@@ -7,10 +7,6 @@ namespace Drupal\tripald3\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
-// Include colour scheme api of this module.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/color_scheme');
-
 /**
  * Defines TripalD3IntegrationTest class.
  * This will render the page found in configuration/test.
@@ -27,20 +23,15 @@ class TripalD3IntegrationTest extends ControllerBase {
     $config = \Drupal::service('config.factory')
       ->getEditable('tripald3.settings');
     
-    // Array to hold all configurations values returned.
-    $to_Drupalsettings = [];
-
+    // Namespace module name to prevent name collision.
+     
     // Colour schemes.
-    // This value will be accessible to script using:
-    // drupalSettings.scheme
     $default_scheme = $config->get('tripald3_colorScheme');
-    $to_Drupalsettings['scheme'] = tripald3_register_colorschemes($default_scheme);
+    $to_Drupalsettings['tripalD3']['vars']['scheme'] = tripald3_register_colorschemes($default_scheme);
 
     // Auto resize configuration.        
-    // This value will be accessible to script using:
-    // drupalSettings.autoresize.tripalD3.autResize.
     $default_resize = $config->get('tripald3_autoResize');
-    $to_Drupalsettings['autoresize']['tripalD3']['autoResize'] = $default_resize;
+    $to_Drupalsettings['tripalD3']['vars']['autoResize'] = $default_resize;
     
     // @see libraries.yml
     $libraries = [
@@ -57,7 +48,6 @@ class TripalD3IntegrationTest extends ControllerBase {
       
       // CONSTRUCT
       'tripald3/page-test',
-      'tripald3/create-test',
 
       // STYLE
       'tripald3/style-tripald3'

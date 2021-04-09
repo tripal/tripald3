@@ -13,9 +13,9 @@ Making your own colour scheme available to this module is as simple as implement
     $color_schemes = array();
 
     // This key should be unique across colour schemes.
-    $color_schemes['PrpGr'] = array(
+    $color_schemes['BlkGr'] = array(
       // This name will show up in the colour scheme configuration
-      'name' => 'Purple-Green',
+      'name' => 'Black-Green',
       // These are the colours your colour scheme consists of.
       'colors' => array('#3d4051', '#753fb0', '#8f7abf', '#294090', '#6683c3', '#0C6758', '#7AB318', '#A0C55E', '#9fa7a3'),
       'pick order' => array(

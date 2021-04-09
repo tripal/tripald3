@@ -17,10 +17,6 @@ namespace Drupal\tripald3\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-// Include pedigree api of this module.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/pedigree');
-
 /**
  * Defines TripalD3RelationshipController class.
  */

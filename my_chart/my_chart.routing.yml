@@ -1,0 +1,26 @@
+# Simple Pie.
+my_chart.simplepie:
+  path: '/mychart/simplepie'
+  defaults:
+    _title: 'My Chart - Test Simple Pie Tripal D3'
+    _controller: '\Drupal\my_chart\Controller\MyChartSimplePie:content'
+  requirements:
+    _permission: 'administer tripal, access content'
+
+# Simple Donut.
+my_chart.simpledonut:
+  path: '/mychart/simpledonut'
+  defaults:
+    _title: 'My Chart - Test Simple Donut Tripal D3'
+    _controller: '\Drupal\my_chart\Controller\MyChartSimpleDonut:content'
+  requirements:
+    _permission: 'administer tripal, access content'    
+
+# Multi-series Donut
+my_chart.multiseriesdonut:
+  path: '/mychart/multiseriesdonut'
+  defaults:
+    _title: 'My Chart - Test Multi-series Donut Tripal D3'
+    _controller: '\Drupal\my_chart\Controller\MyChartMultiseriesDonut:content'
+  requirements:
+    _permission: 'administer tripal, access content'    

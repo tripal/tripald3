@@ -12,7 +12,7 @@ var marginTop  = 5,
 // Attach behavior.
 Drupal.behaviors.TripalD3_colorscheme_display = {
   attach: function (context, settings) {
-    var settingsvar = drupalSettings.tripald3.colorscheme_display.variable;    
+    var settingsvar = drupalSettings.tripalD3.vars.colorscheme_display;    
     tripalD3Initialize(settingsvar);
   }
 };
@@ -30,8 +30,8 @@ Drupal.behaviors.TripalD3_colorscheme_display = {
  */
 function tripalD3Initialize(settingsvar) {   
   if (!initialized) {
-    Object.keys(settingsvar.tripalD3.colorSchemes).forEach(function (schemeId) {
-      if (typeof settingsvar.tripalD3.colorSchemes[schemeId] === 'object') {
+    Object.keys(settingsvar.colorSchemes).forEach(function (schemeId) {
+      if (typeof settingsvar.colorSchemes[schemeId] === 'object') {
         createPallet(settingsvar, schemeId);
       }
     });
@@ -61,7 +61,7 @@ function createPallet(settingsvar, id) {
 
   var swatchIndex = 0;
   palletQuant.selectAll('rect')
-    .data(settingsvar.tripalD3.colorSchemes[id].quantitative)
+    .data(settingsvar.colorSchemes[id].quantitative)
     .enter()
       .append('rect')
         .attr('width', 20)

@@ -115,13 +115,13 @@ function tripald3_register_colorschemes($default) {
 
   $schemes = tripald3_get_color_schemes();
   foreach ($schemes as $id => $scheme) {
-    $jsSettings['tripalD3']['colorSchemes'][$id]['name'] = $scheme['name'];
-    $jsSettings['tripalD3']['colorSchemes'][$id]['quantitative'] = tripald3_get_scheme_colors($id, 'quantitative', $scheme);
-    $jsSettings['tripalD3']['colorSchemes'][$id]['categorical'] = tripald3_get_scheme_colors($id, 'categorical', $scheme);
+    $jsSettings['colorSchemes'][$id]['name'] = $scheme['name'];
+    $jsSettings['colorSchemes'][$id]['quantitative'] = tripald3_get_scheme_colors($id, 'quantitative', $scheme);
+    $jsSettings['colorSchemes'][$id]['categorical'] = tripald3_get_scheme_colors($id, 'categorical', $scheme);
   }
 
   // Add in the currently selected scheme.
-  $jsSettings['tripalD3']['colorSchemes']['selected'] = $default;
+  $jsSettings['colorSchemes']['selected'] = $default;
 
   return $jsSettings;
 }

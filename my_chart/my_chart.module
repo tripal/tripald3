@@ -1,0 +1,48 @@
+<?php
+// Include pedigree api of this module.
+
+/**
+ * Implements hook_theme().
+ */
+function my_chart_theme($existing, $type, $theme, $path) {  
+  $variables = [
+    'mychart_theme_simplepie' => [
+      'variables' => [],
+      'template' => 'template-my-chart-simplepie',
+    ],
+    'mychart_theme_simpledonut' => [
+      'variables' => [],
+      'template' => 'template-my-chart-simpledonut',
+    ],
+    'mychart_theme_multiseriesdonut' => [
+      'variables' => [],
+      'template' => 'template-my-chart-multiseriesdonut',
+    ],
+  ];
+
+  return $variables;
+}
+
+/**
+ * Add new scheme.
+ */
+function my_chart_tripald3_color_schemes() {
+    $color_schemes = array();
+
+    // This key should be unique across colour schemes.
+    $color_schemes['MonoC'] = array(
+      // This name will show up in the colour scheme configuration
+      'name' => 'Monochromatic',
+      // These are the colours your colour scheme consists of.
+      'colors' => array('#000000', '#656565', '#7e7d7d', '#929191', '#a4a3a3', '#a79b9b', '#d7ccc9', '#efe8e6', '#777777'),
+      'pick order' => array(
+        // This is the order of the above colours when picking for a
+        // qualitative chart (e.g. heatmap).
+        'quantitative' => array(0, 1, 2, 3, 4, 5, 6, 7, 8),
+        // This is the order for a categorical chart (e.g. pie chart)
+        'categorical' => array(3, 6, 1, 4, 5, 8, 2, 7, 0)
+      ),
+    );
+
+    return $color_schemes;
+  }
