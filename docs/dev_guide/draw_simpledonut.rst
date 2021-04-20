@@ -6,7 +6,7 @@ Draw a Simple Donut Chart
 
 1. Implement hook_theme in module_name.module file. Take note of the value set for template key as this will become the name of template file in subsequent steps.
 
-.. code::
+.. code-block:: php
 
   /**
    * Implements hook_theme().
@@ -24,7 +24,7 @@ Draw a Simple Donut Chart
 
 3. Define an HTML element in the template file to be used as container for chart components. Note the value set for the id attribute of <div> element, as this will be referenced by `tripalD3.drawChart()` function in the next steps.
 
-.. code::
+.. code-block:: php
   
   {#
     /**
@@ -39,7 +39,7 @@ Draw a Simple Donut Chart
 
 4. Prepare libraries. In module/js directory, create a .js file that will draw the chart in your template by calling `tripalD3.drawChart()`. This is done by using Drupal behaviours to ensure it is run at the correct point and the data prepared is passed in.
 
-.. code::
+.. code-block:: langcode
 
   Drupal.behaviors.tripalD3demoSimpleDonut = {
     attach: function (context, settings) {
@@ -65,7 +65,8 @@ Draw a Simple Donut Chart
 
 5. Update or create module_name.libraries.yml file and define a library with js: key set to match the Javascript file in step #4.
 
-.. code::
+.. code-block:: langcode
+  
   # Tripald3 Core library: Create Simple Donut.
   create-simpledonut:
     version: v1.x
@@ -74,7 +75,7 @@ Draw a Simple Donut Chart
 
 6. With all the parts ready, It is time to compose the routing controller callback function. 
  
-  .. code::
+  .. code-block:: langcode
     
     namespace Drupal\my_chart\Controller;
 
