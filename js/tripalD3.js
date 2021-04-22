@@ -887,11 +887,11 @@ tripalD3 = {
   getColorScheme: function(type, schemeName) { 
     //Retrieve default color scheme; if not set.
     if (!schemeName) {
-      schemeName = drupalSettings.tripalD3.vars.scheme.colorSchemes.selected;
+      schemeName = drupalSettings.tripalD3.vars.colorScheme.tripalD3.colorSchemes.selected;
     }
 
     // Grab the colour schemes added to Drupal settings.
-    var schemes = drupalSettings.tripalD3.vars.scheme.colorSchemes;
+    var schemes = drupalSettings.tripalD3.vars.colorScheme.tripalD3.colorSchemes;
 
     if (type == 'quantitative') {
       return schemes[schemeName].quantitative;

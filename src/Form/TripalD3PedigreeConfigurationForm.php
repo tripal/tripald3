@@ -1,6 +1,7 @@
 <?php
 /**
- * @file Construct configuration form illustrating pedigree tree
+ * @file 
+ * Construct configuration form illustrating pedigree tree
  * and selection of relationship terms to be used.
  */
 
@@ -37,19 +38,37 @@ class TripalD3PedigreeConfigurationForm extends ConfigFormBase {
    * Build form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config(static::SETTINGS);
+    // Check if d3 library exists.
+    $lib = \Drupal::service('library.discovery')->getLibraryByName('tripald3', 'D3');
+    if (!$lib) {
+      // Library not found.
+      \Drupal::messenger()->addError(t('Unable to find D3 library. Please see documentation.'));  
+      
+      // Nothing to render but the error message.
+      return false;
+    }
 
-    // Attach libraries.
+    // Attach style and libraries.
+    // NOTE: d3 library is an external library.
     $form['#attached']['library'][] = 'tripald3/D3';
+    
+    // Javascript library to demo pedigree tree diagram.
     $form['#attached']['library'][] = 'tripald3/illustrate-pedigree';
-
+    
+    // Style pedigree tree diagram.
     $form['#attached']['library'][] = 'style_pedigree/style-pedigree';
 
-    // Get relationships.
-    $rel_options = tripald3_get_stockrelationship();
-    $form_state->set('relationships', $rel_options);
-    
+
+    // Configurations:
+    $config = $this->config(static::SETTINGS);
     $default_rels = $config->get('tripald3_stock_pedigree_rels');
+
+
+    // Form render array:
+    $service = \Drupal::service('tripald3.TripalD3Pedigree');
+    $rel_options = $service->getStockRelationshipTypes();
+    $form_state->set('relationships', $rel_options);
+
     if (!$default_rels) {
       $default_rels = array(
         'object' => array(),
@@ -80,7 +99,7 @@ class TripalD3PedigreeConfigurationForm extends ConfigFormBase {
         <em><strong>NOTE:</strong> Each relationship can only be followed in ONE
           direction.</em></div>"
     ];
-
+    
     // NOTE: Fieldset title does not coincide with field name. 
     // Fieldset contains the tree diagram where the subject is the parent and thus the current stock is the object. 
     // The form elements are named after the current stock as that's where the data is being added to but it's 

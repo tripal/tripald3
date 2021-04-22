@@ -1,6 +1,7 @@
 <?php
 /**
- * @file Construct configuration form to allow configuration
+ * @file 
+ * Construct configuration form to allow configuration
  * of charts and diagram elements.
  */
 
@@ -39,11 +40,33 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
     // Check if d3 library exists.
     $lib = \Drupal::service('library.discovery')->getLibraryByName('tripald3', 'D3');
     if (!$lib) {
-      drupal_set_message('Unable to load D3.js. Please make sure you have downloaded D3.js and placed it in your sites/all/assets/vendor/d3 directory.', 'error');      
+      // Library not found.
+      \Drupal::messenger()->addError(t('Unable to find D3 library. Please see documentation.'));  
+      
+      // Nothing to render but the error message.
+      return false;
     }
-
-    $config = $this->config(static::SETTINGS);
     
+    // Attach main library D3 and script variables.
+    // NOTE: d3 library is an external library.
+    $form['#attached']['library'][] = 'tripald3/D3';
+    
+    // Javascript library to demo the colour schemes.
+    $form['#attached']['library'][] = 'tripald3/create-colour-pallets';
+    
+    // Create colour pallets using color scheme service.
+    $service = \Drupal::service('tripald3.TripalD3ColorScheme');
+    $to_Drupalsettings = $service->registerColorScheme();
+    $form['#attached']['drupalSettings']['colorscheme_display'] = $to_Drupalsettings;
+
+
+    // Configurations:
+    $config = $this->config(static::SETTINGS);
+    $config_scheme = $config->get('tripald3_colorScheme'); 
+    $config_resize = $config->get('tripald3_autoResize'); 
+
+    
+    // Form render array:
     // Field: Auto-Resize option.
     $form['general'] = [
       '#type' => 'fieldset',
@@ -53,7 +76,7 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
     $form['general']['fld_checkbox_autoresize'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Auto-Resize'),
-      '#default_value' => $config->get('tripald3_autoResize'), 
+      '#default_value' => $config_resize,
 
       '#description' => 'Select this option if your theme is fluid-width and you would 
         like TripalD3 diagrams to resize themeselves when users resize the page. 
@@ -73,19 +96,8 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
         The color scheme chosen will be used for all Tripal D3 Diagrams site-wide providing a nice 
         consistent interface.</p>',
     ];
-    
-    // Attach main library: D3.
-    // NOTE: d3 library is an external library.
-    $form['#attached']['library'][] = 'tripald3/D3';
-    $default_scheme = $config->get('tripald3_colorScheme');
-    // Create colour pallets.
-    $to_Drupalsettings = tripald3_register_colorschemes($default_scheme);
-    $form['#attached']['drupalSettings']['tripalD3']['vars']['colorscheme_display'] = $to_Drupalsettings;
-    
-    // Javascript libraries to demo the colour schemes.
-    $form['#attached']['library'][] = 'tripald3/create-colour-pallets';
-    
-    $schemes = tripald3_get_color_schemes();
+      
+    $schemes = $service->loadColorSchemes();
     $options = [];
     foreach ($schemes as $id => $scheme) {
       $options[ $id ] = $scheme['name'] . '<div id="TD3-scheme-' . $id . '" class="' . $id . '"></div>';
@@ -94,9 +106,9 @@ class TripalD3IntegrationConfigurationForm extends ConfigFormBase {
     $form['colors']['fld_radio_colorscheme'] = [
       '#type' => 'radios',
       '#options' => $options,
-      '#default_value' => $default_scheme
+      '#default_value' => $config_scheme
     ];
-
+    
     return parent::buildForm($form, $form_state);
   }
 

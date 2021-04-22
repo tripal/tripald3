@@ -29,7 +29,8 @@ class TripalD3RelationshipJsonController {
     $json_response->headers->set('Access-Control-Allow-Origin', '*');
     
     // From pedigree API.
-    $subset = tripald3_get_pedigree_relationship_types();
+    $service = \Drupal::service('tripald3.TripalD3Pedigree');
+    $subset = $service->getPedigreeRelationshipTypes();
     $tree_data = $this->getRelationshipTree($base_table, $id, $subset);
     
     if ($tree_data) {

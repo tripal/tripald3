@@ -1,13 +1,8 @@
 <?php
-
-// Include colour scheme api of this module.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/color_scheme');
-
-// Include pedigree api of this module.
-// @see /api
-module_load_include('inc', 'tripald3', 'api/pedigree');
-
+/**
+ * @file
+ * .module file of TripalD3.
+ */
 
 /**
  * Implements hook_theme().
@@ -31,4 +26,76 @@ function tripald3_theme($existing, $type, $theme, $path) {
   ];
 
   return $variables;
+}
+
+/**
+ * Implements hook_tripald3_color_schemes().
+ * This will be a set of color schemes available for use in chart elements and
+ * other enabled module can implement this hook to extend colour schemes.
+ *
+ * NOTE: Do not delete key BlOr in the array below without changing 
+ *       the value of default color scheme configuration in
+*        config/install/tripald3.settings.yml.
+ *
+ * @see documentation on extending this color schemes.
+ * @see color scheme service src/Services.
+ */
+function tripald3_tripald3_color_schemes() {
+  $color_schemes = [
+    'PrpGr' => [
+      'name' => 'Purple-Green',
+      'colors' => ['#3d4051', '#753FB0', '#8F7ABF', '#294090', '#6683C3', '#0C6758', '#7AB318', '#A0C55E', '#9FA7A3'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 1, 4, 5, 8, 2, 7, 0]
+      ],
+    ],
+     
+    'BlOr' => [
+      'name' => 'Blue-Orange',
+      'colors' => ['#004854', '#295990', '#6696C3', '#017E80', '#00B9BC', '#F10A12', '#FF8600', '#FFB200', '#EDE1BB'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 4, 5, 1, 7, 8, 2, 0]
+      ],
+    ],
+
+    'RedYl' => [
+      'name' => 'Fire',
+      'colors' => ['#670927', '#6d3f24', '#a74811', '#C1002C', '#F10A12', '#FF8600', '#FFB200', '#CFD6B4', '#EDE1BB'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 2, 5, 8, 4, 1, 7, 0]
+      ],
+    ],
+
+    'BrnGr' => [
+      'name' => 'Earth Green',
+      'colors' => ['#323C30', '#665343', '#AD9575', '#68722D', '#A3BD00', '#CECA72', '#A9B79E', '#CFD6B4', '#F1E7CD'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 7, 1, 4, 2, 7, 1, 8, 0]
+      ],
+    ],
+
+    'pRdBl' => [
+      'name' => 'Earth Rose',
+      'colors' => ['#670927', '#665343', '#AD9575', '#9D1D36', '#C25848', '#DAA887', '#A9B79E', '#CFD6B4', '#E8DDBD'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 7, 1, 4, 2, 7, 1, 8, 0]
+      ],
+    ],
+
+    'NvGr' => [
+      'name' => 'Navy-Green',
+      'colors' => ['#090C0E', '#253443', '#21597D', '#0C6758', '#7AB318', '#A0C55E', '#9FA7A3', '#BBC7BD', '#D5D4E6'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [4, 3, 1, 7, 2, 5, 8, 6, 0]
+      ],
+    ]
+  ];
+
+  return $color_schemes;
 }

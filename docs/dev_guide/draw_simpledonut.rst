@@ -87,20 +87,15 @@ Draw a Simple Donut Chart
 
         // FETCH CONFIGURATION SETTINGS VARIABLES.
     
-        // Fetch configuration settings - autoresize, colour scheme and pedigree terms.
-        // Configuration values will be available in scripts as drupalSettings.tripalD3.vars.
-        $config = \Drupal::service('config.factory')
-          ->getEditable('tripald3.settings');
-        
-        // Namespace module name to prevent name collision.
-        
-        // Colour schemes.
-        $default_scheme = $config->get('tripald3_colorScheme');
-        $to_Drupalsettings['tripalD3']['vars']['scheme'] = tripald3_register_colorschemes($default_scheme);
+        // Color scheme configuration.
+        $default_scheme = \Drupal::service('tripald3.TripalD3ColorScheme')
+          ->registerColorScheme();
+        $to_Drupalsettings['tripalD3']['vars']['colorScheme'] = $default_scheme; 
 
         // Auto resize configuration.        
-        $default_resize = $config->get('tripald3_autoResize');
-        $to_Drupalsettings['tripalD3']['vars']['autoResize'] = $default_resize;
+        $default_resize = $this->config('tripald3.settings')
+          ->get('tripald3_autoResize');
+        $to_Drupalsettings['tripalD3']['vars']['autoResize']  = $default_resize;
         
         // YOUR DATA ARRAY.
 

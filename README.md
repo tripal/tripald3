@@ -10,7 +10,7 @@ NOTE: This module is an API and does not provide user facing diagrams. Rather, y
 3. (Optional) Go to Admin » Tripal » Extension Modules » Tripal D3 Diagrams to configure colour schemes, etc.
 
 ### Dependencies
-1. [Tripal 3.x](https://www.drupal.org/project/tripal)
+1. [Tripal 4.x](https://www.drupal.org/project/tripal)
 2. [Drupal Libraries API](https://www.drupal.org/project/libraries)
 3. [D3 v3 javascript library](https://github.com/d3/d3/releases/download/v3.5.14/d3.zip)
 

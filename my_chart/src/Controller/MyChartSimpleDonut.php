@@ -9,20 +9,18 @@ use Drupal\Core\Controller\ControllerBase;
 
 class MyChartSimpleDonut extends ControllerBase {
   public function content() {
-    // Fetch configuration settings - autoresize, colour scheme and pedigree terms.
-    // Configuration values will be available in scripts as drupalSettings.
-    $config = \Drupal::service('config.factory')
-      ->getEditable('tripald3.settings');
+    // Make configuration values available to Javascript libraries.  
     
-    // Namespace module name to prevent name collision.
-    
-    // Colour schemes.
-    $default_scheme = $config->get('tripald3_colorScheme');
-    $to_Drupalsettings['tripalD3']['vars']['scheme'] = tripald3_register_colorschemes($default_scheme);
+    // Color scheme configuration.
+    $default_scheme = \Drupal::service('tripald3.TripalD3ColorScheme')
+      ->registerColorScheme();
+    $to_Drupalsettings['tripalD3']['vars']['colorScheme'] = $default_scheme; 
 
     // Auto resize configuration.        
-    $default_resize = $config->get('tripald3_autoResize');
-    $to_Drupalsettings['tripalD3']['vars']['autoResize'] = $default_resize;
+    $default_resize = $this->config('tripald3.settings')
+      ->get('tripald3_autoResize');
+    $to_Drupalsettings['tripalD3']['vars']['autoResize']  = $default_resize;
+    
     
     // Data.
     $data  = [
