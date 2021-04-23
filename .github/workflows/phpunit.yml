@@ -91,13 +91,13 @@ jobs:
     # 6) Install Tripal D3.
     - name: Install Tripal D3
       id: installtripald3
-      uses: tripal/tripald3@9.x-2.x
       env:
         DRUSH: ${{ steps.tripalsetup.outputs.drush_path }}
         DRUPAL_ROOT: ${{ steps.tripalsetup.outputs.drupal_root }}
       run: |
-        mkdir -p $DRUPAL_ROOT/modules/tripald3
-        cp -R * $DRUPAL_ROOT/modules/tripald3
+        cd $DRUPAL_ROOT/sites/all/modules
+        git clone https://github.com/tripal/tripald3.git
+        git checkout checkout 9.x-2.x
         cd $DRUPAL_ROOT
         $DRUSH en -y tripald3
 
