@@ -13,6 +13,8 @@ These docs provide full details of the javascript API including all options avai
    api/drawSimpleDonut
    api/drawMultiDonut
    api/drawSimpleBar
+   api/drawSimpleHistogram
+   api/drawHistogram
    api/ellipsisThrobber
    api/popover
    api/getColorScheme

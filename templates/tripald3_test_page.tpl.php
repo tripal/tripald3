@@ -51,7 +51,7 @@
       );
 
       // Check general options for all chart types...
-      ['simplepie', 'simpledonut', 'multidonut', 'simplebar'].forEach(function(element) {
+      ['simplepie', 'simpledonut', 'multidonut', 'simplebar', 'simplehistogram', 'histogram'].forEach(function(element) {
 
         // No Data.
         console.log("Test #0: " + element + " data = []. ERROR EXPECTED.");
@@ -225,8 +225,8 @@
           }
         );
 
-        // Check simplepie, simpledonut and simplebar data compliance.
-        if (element == 'simplepie' || element == 'simpledonut' || element == 'simplebar') {
+        // Check simplepie, simpledonut, simplebar, and histogram data compliance.
+        if (element == 'simplepie' || element == 'simpledonut' || element == 'simplebar' || element == 'simplehistogram' || element == 'histogram') {
           // Already checked that data is a non-empty array.
           // Check that each element must have a label & count.
           // Semi-deep clone testData 2X.
@@ -257,7 +257,7 @@
             }
           );
         }
-        // Check simplepie, simpledonut and simplebar data compliance.
+        // Check simplepie, simpledonut, simplebar and histogram data compliance.
         if (element == 'multidonut') {
           // Already checked that data is a non-empty array.
           // Check that each element must have a label & count.

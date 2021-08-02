@@ -116,6 +116,24 @@ tripalD3.test = {
 
     return dataset;
   },
+  
+  //------------------------------------------------------
+  'isFrequencyDataCompliant': function (data) {
+     
+    if (data.length == 0) {
+      console.error("The " + dataLabel + " must not be empty.");
+      return false;
+    }
+  
+    if (data.some(isNaN)) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  },
+   
+ 
 
   /**
    * Generate random words to be used as labels. All labels consist of two parts

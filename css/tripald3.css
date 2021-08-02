@@ -68,3 +68,50 @@ svg.tripald3-tree .tree-node {
 .tripald3-default-watermark {
   background-image: url(watermark.png);
 }
+
+/**--------------------Histo updates-----------------*/
+
+body {
+      font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+      fill: none;
+      stroke: #000
+}
+
+line {
+      vector-effect: non-scaling-stroke;
+      stroke: #000;
+      stroke-dasharray: 18;
+      stroke-width: 2px;
+}
+
+line:hover {
+      stroke-width: 3px;
+      shape-rendering: crispEdges;
+}
+
+.legendText {
+      font: 12px sans-serif;
+      font-weight: bolder;
+      float: left;
+      width: 20px;
+      height: 20px;
+      margin: 5px;
+}
+
+div.absolute {
+      position: absolute;
+      top:570px;
+      left: 475px;
+      width: 300px;
+}
+
+div.absolute2 {
+      position: absolute;
+      top: 150px;
+      left: 470px;
+      width: 180px;
+}
