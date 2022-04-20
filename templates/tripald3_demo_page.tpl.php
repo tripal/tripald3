@@ -12,7 +12,7 @@
   tripald3_load_libraries();
 ?>
 
-<h2>Demonstrations</h2>
+<h2>Test</h2>
 
 <p>This page demonstrates the various diagrams available through this module.
   Remember that this module simply provides an API to develop common diagrams
@@ -319,6 +319,825 @@ series of data.</p>
   <!-- Javascript will add a Simple Bar Chart, Title and Figure legend here -->
 </div>
 
+
+<!---------------SCATTERPLOT------------------->
+<h3>Scatterplot Diagram</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleScatter = {
+    attach: function (context, settings) { 
+      var scatterData = [[1, 6], [4, 8], [10,10], [6,8], [5,4],[6,5]];
+
+      tripalD3.drawFigure(
+        scatterData,
+        {
+          "chartType" : "simplescatter",
+          "elementId" : "tripald3-scatterplot",
+          "height" : 400,
+          "width" : 800,
+          "xAxisPadding" : 30,
+          "yAxisPadding" : 60,
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-scatterplot" class="tripald3-diagram">
+  <!-- Javascript will add a Simple Scatterplot, Title and Figure legend here -->
+</div>
+
+
+<!---------------SCATTERPLOT HORIZONTAL THRESHOLD------------------->
+<h3>Scatterplot With Threshold Diagram</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleScatterHorizontal = {
+    attach: function (context, settings) { 
+      var scatterData = [
+	{
+  "x": 7,
+  "y": 9
+  },
+  {
+  "x": 10,
+  "y": 3
+  },
+  {
+  "x": 1,
+  "y": 9
+  },
+  {
+  "x": 8,
+  "y": 5
+  },
+  {
+  "x": 4,
+  "y": 2
+  },
+  {
+  "x": 1,
+  "y": 6
+  },
+];
+
+      tripalD3.drawFigure(
+        scatterData,
+        {
+          "chartType" : "horizontalscatter",
+          "elementId" : "tripald3-scatterplot-horizontal",
+          "height" : 400,
+          "width" : 800,
+          "xAxisPadding" : 30,
+          "yAxisPadding" : 60,
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-scatterplot-horizontal" class="tripald3-diagram">
+  <!-- Javascript will add a Simple Scatterplot, Title and Figure legend here -->
+</div>
+
+
+
+<!--------  LINE PLOT ------------------------------------------------->
+<h3>Simple Line Plot</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleLinePlot = {
+    attach: function (context, settings) {
+
+      var linePlotData= [
+	      {x: 10, y: 20}, 
+	      {x: 30, y: 40}, 
+	      {x: 50, y: 60}, 
+	      {x: 70, y: 80}, 
+	      {x: 90, y: 100}
+      ];
+
+      // Draw chart
+      tripalD3.drawFigure(
+        linePlotData,
+        {
+          "chartType" : "simplelineplot",
+          "elementId": "tripald3-simplelineplot",
+          "height": 500,
+          "width": 1000,
+          "keyPosition": "right",
+          /*
+          "title": "testing line plot",
+          "legend": "aabb",
+          "chartOptions": {
+            "xAxisTitle": "",
+            "yAxisTitle": "",
+          }
+          */
+        }
+      );
+
+
+    }
+  }
+</script>
+
+
+<div id="tripald3-simplelineplot" class="tripald3-diagram" style="width: 800px;">
+  <!-- Javascript will add a Simple LinePlot, Title and Figure legend here -->
+</div>
+
+
+<!--------  HISTOGRAM  -------------------------------------------------------->
+<h3>Histogram With Interactive Thresholds</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoHistogram = {
+    attach: function (context, settings) {
+
+      // Pull the data out of the javascript settings.
+      var histoData = [
+        4.1     	,
+5.3     	,
+4.4     	,
+3.9     	,
+5.5     	,
+5.3     	,
+5.4     	,
+4.3     	,
+4.2     	,
+4.0     	,
+6.3     	,
+7.9     	,
+4.5     	,
+5.2     	,
+4.6     	,
+5.4     	,
+5.6     	,
+4.6     	,
+5.1     	,
+4.6     	,
+3.7     	,
+4.8     	,
+7.7     	,
+4.3     	,
+3.8     	,
+5.0     	,
+4.5     	,
+4.6     	,
+4.1     	,
+4.6     	,
+7.1     	,
+5.5     	,
+5.2     	,
+4.5     	,
+4.8     	,
+4.1     	,
+4.4     	,
+4.8     	,
+4.8     	,
+3.9     	,
+3.9     	,
+8.2     	,
+6.2     	,
+3.7     	,
+5.4     	,
+5.1     	,
+3.7     	,
+5.2     	,
+7.1     	,
+4.4     	,
+3.8     	,
+6.8     	,
+4.9     	,
+4.7     	,
+4.2     	,
+4.2     	,
+3.9     	,
+3.2     	,
+6.3     	,
+4.7     	,
+4.6     	,
+3.8     	,
+4.7     	,
+7.0     	,
+10.5     	,
+4.9     	,
+4.2     	,
+3.5     	,
+5.7     	,
+3.5     	,
+6.3     	,
+9.2     	,
+9.5     	,
+6.7     	,
+5.5     	,
+5.8     	,
+5.6     	,
+9.0     	,
+8.3     	,
+9.4     	,
+4.2     	,
+3.1     	,
+8.4     	,
+2.1     	,
+6.5     	,
+3.7     	,
+4.2     	,
+3.6     	,
+5.6     	,
+8.2     	,
+11.2     	,
+11.3     	,
+10.5     	,
+10.7     	,
+2.3     	,
+7.0     	,
+7.5     	,
+7.0     	,
+6.3     	,
+5.2     	,
+7.0     	,
+4.9     	,
+7.1     	,
+10.0     	,
+5.4     	,
+5.9     	,
+9.2     	,
+5.5     	,
+5.2     	,
+4.4     	,
+6.6     	,
+5.3     	,
+3.4     	,
+4.0     	,
+5.6     	,
+5.9     	,
+5.4     	,
+8.8     	,
+4.5     	,
+6.9     	,
+5.9     	,
+5.1     	,
+5.3     	,
+5.4     	,
+3.6     	,
+4.1     	,
+5.0     	,
+5.6     	,
+5.8     	,
+5.6     	,
+6.4     	,
+3.8     	,
+4.1     	,
+5.5     	,
+4.8     	,
+4.0     	,
+4.3     	,
+4.7     	,
+4.3     	,
+4.0     	,
+4.8     	,
+7.3     	,
+8.0     	,
+6.5     	,
+5.5     	,
+5.8     	,
+5.0     	,
+6.0     	,
+5.2     	,
+5.8     	,
+5.0     	,
+3.8     	,
+3.3     	,
+5.4     	,
+5.5     	,
+5.9     	,
+5.1     	,
+6.3     	,
+4.2     	,
+4.9     	,
+6.7     	,
+5.4     	,
+7.1     	,
+5.0     	,
+4.4     	,
+5.3     	,
+5.5     	,
+5.8     	,
+4.1     	,
+4.8     	,
+6.5     	,
+3.6     	,
+4.4     	,
+5.3     	,
+4.0     	,
+5.7     	,
+6.5     	,
+6.8     	,
+6.0     	,
+6.6     	,
+3.0     	,
+5.8     	,
+6.6     	,
+5.5     	,
+3.4     	,
+4.3     	,
+4.9     	,
+6.6     	,
+4.8     	,
+9.6     	,
+3.6     	,
+7.3     	,
+4.3     	,
+8.9     	,
+8.3     	,
+4.6     	,
+8.4     	,
+4.8     	,
+9.1     	,
+9.8     	,
+6.7     	,
+6.1     	,
+5.0     	,
+8.6     	,
+2.7     	,
+7.1     	,
+5.2     	,
+10.3     	,
+11.3     	,
+3.7     	,
+10.0     	,
+4.0     	,
+4.1     	,
+3.3     	,
+3.7     	,
+11.6     	,
+4.8     	,
+4.3     	,
+6.5     	,
+4.5     	,
+3.8     	,
+2.6     	,
+7.2     	,
+3.5     	,
+2.4     	,
+5.2     	,
+2.9     	,
+6.5     	,
+6.2     	,
+7.4     	,
+9.2     	,
+4.7     	,
+3.3     	,
+7.4     	,
+9.7     	,
+7.1     	,
+7.5     	,
+11.3     	,
+5.7     	,
+4.4     	,
+5.4     	,
+7.9     	,
+4.5     	,
+5.7     	,
+4.1     	,
+5.0     	,
+3.0     	,
+4.6     	,
+3.5     	,
+3.7     	,
+3.9     	,
+2.5     	,
+3.8     	,
+6.4     	,
+6.3     	,
+6.3     	,
+4.4     	,
+5.4     	,
+4.2     	,
+4.1     	,
+3.6     	,
+3.2     	,
+3.6     	,
+5.0     	,
+7.5     	,
+4.3     	,
+3.3     	,
+3.3     	,
+3.6     	,
+4.4     	,
+10.1     	,
+4.0     	,
+3.9     	,
+2.3     	,
+2.6     	,
+3.0     	,
+4.4     	,
+3.8     	,
+6.3     	,
+3.5     	,
+3.8     	,
+5.8     	,
+2.8     	,
+5.4     	,
+8.1     	,
+5.3     	,
+3.7     	,
+6.5     	,
+4.7     	,
+4.3     	,
+2.6     	,
+3.1     	,
+4.4     	,
+6.3     	,
+7.0     	,
+6.9     	,
+3.0     	,
+6.4     	,
+5.6     	,
+3.0     	,
+2.9     	,
+2.4     	,
+4.8     	,
+2.7     	,
+3.8     	,
+2.6     	];
+
+      // Draw your chart.
+      tripalD3.drawFigure(
+        histoData,
+        {
+          "chartType" : "histogram",
+          "elementId": "tripald3-histogram",
+          "height": 500,
+          "width": 1000,
+          "keyPosition": "right",
+          "title": "SNPs available for the selection of <em>Tripalus databasica</em>",
+          "legend": "The above histogram depicts the number of SNPs available per selected tree for <em>Tripalus databasica</em>.",
+          "chartOptions": {
+            "xAxisTitle": "",
+            "yAxisTitle": "",
+          }
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-histogram" class="tripald3-diagram">
+  <!-- Javascript will add a Histogram, Title and Figure legend here -->
+</div>
+
+
+<!--------  SIMPLE HISTOGRAM  -------------------------------------------------------->
+<h3>Simple Histogram</h3>
+<p></p>
+
+<script type="text/javascript">
+  Drupal.behaviors.tripalD3demoSimpleHistogram = {
+    attach: function (context, settings) {
+
+      // Pull the data out of the javascript settings.
+      var simpleHistoData = [
+                4.1     	,
+5.3     	,
+4.4     	,
+3.9     	,
+5.5     	,
+5.3     	,
+5.4     	,
+4.3     	,
+4.2     	,
+4.0     	,
+6.3     	,
+7.9     	,
+4.5     	,
+5.2     	,
+4.6     	,
+5.4     	,
+5.6     	,
+4.6     	,
+5.1     	,
+4.6     	,
+3.7     	,
+4.8     	,
+7.7     	,
+4.3     	,
+3.8     	,
+5.0     	,
+4.5     	,
+4.6     	,
+4.1     	,
+4.6     	,
+7.1     	,
+5.5     	,
+5.2     	,
+4.5     	,
+4.8     	,
+4.1     	,
+4.4     	,
+4.8     	,
+4.8     	,
+3.9     	,
+3.9     	,
+8.2     	,
+6.2     	,
+3.7     	,
+5.4     	,
+5.1     	,
+3.7     	,
+5.2     	,
+7.1     	,
+4.4     	,
+3.8     	,
+6.8     	,
+4.9     	,
+4.7     	,
+4.2     	,
+4.2     	,
+3.9     	,
+3.2     	,
+6.3     	,
+4.7     	,
+4.6     	,
+3.8     	,
+4.7     	,
+7.0     	,
+10.5     	,
+4.9     	,
+4.2     	,
+3.5     	,
+5.7     	,
+3.5     	,
+6.3     	,
+9.2     	,
+9.5     	,
+6.7     	,
+5.5     	,
+5.8     	,
+5.6     	,
+9.0     	,
+8.3     	,
+9.4     	,
+4.2     	,
+3.1     	,
+8.4     	,
+2.1     	,
+6.5     	,
+3.7     	,
+4.2     	,
+3.6     	,
+5.6     	,
+8.2     	,
+11.2     	,
+11.3     	,
+10.5     	,
+10.7     	,
+2.3     	,
+7.0     	,
+7.5     	,
+7.0     	,
+6.3     	,
+5.2     	,
+7.0     	,
+4.9     	,
+7.1     	,
+10.0     	,
+5.4     	,
+5.9     	,
+9.2     	,
+5.5     	,
+5.2     	,
+4.4     	,
+6.6     	,
+5.3     	,
+3.4     	,
+4.0     	,
+5.6     	,
+5.9     	,
+5.4     	,
+8.8     	,
+4.5     	,
+6.9     	,
+5.9     	,
+5.1     	,
+5.3     	,
+5.4     	,
+3.6     	,
+4.1     	,
+5.0     	,
+5.6     	,
+5.8     	,
+5.6     	,
+6.4     	,
+3.8     	,
+4.1     	,
+5.5     	,
+4.8     	,
+4.0     	,
+4.3     	,
+4.7     	,
+4.3     	,
+4.0     	,
+4.8     	,
+7.3     	,
+8.0     	,
+6.5     	,
+5.5     	,
+5.8     	,
+5.0     	,
+6.0     	,
+5.2     	,
+5.8     	,
+5.0     	,
+3.8     	,
+3.3     	,
+5.4     	,
+5.5     	,
+5.9     	,
+5.1     	,
+6.3     	,
+4.2     	,
+4.9     	,
+6.7     	,
+5.4     	,
+7.1     	,
+5.0     	,
+4.4     	,
+5.3     	,
+5.5     	,
+5.8     	,
+4.1     	,
+4.8     	,
+6.5     	,
+3.6     	,
+4.4     	,
+5.3     	,
+4.0     	,
+5.7     	,
+6.5     	,
+6.8     	,
+6.0     	,
+6.6     	,
+3.0     	,
+5.8     	,
+6.6     	,
+5.5     	,
+3.4     	,
+4.3     	,
+4.9     	,
+6.6     	,
+4.8     	,
+9.6     	,
+3.6     	,
+7.3     	,
+4.3     	,
+8.9     	,
+8.3     	,
+4.6     	,
+8.4     	,
+4.8     	,
+9.1     	,
+9.8     	,
+6.7     	,
+6.1     	,
+5.0     	,
+8.6     	,
+2.7     	,
+7.1     	,
+5.2     	,
+10.3     	,
+11.3     	,
+3.7     	,
+10.0     	,
+4.0     	,
+4.1     	,
+3.3     	,
+3.7     	,
+11.6     	,
+4.8     	,
+4.3     	,
+6.5     	,
+4.5     	,
+3.8     	,
+2.6     	,
+7.2     	,
+3.5     	,
+2.4     	,
+5.2     	,
+2.9     	,
+6.5     	,
+6.2     	,
+7.4     	,
+9.2     	,
+4.7     	,
+3.3     	,
+7.4     	,
+9.7     	,
+7.1     	,
+7.5     	,
+11.3     	,
+5.7     	,
+4.4     	,
+5.4     	,
+7.9     	,
+4.5     	,
+5.7     	,
+4.1     	,
+5.0     	,
+3.0     	,
+4.6     	,
+3.5     	,
+3.7     	,
+3.9     	,
+2.5     	,
+3.8     	,
+6.4     	,
+6.3     	,
+6.3     	,
+4.4     	,
+5.4     	,
+4.2     	,
+4.1     	,
+3.6     	,
+3.2     	,
+3.6     	,
+5.0     	,
+7.5     	,
+4.3     	,
+3.3     	,
+3.3     	,
+3.6     	,
+4.4     	,
+10.1     	,
+4.0     	,
+3.9     	,
+2.3     	,
+2.6     	,
+3.0     	,
+4.4     	,
+3.8     	,
+6.3     	,
+3.5     	,
+3.8     	,
+5.8     	,
+2.8     	,
+5.4     	,
+8.1     	,
+5.3     	,
+3.7     	,
+6.5     	,
+4.7     	,
+4.3     	,
+2.6     	,
+3.1     	,
+4.4     	,
+6.3     	,
+7.0     	,
+6.9     	,
+3.0     	,
+6.4     	,
+5.6     	,
+3.0     	,
+2.9     	,
+2.4     	,
+4.8     	,
+2.7     	,
+3.8     	,
+2.6     	];
+
+      // Draw your chart.
+      tripalD3.drawFigure(
+        simpleHistoData,
+        {
+          "chartType" : "simplehistogram",
+          "elementId": "tripald3-simpleHistogram",
+          "height": 500,
+          "width": 1000,
+          "keyPosition": "right",
+          "title": "SNPs available for the selection of <em>Tripalus databasica</em>",
+          "legend": "The above histogram depicts the number of SNPs available per selected tree for <em>Tripalus databasica</em>.",
+          "chartOptions": {
+            "xAxisTitle": "",
+            "yAxisTitle": "",
+          }
+        }
+      );
+    }
+  };
+</script>
+
+<div id="tripald3-simpleHistogram" class="tripald3-diagram">
+  <!-- Javascript will add a Simple Histogram, Title and Figure legend here -->
+</div>
+
+
+
 <!--------  PEDIGREE DIAGRAM ------------------------------------------------->
 <h3>Pedigree Diagram</h3>
 <p>This diagram was developed to mimic plant breeder pedigrees with additional
@@ -515,3 +1334,7 @@ series of data.</p>
 <div id="tripald3-pedigree-right" class="tripald3-diagram">
   <!-- Javascript will add the pedigree diagram and figure legend here -->
 </div>
+
+
+
+
