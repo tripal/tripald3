@@ -13,6 +13,7 @@ This guide contains tutorials for using the Tripal D3.js API to add diagrams to 
    dev_guide/draw_multidonut
    dev_guide/color_scheme
    dev_guide/get_color_scheme
+   dev_guide/draw_simplescatter
 
 Additional Information
 ------------------------
