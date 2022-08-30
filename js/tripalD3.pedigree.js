@@ -418,9 +418,10 @@ tripalD3.pedigree = {
         // Add tooltips to the connecting lines to make sure it's
         // clear what the relationship is.
         var tooltips= d3.selectAll("path.tree-link")
+          .style('cursor', 'pointer')
           .append('title')
             .text(function(d,i) {
-              return d.target.relationship.subject + ' ' + d.target.relationship.type + ' ' + d.target.relationship.object;
+              return d.target.relationship.object + ' ' + d.target.relationship.type + ' ' + d.target.relationship.subject;
             });
 
         // Stash the old positions for transition.
