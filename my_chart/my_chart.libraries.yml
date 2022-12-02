@@ -1,0 +1,17 @@
+# Tripald3 Core library: Create Simple Pie.
+mychart-simplepie:
+  version: v1.x
+  js:
+    js/simple-pie.js: {} 
+
+# Tripald3 Core library: Create Simple Donut.
+mychart-simpledonut:
+  version: v1.x
+  js:
+    js/simple-donut.js: {} 
+
+# Tripald3 Core library: Create Multi-series Donut.
+mychart-multiseriesdonut:
+  version: v1.x
+  js:
+    js/multiseries-donut.js: {}         

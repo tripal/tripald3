@@ -5,14 +5,14 @@ Provides d3.js integration for Tripal. It provides an API for developing consist
 NOTE: This module is an API and does not provide user facing diagrams. Rather, you would use this API to easily draw common diagrams within your own fields. For an example of how to use this module, see [Tripal Fancy Fields](https://github.com/tripal/trpfancy_fields).
 
 ## Quickstart
-1. Unpack the [D3 v3 javascript library](https://github.com/d3/d3/releases?after=v4.0.0) in your Drupal Libraries directory (quick check, you should have a libraries/d3/d3.min.js file; for more information see the drupal.org documentation).
-2. Download and install this module as you would any other Drupal module ([Documentation](https://www.drupal.org/documentation/install/modules-themes>))
+1. Unpack the [D3 v3 javascript library](https://github.com/d3/d3/releases/download/v3.5.14/d3.zip) in your Drupal 8 Libraries directory (sites/all/assets/vendor/d3).
+2. Download and install this module as you would any other Drupal module ([Documentation](https://www.drupal.org/docs/extending-drupal/installing-modules))
 3. (Optional) Go to Admin » Tripal » Extension Modules » Tripal D3 Diagrams to configure colour schemes, etc.
 
 ### Dependencies
-1. [Tripal 3.x](https://www.drupal.org/project/tripal)
+1. [Tripal 4.x](https://www.drupal.org/project/tripal)
 2. [Drupal Libraries API](https://www.drupal.org/project/libraries)
-3. [D3 v3 javascript library](https://github.com/d3/d3/releases?after=v4.0.0)
+3. [D3 v3 javascript library](https://github.com/d3/d3/releases/download/v3.5.14/d3.zip)
 
 ## Browser Support
 All Diagrams Tested on:

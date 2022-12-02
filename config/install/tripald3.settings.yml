@@ -1,0 +1,6 @@
+# Auto-resize svg canvass, default to false
+tripald3_autoResize: FALSE
+# Colour scheme, default to Blue orange.
+tripald3_colorScheme: BlOr
+# Stock pedigree terms used, default to empty.
+tripald3_stock_pedigree_rels: 

@@ -1,0 +1,8 @@
+services:
+  tripald3.TripalD3ColorScheme:
+    class: Drupal\tripald3\Services\TripalD3ColorScheme
+    arguments: ['@config.factory']    
+  
+  tripald3.TripalD3Pedigree:
+    class: Drupal\tripald3\Services\TripalD3Pedigree
+    arguments: ['@config.factory']

@@ -1,0 +1,6 @@
+name: My Chart - Test Tripal D3 Module.
+description: Test Tripal D3 Libraries.
+package: Tripal Extension
+
+type: module
+core: 8.x

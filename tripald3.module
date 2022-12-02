@@ -1,166 +1,101 @@
 <?php
-
-/** @pedigree Comment out pedigree's until re-vamped. */
-require_once('includes/stock_pedigree.inc');
-
-require_once('includes/tripalD3.api.inc');
-require_once('includes/color_scheme.inc');
-
 /**
- * Implements hook_libraries_info()
+ * @file
+ * .module file of TripalD3.
  */
-function tripald3_libraries_info() {
-  $libraries = array();
-  $libraries['d3'] = array(
-    'name' => 'D3.js',
-    'vendor url' => 'http://d3js.org/',
-    'download url' => 'https://github.com/mbostock/d3',
-    'version arguments' => array(
-      'file' => 'd3.js',
-      'pattern' => '/\s*version: "(\d+\.\d+\.\d+)"\s*/',
-    ),
-    'files' => array(
-      'js' => array(
-        'd3.min.js',
-      ),
-    ),
-  );
-
-  return $libraries;
-}
-
-/**
- * Implements hook_menu().
- */
-function tripald3_menu() {
-  $items = array();
-
-  /** @pedigree Comment out pedigree's until re-vamped. */
-  $items['ajax/tripal/d3-json/relationships/%/%'] = array(
-    'title' => 'JS Graph: Tree',
-    'page callback' => 'tripald3_get_relationship_json',
-    'page arguments' => array(4,5),
-    'access arguments' => array('view tripald3 json'),
-    'type' => MENU_CALLBACK
-  );
-
-  $items['admin/tripal/extension/tripald3'] = array(
-    'title' => 'Tripal D3 Diagrams',
-    'description' => 'Configuration for D3.js integration.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('tripald3_common_settings_form'),
-    'access arguments' => array('administer tripal'),
-    'file' => 'includes/settings_forms.inc',
-  );
-
-  $items['admin/tripal/extension/tripald3/general'] = array(
-    'title' => 'General',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('tripald3_common_settings_form'),
-    'access arguments' => array('administer tripal'),
-    'file' => 'includes/settings_forms.inc',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => 0,
-  );
-
-  $items['admin/tripal/extension/tripald3/demo'] = array(
-    'title' => 'Demo',
-    'page callback' => 'theme',
-    'page arguments' => array('tripald3_demo_page'),
-    'access arguments' => array('administer tripal'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 1,
-  );
-
-  $items['admin/tripal/extension/tripald3/test'] = array(
-    'title' => 'Test',
-    'page callback' => 'theme',
-    'page arguments' => array('tripald3_test_page'),
-    'access arguments' => array('administer tripal'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 1,
-  );
-
-  /** @pedigree Comment out pedigree's until re-vamped. */
-  $items['admin/tripal/extension/tripald3/stock_pedigree'] = array(
-    'title' => 'Stock Pedigree',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('tripald3_stock_pedigree_settings_form'),
-    'access arguments' => array('administer tripal'),
-    'file' => 'includes/settings_forms.inc',
-    'type' => MENU_LOCAL_TASK
-  );
-
-  return $items;
-}
 
 /**
  * Implements hook_theme().
+ * Used by Tripal D3 Integration Demo and Test pages.
+ *
+ * @see templates in /templates
  */
-function tripald3_theme($existing, $type, $theme, $path) {
-  $items = array();
+function tripald3_theme($existing, $type, $theme, $path) {  
+  $variables = [
+    // Tripal D3 Demo page theme.
+    'theme_tripald3demo' => [
+      'variables' => [],
+      'template' => 'template-tripald3-demo',
+    ],
+    
+    // Tripal D3 Test page theme.
+    'theme_tripald3test' => [
+      'variables' => [],
+      'template' => 'template-tripald3-test',
+    ]
+  ];
 
-  /** @pedigree Comment out pedigree's until re-vamped. */
-  $items['tripald3_stock_pedigree'] = array(
-    'template' => 'tripal_stock_pedigree',
-    'path' => $path.'/templates',
-    'variables' => array('node' => NULL),
-  );
-
-  $items['tripald3_demo_page'] = array(
-    'template' => 'tripald3_demo_page',
-    'path' => $path.'/templates',
-  );
-
-  $items['tripald3_test_page'] = array(
-    'template' => 'tripald3_test_page',
-    'path' => $path.'/templates',
-  );
-
-  return $items;
+  return $variables;
 }
 
 /**
- * Implements hook_permission().
+ * Implements hook_tripald3_color_schemes().
+ * This will be a set of color schemes available for use in chart elements and
+ * other enabled module can implement this hook to extend colour schemes.
+ *
+ * NOTE: Do not delete key BlOr in the array below without changing 
+ *       the value of default color scheme configuration in
+*        config/install/tripald3.settings.yml.
+ *
+ * @see documentation on extending this color schemes.
+ * @see color scheme service src/Services.
  */
-function tripald3_permission() {
-  return array(
-    // @todo better permissions control.
-    'view tripald3 json' => array(
-      'title' => t('View Tripal D3 JSON'),
-      'description' => t('Required for anyone wanting to view a Tripal D3 diagram.'),
-    ),
-  /** @pedigree Comment out pedigree's until re-vamped. */
-    'view tripald3 pedigree' => array(
-      'title' => t('View Tripal D3 Pedigree'),
-      'description' => t('Required to view the pedigree pane on stock pages.'),
-    ),
+function tripald3_tripald3_color_schemes() {
+  $color_schemes = [
+    'PrpGr' => [
+      'name' => 'Purple-Green',
+      'colors' => ['#3d4051', '#753FB0', '#8F7ABF', '#294090', '#6683C3', '#0C6758', '#7AB318', '#A0C55E', '#9FA7A3'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 1, 4, 5, 8, 2, 7, 0]
+      ],
+    ],
+     
+    'BlOr' => [
+      'name' => 'Blue-Orange',
+      'colors' => ['#004854', '#295990', '#6696C3', '#017E80', '#00B9BC', '#F10A12', '#FF8600', '#FFB200', '#EDE1BB'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 4, 5, 1, 7, 8, 2, 0]
+      ],
+    ],
 
-  );
-}
+    'RedYl' => [
+      'name' => 'Fire',
+      'colors' => ['#670927', '#6d3f24', '#a74811', '#C1002C', '#F10A12', '#FF8600', '#FFB200', '#CFD6B4', '#EDE1BB'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 6, 2, 5, 8, 4, 1, 7, 0]
+      ],
+    ],
 
-/**
- * Implements hook_node_view(). Acts on all content types.
- * @pedigree
- */
-function tripald3_node_view($node, $view_mode, $langcode) {
+    'BrnGr' => [
+      'name' => 'Earth Green',
+      'colors' => ['#323C30', '#665343', '#AD9575', '#68722D', '#A3BD00', '#CECA72', '#A9B79E', '#CFD6B4', '#F1E7CD'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 7, 1, 4, 2, 7, 1, 8, 0]
+      ],
+    ],
 
-  switch ($node->type) {
-    case 'chado_stock':
-      if ($view_mode == 'full') {
-        if(user_access('view tripald3 pedigree')) {
+    'pRdBl' => [
+      'name' => 'Earth Rose',
+      'colors' => ['#670927', '#665343', '#AD9575', '#9D1D36', '#C25848', '#DAA887', '#A9B79E', '#CFD6B4', '#E8DDBD'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [3, 7, 1, 4, 2, 7, 1, 8, 0]
+      ],
+    ],
 
-          // Only add the pedigree if there is more than the root node.
-          if (!tripald3_is_node_leafless_tree($node->stock->stock_id)) {
-            $node->content['tripal_stock_pedigree'] = array(
-              '#theme' => 'tripald3_stock_pedigree',
-              '#node' => $node,
-              '#tripal_toc_id'    => 'pedigree',
-              '#tripal_toc_title' => 'Pedigree'
-            );
-          }
-        }
-      }
-    break;
-  }
+    'NvGr' => [
+      'name' => 'Navy-Green',
+      'colors' => ['#090C0E', '#253443', '#21597D', '#0C6758', '#7AB318', '#A0C55E', '#9FA7A3', '#BBC7BD', '#D5D4E6'],
+      'pick order' => [
+        'quantitative' => [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        'categorical'  => [4, 3, 1, 7, 2, 5, 8, 6, 0]
+      ],
+    ]
+  ];
+
+  return $color_schemes;
 }
